@@ -1,13 +1,15 @@
 import usePreferences from "../../state/hooks/usePreferences"
-import { Link, Outlet, useNavigate } from "react-router-native"
 import { Button, StyleSheet, Text, View } from "react-native"
 import React from "react"
+import { useNavigation } from "@react-navigation/native"
+
+
 const Header = () => {
     const preferences = usePreferences()
+    const navigation = useNavigation()
     React.useEffect(() => {
-        const navigate = useNavigate()
         if (!preferences.initializer) {
-            navigate("/inicializar/criarGrupos")
+            navigation.navigate("Welcome")
         }
     }, [])
 
@@ -16,15 +18,10 @@ const Header = () => {
             <View>
                 <View >
                     <Text >TrainFit</Text>
-                    <Link to={"/"} >
-                        <Text>Home</Text>
-                    </Link>
-                    <Link to={"/configuracoes"} >
-                        <Text>Configurações</Text>
-                    </Link>
+                    <Button title="Home" onPress={event => navigation.navigate("Home")} />
+                    <Button title="Configurações" onPress={event => navigation.navigate("Configuration")} />
                 </View>
             </View>
-            <Outlet />
         </View>
         // <View>
         //     <View className="flex justify-center items-center bg-cor-terciaria h-14 w-full px-8 md:px-20">

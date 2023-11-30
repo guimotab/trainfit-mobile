@@ -1,17 +1,17 @@
-import { StyleSheet, Switch } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Home from './src/pages/Home';
 import { RecoilRoot } from 'recoil';
 import { Suspense } from 'react';
-import { NativeRouter, Route, Router, Routes } from 'react-router-native';
 import Configuration from './src/pages/Configuration';
 import Welcome from './src/pages/Welcome';
 import CreateExercises from './src/pages/Welcome/CreateExercises';
-import Pagination from './src/pages/Welcome/Pagination';
 import StyleGroups from './src/pages/Welcome/StyleGroups';
 import Workout from './src/pages/Workout';
-import Header from './src/components/Header';
 import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 export default function App() {
+  const Stack = createNativeStackNavigator();
   React.useEffect(() => {
     console.log("oi");
     
@@ -19,20 +19,18 @@ export default function App() {
   return (
     <Suspense>
       <RecoilRoot>
-        <NativeRouter>
-          <Routes>
-            <Route path="inicializar/" element={<Pagination />} >
-              <Route path="criarGrupos" element={<Welcome />} />
-              <Route path="criarExercicios" element={<CreateExercises />} />
-              <Route path="estilizarGrupos" element={<StyleGroups />} />
-            </Route>
-            <Route path='/' element={<Header />}>
-              <Route index element={<Home />} />
-              <Route path='treino/:id' element={<Workout />} />
-              <Route path='configuracoes' element={<Configuration />} />
-            </Route>
-          </Routes>
-        </NativeRouter>
+        <NavigationContainer>
+        <Stack.Navigator initialRouteName='Home'>
+              <Stack.Screen name='Home' component={Home} />
+              <Stack.Screen name='Workout' 
+              component={Workout} />
+              {/* path='treino/:id'  */}
+              <Stack.Screen name='Configuration' component={Configuration} />
+              <Stack.Screen name='Welcome'  component={Welcome} />
+              <Stack.Screen name='CreateExercises' component={CreateExercises} />
+              <Stack.Screen name='StyleGroups' component={StyleGroups} />
+        </Stack.Navigator>
+        </NavigationContainer>
       </RecoilRoot>
     </Suspense>
   );

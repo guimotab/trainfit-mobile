@@ -7,16 +7,15 @@ import { useUpdatePreferences } from "../../state/hooks/useUpdatePreferences"
 import { useUpdateTables } from "../../state/hooks/useUpdateTables"
 import AllWorkouts from "./AllWorkouts"
 import { IPreferencesWorkout } from "../../shared/interfaces/IPreferencesWorkout"
-import { useNavigate } from "react-router-native"
-import { useEffect } from "react"
+import Header from "../../components/Header"
 const Home = () => {
     const tables = new Tables(useTables())
     const setTable = useUpdateTables()
     const preferences = new AllPreferences(usePreferences())
     const setPreferences = useUpdatePreferences()
     function createMuscularGroup() {
-        let newId : number
-        if(tables.tables[0]){
+        let newId: number
+        if (tables.tables[0]) {
             newId = tables.tables[tables.tables.length - 1].id + 1
         } else {
             newId = 1
@@ -31,24 +30,27 @@ const Home = () => {
         setPreferences(preferences.returnInformation())
         setTable(tables.tables)
     }
-    
+
     return (
-        <View style={styles.section}>
-        <View style={styles.section}>
-            <View style={styles.muscleButton}>
-                <Text style={styles.textMuscleButton}>Grupos Musculares</Text>
-                <Button 
-                title="Novo Grupo Muscular"
-                accessibilityLabel="Novo Grupo Muscular"
-                onPress={event => createMuscularGroup()}/>
+        <>
+            <Header />
+            <View style={styles.section}>
+                <View style={styles.section}>
+                    <View style={styles.muscleButton}>
+                        <Text style={styles.textMuscleButton}>Grupos Musculares</Text>
+                        <Button
+                            title="Novo Grupo Muscular"
+                            accessibilityLabel="Novo Grupo Muscular"
+                            onPress={event => createMuscularGroup()} />
+                    </View>
+                    <View style={styles.AllWokouts}>
+                        {tables.tables ? tables.tables.map(table =>
+                            <AllWorkouts key={table.id} table={table} />
+                        ).reverse() : <></>}
+                    </View>
+                </View>
             </View>
-            <View style={styles.AllWokouts}>
-                {tables.tables ? tables.tables.map(table =>
-                    <AllWorkouts key={table.id} table={table} />
-                ).reverse() : <></>}
-            </View>
-        </View>
-    </View>
+        </>
     )
 }
 const styles = StyleSheet.create({
@@ -60,20 +62,20 @@ const styles = StyleSheet.create({
         height: "100%",
         width: "100%",
         minHeight: "100%",
-    }, 
-    div:{
+    },
+    div: {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         gap: 32,
         width: "auto"
     },
-    muscleButton:{
+    muscleButton: {
         display: "flex",
         marginTop: 30,
         width: "auto"
     },
-    textMuscleButton:{
+    textMuscleButton: {
         fontSize: 20,
         fontWeight: "600",
         color: "#ebebeb"
