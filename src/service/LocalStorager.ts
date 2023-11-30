@@ -6,13 +6,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 export abstract class AsyncStorager {
     static async getInformations() {
         let localStorageWorkout: IMuscleGroup[]
-        if (AsyncStorage.getItem("Workout") != null) {
+        if (await AsyncStorage.getItem("Workout") != null) {
             localStorageWorkout = await AsyncStorage.getItem("Workout") as unknown as IMuscleGroup[]
         } else {
             const preferences = await this.getPreferences()
             localStorageWorkout = [] as IMuscleGroup[]
             let idCounter = 1
-            if (preferences) {
+            if (preferences != null) {
                 preferences.preferencesWorkout.forEach(preference => {
                     localStorageWorkout.push({
                         id: idCounter,

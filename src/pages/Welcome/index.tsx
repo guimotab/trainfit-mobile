@@ -1,15 +1,17 @@
-import { AiOutlinePlusCircle } from 'react-icons/ai'
+import Icon from 'react-native-vector-icons/AntDesign'
 import useTables from '../../state/hooks/useTables'
 import { useUpdateTables } from '../../state/hooks/useUpdateTables'
 import usePreferences from '../../state/hooks/usePreferences'
 import { useUpdatePreferences } from '../../state/hooks/useUpdatePreferences'
+import {ScrollView, Button, StyleSheet, Text, View } from "react-native"
 import { Tables } from '../../models/Tables'
 import InputNameMuscles from './InputNameMuscles'
-import { Link } from 'react-router-native'
 import { IPreferencesWorkout } from '../../shared/interfaces/IPreferencesWorkout'
 import { AllPreferences } from '../../models/AllPreferences'
 import ErrorProgram from '../../components/ErrorProgram'
 import useErrorProgram from '../../state/hooks/useErrorProgram'
+import { useNavigation } from '@react-navigation/native'
+import { cor, font } from '../../utils/presetStyles'
 
 const Welcome = () => {
     const tables = new Tables(useTables())
@@ -17,9 +19,11 @@ const Welcome = () => {
     const preferences = new AllPreferences(usePreferences())
     const setPreferences = useUpdatePreferences()
     const erroProgram = useErrorProgram()
+    const navigation = useNavigation()
+
     function addNewMuscularGroup() {
-        let newId : number
-        if(tables.tables[0]){
+        let newId: number
+        if (tables.tables[0]) {
             newId = tables.tables[tables.tables.length - 1].id + 1
         } else {
             newId = 1
@@ -34,34 +38,130 @@ const Welcome = () => {
         setPreferences(preferences.returnInformation())
         setTables(tables.tables)
     }
-    
+
     return (
-        <section className="flex justify-center bg-gray-900 h-full min-h-screen w-full py-10">
-            <div className="flex justify-center max-w-7xl w-full px-10">
-                <div className='flex flex-col max-w-5xl gap-6 w-full animate-entraceWelcome'>
-                    <h1 className="text-gray-200 font-semibold text-3xl">Olá! Bem vindo ao <span className="text-cor-hover font-bold ">TrainFit!</span></h1>
-                    <div className='flex flex-col gap-5'>
-                        <div className='flex items-center gap-3'>
-                            <h2 className="text-gray-200 font-semibold text-2xl">Crie sua divisão de grupos musculares</h2>
-                            <AiOutlinePlusCircle size={28} onClick={event=>addNewMuscularGroup()} className='text-gray-200 cursor-pointer hover:animate-hoverWH' />
-                        </div>
-                    </div>
-                    <div className='grid grid-cols-2 gap-y-6 mt-3 px-6'>
-                        {tables.tables.map(table => <InputNameMuscles key={table.id} table={table} />)}
-                    </div>
-                    {tables.tables[0] ?
-                        <Link
-                            id='button-to-criarExercicios'
-                            to={"../criarExercicios"}
-                            className='self-end text-gray-200 text-lg font-medium lg:border-2 border-cor-secundaria bg-cor-secundaria lg:bg-transparent lg:hover:animate-hoverTH px-3 py-1 mt-2 rounded-lg'>Próximo</Link>
-                        :
-                        <button
-                            className='self-end text-gray-400 text-lg font-medium lg:border-2 border-gray-600 lg:bg-transparent hover:cursor-not-allowed px-3 py-1 mt-2 rounded-lg'>Próximo</button>
-                    }
-                </div>
-            </div>
+        <View style={styles.section}>
+            <ScrollView>
+                <View style={styles.divWelcome}>
+                    <View style={styles.divTextWelcome}>
+                        <Text style={styles.inicialText}>Olá! Bem vindo ao <Text style={styles.boldText}>TrainFit!</Text></Text>
+                        <View style={styles.viewDivH2}>
+                            <View style={styles.viewH2}>
+                                <Text style={styles.h2}>Crie sua divisão de grupos musculares</Text>
+                                <Icon name={"pluscircleo"} size={23} onPress={event => addNewMuscularGroup()} style={styles.icon} />
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.divInputButton}>
+                        <View style={styles.viewTables}>
+                            {tables.tables.map(table => <InputNameMuscles key={table.id} table={table} />)}
+                        </View>
+                        <View style={styles.viewTextButtons}>
+                            {tables.tables[0] ?
+                                <Text
+                                    style={styles.buttonNextEnable}
+                                    //id='button-to-criarExercicios'
+                                    //style=''
+                                    accessibilityLabel="Novo Grupo Muscular"
+                                    onPress={event => navigation.navigate("CreateExercises")}> Próximo</Text>
+                                :
+                                <Text style={styles.buttonNextDisabled}> Próximo</Text>
+                            }
+                        </View>
+                    </View>
+                </View>
+            </ScrollView>
             <ErrorProgram text={erroProgram} />
-        </section>
+        </View>
     )
 }
+const styles = StyleSheet.create({
+    section: {
+        display: "flex",
+        flex: 1,
+        backgroundColor: cor.gray900, //900,
+        paddingTop: 60,
+    },
+    divWelcome: {
+        display: "flex",
+        flex: 1
+        //animate-entraceWelcome
+    },
+    divTextWelcome: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 20,
+        paddingHorizontal: 25
+    },
+    divInputButton: {
+        display: "flex",
+        flex: 1,
+        gap: 30,
+        flexDirection: "column",
+    },
+    inicialText: {
+        color: cor.gray200, //200,
+        fontWeight: font.semibold, //semibold
+        fontSize: 27
+    },
+    boldText: {
+        color: cor.secundaria,
+        fontWeight: font.extraBold
+    },
+    viewDivH2: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 20
+    },
+    viewH2: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12
+    },
+    h2: {
+        color: cor.gray200, //200,
+        fontWeight: font.semibold,
+        fontSize: 17 //2xl
+    },
+    icon: {
+        color: cor.gray200, //200,
+        //hover:animate-hoverWH'
+    },
+    viewTables: {
+        display: "flex",
+        flex: 2,
+        rowGap: 24, //6
+        marginTop: 12, //3
+        padding: 24, //6
+    },
+    viewTextButtons: {
+        display: "flex",
+        flex: 1,
+        marginBottom: 40,
+        marginHorizontal: 30,
+    },
+    buttonNextDisabled: {
+        alignSelf: "flex-end",
+        color: cor.gray400,//400
+        fontSize: 18, //lg
+        fontWeight: font.medium,//medium
+        borderColor: "gray", //600
+        borderWidth: 2,
+        paddingHorizontal: 12,
+        paddingVertical: 4,
+        borderRadius: 8 //lg
+    },
+    buttonNextEnable: {
+        alignSelf: "flex-end",
+        color: cor.gray200,
+        fontSize: 18,
+        fontWeight: font.medium,
+        borderColor: cor.secundaria,
+        borderWidth: 2,
+        paddingHorizontal: 12,
+        paddingVertical: 4,
+        borderRadius: 8 //lg 
+    }
+})
 export default Welcome

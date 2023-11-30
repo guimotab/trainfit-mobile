@@ -8,11 +8,11 @@ import { useUpdateTables } from "../../../../../state/hooks/useUpdateTables";
 import { IExercise } from "../../../../../shared/interfaces/IExercise";
 import { IMuscleGroupInformations } from "../../../../../shared/interfaces/IMuscleGroupInformations";
 import { AsyncStorager } from "../../../../../service/LocalStorager";
-import { IoMdTrash } from "react-icons/io";
 import { IMuscleGroup } from "../../../../../shared/interfaces/IMuscleGroup";
 import useWarningProgram from "../../../../../state/hooks/useWarningProgram";
 import { useUpdateMessageProgram } from "../../../../../state/hooks/useUpdateMessageProgram";
-import { useParams } from "react-router-native";
+import { useRoute } from "@react-navigation/native";
+import { ParamsProps } from "../../../../../@types/navigation";
 export interface SetsProps {
     sets: ISets
     exercise: IExercise
@@ -21,12 +21,14 @@ export interface SetsProps {
     saveTable: IMuscleGroup[]
 }
 export const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsProps) => {
+    const route = useRoute()
+    const params =  route.params as ParamsProps
+    const id = params.id.toString()
     const tables = new Tables(useTables());
     const saveTables = new Tables(saveTable)
     const setTables = useUpdateTables()
     const updadeMessageProgram = useUpdateMessageProgram()
     const warningProgram = useWarningProgram()
-    const { id } = useParams();
     const currentTable = new MuscleGroup(findCurrentTable(saveTable, id!))
     const [dateId, setDateId] = useState(workout.date + "%" + exercise.id + "%" + sets.numberSet)
     const [numberSet, setNumberSet] = useState(sets.numberSet)
@@ -76,7 +78,7 @@ export const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsP
         <div className='flex flex-col gap-1.5 border-2 border-gray-200 rounded-xl px-5 py-3'>
             <div className="flex w-full justify-between">
                 <h4 className='text-lg font-medium text-gray-200'>{numberSet}° Série</h4>
-                <IoMdTrash size={24} onClick={event => deleteSet()} className="text-gray-200 hover:animate-hoverTrash" />
+                {/* <IoMdTrash size={24} onClick={event => deleteSet()} className="text-gray-200 hover:animate-hoverTrash" /> */}
             </div>
             <div className='flex flex-col gap-1.5 pl-3'>
                 <div className='flex items-center gap-3'>

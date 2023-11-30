@@ -15,13 +15,17 @@ import WarningDeleteTable from './WarningDeleteTable'
 import { useUpdateMessageProgram } from '../../../state/hooks/useUpdateMessageProgram'
 import { useUpdatePreferences } from '../../../state/hooks/useUpdatePreferences'
 import { AllPreferences } from '../../../models/AllPreferences'
-import { useParams } from 'react-router-native'
 import ErrorProgram from '../../../components/ErrorProgram'
 import Filter from '../../../components/Filter'
 import WarningProgram from '../../../components/WarningProgram'
 import { AsyncStorager } from '../../../service/LocalStorager'
+import { useRoute } from '@react-navigation/native'
+import { ParamsProps } from '../../../@types/navigation'
+
 const Table = () => {
-    const { id } = useParams()
+    const route = useRoute()
+    const params =  route.params as ParamsProps
+    const id = params.id.toString()
     const tables = new Tables(useTables())
     const setTables = useUpdateTables()
     const preferences = new AllPreferences(usePreferences())

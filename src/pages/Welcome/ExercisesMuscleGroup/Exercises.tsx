@@ -1,4 +1,3 @@
-import { IoMdTrash } from "react-icons/io"
 import { useEffect, useState } from "react"
 import { AllPreferences } from "../../../models/AllPreferences"
 import { PreferencesWorkout } from "../../../models/PreferencesWorkout"
@@ -6,6 +5,9 @@ import usePreferences from "../../../state/hooks/usePreferences"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
 import { useUpdatePreferences } from "../../../state/hooks/useUpdatePreferences"
 import { IPreferencesWorkout } from "../../../shared/interfaces/IPreferencesWorkout"
+import Icon from "react-native-vector-icons/FontAwesome5"
+import { ScrollView, Button, StyleSheet, Text, View, TextInput } from "react-native"
+import { cor, font } from "../../../utils/presetStyles"
 
 interface ExerciseseGroupProps {
     preference: IPreferencesWorkout
@@ -23,7 +25,8 @@ const Exercises = ({ preference, exercise }: ExerciseseGroupProps) => {
         setBaseExercise(preference.basesExercises)
     }, [exercise])
 
-    function editExercise(value: string) {
+    function editExercise() {
+        const value = exerciseName
         const findValueIquals = baseExercise.find(thisExercise => thisExercise === value)
         const isThisElement = value === exercise
         if (value === "") {
@@ -53,15 +56,41 @@ const Exercises = ({ preference, exercise }: ExerciseseGroupProps) => {
         setPreferences({ initializer: preferences.initializer, preferencesWorkout: fakePreferences })
     }
     return (
-        <div key={exercise} className="flex items-center gap-3">
-            <input
+        <View key={exercise} style={styles.view}>
+            <TextInput
                 maxLength={30}
                 value={exerciseName}
-                onChange={event => setExerciseName(event.target.value)}
-                onBlur={event => editExercise(event.target.value)}
-                className=" ml-3 pr-4 py-1 bg-transparent border-dashed-hover text-gray-200 text-lg" />
-            <IoMdTrash size={22} onClick={event => deleteMuscleGroup()} className="text-gray-200 hover:animate-hoverTrash" />
-        </div>
+                onChangeText={text => setExerciseName(text)}
+                onEndEditing={event => editExercise()}
+                style={styles.input}
+                 />
+            <Icon name="trash" size={17} onPress={event => deleteMuscleGroup()} style={styles.icon} />
+        </View>
     )
 }
+const styles = StyleSheet.create({
+    view: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12
+    },
+    input: {
+        //" ml-3 pr-4 py-1 bg-transparent border-dashed-hover text-gray-200 text-lg"
+        marginLeft: 5,
+        flex: 1,
+        paddingRight: 16,
+        paddingVertical: 4,
+        backgroundColor: "transparent",
+        borderBottomWidth: 2,
+        borderColor: cor.secundaria,
+        borderStyle: "dashed",
+        color: cor.gray200,
+        fontSize: 16
+    },
+    icon: {
+        color: cor.gray200, //200,
+        //hover: animate - hoverWH'
+    },
+})
 export default Exercises

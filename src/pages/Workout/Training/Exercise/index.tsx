@@ -12,23 +12,25 @@ import { AsyncStorager } from "../../../../service/LocalStorager"
 import { IExercise } from "../../../../shared/interfaces/IExercise"
 import { useEffect, useState } from "react"
 import { IMuscleGroup } from "../../../../shared/interfaces/IMuscleGroup"
-import { IoMdTrash } from "react-icons/io"
 import { useUpdateMessageProgram } from "../../../../state/hooks/useUpdateMessageProgram"
 import useWarningProgram from "../../../../state/hooks/useWarningProgram"
-import { AiOutlinePlusCircle } from 'react-icons/ai'
-import { useParams } from "react-router-native"
+import { useRoute } from "@react-navigation/native"
+import { ParamsProps } from "../../../../@types/navigation"
 interface ExerciseProps {
     exercise: IExercise
     workout: IMuscleGroupInformations
     setSaveTable: React.Dispatch<React.SetStateAction<IMuscleGroup[]>>
     saveTable: IMuscleGroup[]
 }
+
 const Exercise = ({ exercise, workout, saveTable, setSaveTable }: ExerciseProps) => {
+    const route = useRoute()
+    const params =  route.params as ParamsProps
+    const id = params.id.toString()
     const tables = new Tables(useTables())
     const saveTables = new Tables(saveTable)
     const setTables = useUpdateTables()
     const [nameExercise, setNameExercise] = useState(exercise.name)
-    const { id } = useParams();
     const currentTable = new MuscleGroup(findCurrentTable(saveTables.tables, id!))
     const updadeMessageProgram = useUpdateMessageProgram()
     const warningProgram = useWarningProgram()
@@ -95,14 +97,14 @@ const Exercise = ({ exercise, workout, saveTable, setSaveTable }: ExerciseProps)
     return (
         <div className='flex flex-col gap-3'>
             <div className='flex items-center gap-3'>
-                <IoMdTrash onClick={event => deleteSet()} className="text-gray-200 w-5 h-5 hover:animate-hoverTrash" />
+                {/* <IoMdTrash onClick={event => deleteSet()} className="text-gray-200 w-5 h-5 hover:animate-hoverTrash" /> */}
                 <input
                     maxLength={20}
                     onChange={event => setNameExercise(event.target.value)}
                     value={nameExercise}
                     onBlur={event => changeNameExercise(event.target.value)}
                     className='bg-transparent w-full max-w-[15rem] text-gray-200 font-semibold  sm:text-xl focus:outline-none border-dashed-hover' />
-                <AiOutlinePlusCircle onClick={event => createNewSet()} className='text-gray-200 w-7 h-7 font-bold hover:animate-hoverWH hover:cursor-pointer' />
+                {/* <AiOutlinePlusCircle onClick={event => createNewSet()} className='text-gray-200 w-7 h-7 font-bold hover:animate-hoverWH hover:cursor-pointer' /> */}
             </div>
             {exercise.sets[0] ?
                 exercise.sets.map(sets => <Sets key={sets.numberSet} sets={sets} exercise={exercise} workout={workout} saveTable={saveTable}

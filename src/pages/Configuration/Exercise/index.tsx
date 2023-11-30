@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { IoMdTrash } from "react-icons/io"
 import { IPreferencesWorkout } from "../../../shared/interfaces/IPreferencesWorkout"
 import { PreferencesWorkout } from "../../../models/PreferencesWorkout"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
@@ -52,7 +51,7 @@ const Exercise = ({ exercise, savePreferences, preference, setSavePreferences }:
                 onBlur={event => editExercise(event.target.value)}
                 maxLength={20}
                 className="w-full max-w-[18rem] text-gray-800 font-medium sm:text-lg rounded-lg px-2 bg-gray-300 focus:bg-gray-100" />
-            <IoMdTrash size={22} onClick={event => deleteExercise()} className="text-gray-200 hover:animate-hoverTrash" />
+            {/* <IoMdTrash size={22} onClick={event => deleteExercise()} className="text-gray-200 hover:animate-hoverTrash" /> */}
         </div>
     )
 }

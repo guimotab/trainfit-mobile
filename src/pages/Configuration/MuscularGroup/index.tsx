@@ -1,4 +1,3 @@
-import { IoMdTrash } from "react-icons/io"
 import { IPreferencesWorkout } from "../../../shared/interfaces/IPreferencesWorkout"
 import Exercise from "../Exercise"
 import { useState } from "react"
@@ -8,7 +7,7 @@ import useTables from "../../../state/hooks/useTables"
 import { MuscleGroup } from "../../../models/MuscleGroup"
 import { IMuscleGroup } from "../../../shared/interfaces/IMuscleGroup"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
-import { AiOutlinePlusCircle } from "react-icons/ai"
+import Icon from "react-native-vector-icons/AntDesign"
 interface MuscularGroupProps {
     preference: IPreferencesWorkout
     savePreferences: IPreferencesWorkout[]
@@ -89,14 +88,15 @@ const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, s
         <div className="flex justify-center w-full">
             <div className="flex flex-col items-center lg:items-start h-full min-h-[5rem]">
                 <div className="flex items-center py-3">
-                    <IoMdTrash size={22} onClick={event => deleteMuscularGroup()} className="text-gray-200 hover:animate-hoverTrash" />
+                    {/* <IoMdTrash size={22} onClick={event => deleteMuscularGroup()} className="text-gray-200 hover:animate-hoverTrash" /> */}
                     <input
                         maxLength={25}
                         value={valueInput}
                         onChange={event => setValueInput(event.target.value)}
                         onBlur={event => editNameMuscularGroup(event.target.value)}
                         className="bg-transparent sm:text-xl md:text-2xl font-semibold text-gray-200 mx-5 py-1 border-dashed-hover" />
-                <AiOutlinePlusCircle size={30} onClick={event => setCreateNewExercise(true)} className='text-gray-200 font-bold hover:animate-hoverWH hover:cursor-pointer'/>
+                        {/* <Icon name={"pluscircleo"} size={23} onPress={event => addNewMuscularGroup()} style={styles.icon} /> */}
+                {/* <AiOutlinePlusCircle size={30} onClick={event => setCreateNewExercise(true)} className='text-gray-200 font-bold hover:animate-hoverWH hover:cursor-pointer'/> */}
                  {/* <button
                         onClick={event => setCreateNewExercise(true)}
                         className="text-gray-200 font-semibold px-3 py-[0.1rem] bg-cor-secundaria rounded-lg hover:animate-hoverBGSH">Novo Exercício</button> */}

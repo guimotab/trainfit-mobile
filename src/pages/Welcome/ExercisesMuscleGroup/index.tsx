@@ -1,4 +1,3 @@
-import { AiOutlinePlusCircle } from "react-icons/ai"
 import { IPreferencesWorkout } from "../../../shared/interfaces/IPreferencesWorkout"
 import Exercises from "./Exercises"
 import { PreferencesWorkout } from "../../../models/PreferencesWorkout"
@@ -7,6 +6,9 @@ import usePreferences from "../../../state/hooks/usePreferences"
 import { useUpdatePreferences } from "../../../state/hooks/useUpdatePreferences"
 import { useState } from "react"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
+import Icon from "react-native-vector-icons/AntDesign"
+import { ScrollView, Button, StyleSheet, Text, View, TextInput } from "react-native"
+import { cor, font } from "../../../utils/presetStyles"
 
 interface ExercisesMuscleGroupProps {
     preference: IPreferencesWorkout
@@ -17,8 +19,10 @@ const ExercisesMuscleGroup = ({ preference }: ExercisesMuscleGroupProps) => {
     const setPreferences = useUpdatePreferences()
     const setMessageProgram = useUpdateMessageProgram()
     const [newExercise, setNewExercise] = useState(false)
+    const [name, setName] = useState("")
 
-    function saveNewExercise(value: string) {
+    function saveNewExercise() {
+        const value = name
         const findValueIquals = preference.basesExercises.find(thisExercise => thisExercise === value)
         const isThisElement = value === preference.nameMuscleGroup
         if (value === "") {
@@ -37,32 +41,84 @@ const ExercisesMuscleGroup = ({ preference }: ExercisesMuscleGroupProps) => {
             setMessageProgram(["Esse exercício já foi criado!"], "error")
         }
         setNewExercise(false)
+        setName("")
     }
 
     return (
-        <div className="flex justify-center px-6 w-full">
-            <div className="flex flex-col w-full border-2 border-cor-secundaria hover:animate-hoverBorderSH rounded-xl px-6 py-2 gap-3">
-                <div className="flex items-center gap-3">
-                    <p className="py-1 bg-transparent text-gray-200 font-medium text-2xl" >
+        <View style={styles.section}>
+            <View style={styles.sectionView}>
+                <View style={styles.titleGroup}>
+                    <Text style={styles.text} >
                         {preference.nameMuscleGroup}
-                    </p>
-                    <AiOutlinePlusCircle size={28} onClick={event => setNewExercise(true)} className='text-gray-200 cursor-pointer hover:animate-hoverWH' />
-                </div>
-                <div className="flex flex-col gap-2 pb-4">
+                    </Text>
+                    <Icon name={"pluscircleo"} size={23} onPress={event => setNewExercise(true)} style={styles.icon} />
+                </View>
+                <View style={styles.divExerciseInput}>
                     {preference.basesExercises.map(exercise =>
                         <Exercises key={exercise} preference={preference} exercise={exercise} />
                     )}
                     {newExercise ?
-                        <input
-                            type="text"
-                            className="w-full max-w-[18rem] text-gray-800 font-medium text-lg rounded-lg px-2 bg-gray-300 focus:bg-gray-100"
+                        <TextInput
+                            value={name}
+                            style={styles.input}
                             autoFocus
-                            onBlur={event => saveNewExercise(event.target.value)} />
+                            onChangeText={text => setName(text)}
+                            onEndEditing={event => saveNewExercise()}
+                        />
                         : <></>
                     }
-                </div>
-            </div>
-        </div>
+                </View>
+            </View>
+        </View>
     )
 }
+
+const styles = StyleSheet.create({
+    section: {
+        display: "flex",
+        justifyContent: "center",
+        paddingHorizontal: 24,
+    },
+    sectionView: {
+        display: "flex",
+        flexDirection: "column",
+        borderWidth: 2,
+        borderColor: cor.secundaria,
+        borderRadius: 10,
+        paddingHorizontal: 24,
+        paddingVertical: 8,
+        gap: 12
+    },
+    titleGroup: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12
+    },
+    text: {
+        paddingHorizontal: 4,
+        backgroundColor: "transparent",
+        color: cor.gray200,
+        fontWeight: font.medium,
+        fontSize: 20
+    },
+    divExerciseInput: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+        paddingBottom: 12
+    },
+    input: {
+        paddingHorizontal:10,
+        color: cor.gray800,
+        fontWeight: font.medium,
+        fontSize: 16,
+        borderRadius: 5,
+        backgroundColor: cor.gray300
+    },
+    icon: {
+        color: cor.gray200, //200,
+        //hover: animate - hoverWH'
+    },
+})
 export default ExercisesMuscleGroup

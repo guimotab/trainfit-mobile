@@ -1,6 +1,6 @@
+import Icon from 'react-native-vector-icons/FontAwesome5'
 import { useState } from "react"
 import { IMuscleGroup } from "../../../shared/interfaces/IMuscleGroup"
-import { IoMdTrash } from "react-icons/io"
 import { AllPreferences } from "../../../models/AllPreferences"
 import { MuscleGroup } from "../../../models/MuscleGroup"
 import { PreferencesWorkout } from "../../../models/PreferencesWorkout"
@@ -10,6 +10,7 @@ import useTables from "../../../state/hooks/useTables"
 import { useUpdatePreferences } from "../../../state/hooks/useUpdatePreferences"
 import { useUpdateTables } from "../../../state/hooks/useUpdateTables"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
+import { Button, StyleSheet, Text, TextInput, View } from "react-native"
 
 interface InputNameMusclesProps {
     table: IMuscleGroup
@@ -32,7 +33,8 @@ const InputNameMuscles = ({ table }: InputNameMusclesProps) => {
         fakePreferences.splice(indexPreferences, 1)
         setPreferences({initializer: preferences.initializer, preferencesWorkout: fakePreferences})
     }
-    function editNameMuscularGroup(value: string) {
+    function editNameMuscularGroup() {
+        const value = name
         const findValueIquals = tables.tables.find(thisTable => thisTable.name === value)
         const isThisElement = value === table.name
         if (value === "") {
@@ -60,17 +62,52 @@ const InputNameMuscles = ({ table }: InputNameMusclesProps) => {
         }
     }
     return (
-        <div className="flex items-center justify-center px-14 w-full gap-3">
-            <div className="flex items-center gap-3 border-2 border-cor-secundaria hover:animate-hoverBorderSH rounded-xl">
-                <input
+        <View style={styles.section}>
+            <View style={styles.divSection}>
+                <TextInput
                     maxLength={27}
                     value={name}
-                    onChange={event => setName(event.target.value)}
-                    onBlur={event => editNameMuscularGroup(event.target.value)}
-                    className="px-4 py-1 bg-transparent text-gray-200 font-medium text-xl w-full max-w-[17rem]" />
-            </div>
-            <IoMdTrash size={22} onClick={event => deleteMuscularGroup()} className="text-gray-200 hover:animate-hoverTrash" />
-        </div>
+                    onChangeText={text=>setName(text)}
+                    onEndEditing={event => editNameMuscularGroup()}
+                    style={styles.text} />
+            </View>
+            <Icon name="trash" size={20} onPress={event => deleteMuscularGroup()} style={styles.icon} />
+        </View>
     )
 }
+const styles = StyleSheet.create({
+    section: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "auto",
+        gap: 12
+    },
+    divSection: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        borderWidth: 2,
+        borderRadius: 10,
+        borderColor: "#176B87",
+        width: 250,
+        rowGap: 15,
+        paddingHorizontal: 40
+    },
+    text: {
+        paddingHorizontal: 16,
+        paddingVertical: 4,
+        backgroundColor: "transparent",
+        color: "gray", //200,
+        fontWeight: "500", //semibold
+        fontSize: 20, //xl,
+    },
+    icon: {
+        color: "#fff",//200
+        //"hover:animate-hoverTrash"
+    },
+    
+})
 export default InputNameMuscles

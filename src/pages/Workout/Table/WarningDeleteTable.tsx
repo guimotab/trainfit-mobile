@@ -1,4 +1,3 @@
-import { Link } from "react-router-native"
 import { AllPreferences } from "../../../models/AllPreferences"
 import { MuscleGroup } from "../../../models/MuscleGroup"
 import { Tables } from "../../../models/Tables"
@@ -6,7 +5,9 @@ import { AsyncStorager } from "../../../service/LocalStorager"
 import usePreferences from "../../../state/hooks/usePreferences"
 import useTables from "../../../state/hooks/useTables"
 import { useUpdatePreferences } from "../../../state/hooks/useUpdatePreferences"
+import { Button, StyleSheet, Text, View } from "react-native"
 import { useUpdateTables } from "../../../state/hooks/useUpdateTables"
+import { useNavigation } from "@react-navigation/native"
 
 interface WarningDeleteTableProps {
     currentTable: MuscleGroup
@@ -14,6 +15,7 @@ interface WarningDeleteTableProps {
     setShowWarning: React.Dispatch<React.SetStateAction<boolean>>
 }
 const WarningDeleteTable = ({ currentTable, showWarning, setShowWarning }: WarningDeleteTableProps) => {
+    const navigation = useNavigation()
     const tables = new Tables(useTables())
     const setTables = useUpdateTables()
     const preferences = new AllPreferences(usePreferences())
@@ -27,6 +29,7 @@ const WarningDeleteTable = ({ currentTable, showWarning, setShowWarning }: Warni
         setShowWarning(false)
         AsyncStorager.saveTables(tables.tables)
         AsyncStorager.savePreferences(preferences.returnInformation())
+        navigation.navigate("Home")
     }
     function cancelDelete() {
         setShowWarning(false)
@@ -41,8 +44,12 @@ const WarningDeleteTable = ({ currentTable, showWarning, setShowWarning }: Warni
                             <p className="text-gray-200 text-lg font-medium">{"Você tem certeza?"}</p>
                         </div>
                         <div className="flex items-center justify-between w-full max-w-[10rem]">
-                            <Link to={"/"} onPress={event => deleteTable()} className="bg-cor-terciaria hover:bg-cor-hover text-white font-medium px-4 py-[0.1rem] rounded-lg">Sim</Link>
-                            <button onClick={event => cancelDelete()} className="bg-cor-terciaria hover:bg-cor-hover text-white font-medium px-4 py-[0.1rem] rounded-lg">Não</button>
+                            <Button title="Sim" onPress={event => deleteTable()} 
+                            //className="bg-cor-terciaria hover:bg-cor-hover text-white font-medium px-4 py-[0.1rem] rounded-lg"
+                            />
+                            <Button title="Não" onPress={event => cancelDelete()} 
+                            //className="bg-cor-terciaria hover:bg-cor-hover text-white font-medium px-4 py-[0.1rem] rounded-lg"
+                            />
                         </div>
                     </div>
                 </div>

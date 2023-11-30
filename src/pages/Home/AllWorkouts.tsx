@@ -1,4 +1,3 @@
-import { GiWeightLiftingUp } from "react-icons/gi"
 import IconCardio from "../../../assets/svg/cardio.svg"
 import IconHalter from "../../../assets/svg/cardio.svg"
 import IconSupino from "../../../assets/svg/cardio.svg"
@@ -7,12 +6,15 @@ import IconSeringa from "../../../assets/svg/cardio.svg"
 import IconWhey from "../../../assets/svg/cardio.svg"
 import { IMuscleGroup } from "../../shared/interfaces/IMuscleGroup"
 import { Button, StyleSheet, Text, View } from "react-native"
+import { useNavigation } from "@react-navigation/native"
+import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 interface AllWorkoutsProps {
     table: IMuscleGroup
 }
 
 
 const AllWorkouts = ({ table }: AllWorkoutsProps) => {
+    const navigation = useNavigation()
     function changeColor(type: string) {
         const borderLink = document.getElementById(`border-link-workout${table.id}`)!
         if (type === "enter") {
@@ -37,11 +39,12 @@ const AllWorkouts = ({ table }: AllWorkoutsProps) => {
         } else if (logo === "iconWhey") {
             return <IconWhey style={styles.icons} />
         } else if (logo === "GiWeightLiftingUp") {
-            return <GiWeightLiftingUp style={styles.icons} />
+            return <Icon name="weight-lifter" style={styles.icons} />
         }
     }
     return (
-        <div style={styles.div}>
+        <View style={styles.div}>
+            <Button title="" onPress={event=>navigation.navigate("Workout", { id: table.id } )}/>
             {/* <Link
                 to={`/treino/${table.id}`}
                 key={table.id}
@@ -49,13 +52,13 @@ const AllWorkouts = ({ table }: AllWorkoutsProps) => {
                 onMouseLeave={event => changeColor("leave")}
                 style="flex flex-col gap-5 bg-gray-700 max-h-56 h-fit rounded-2xl hover:bg-gray-700 p-4 w-full cursor-pointer max-w-lg">
             </Link> */}
-            <div
+            <View
                 id={`border-link-workout${table.id}`}
                 style={styles.borderLink}>
                 {renderIcons(table.logo)}
-                <h2 style={styles.h2}>{table.name}</h2>
-            </div>
-        </div>
+                <Text style={styles.h2}>{table.name}</Text>
+            </View>
+        </View>
     )
 }
 const styles = StyleSheet.create({

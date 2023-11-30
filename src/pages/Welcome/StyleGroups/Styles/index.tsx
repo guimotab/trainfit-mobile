@@ -1,4 +1,3 @@
-import { GiWeightLiftingUp } from "react-icons/gi"
 import IconCardio from "../../../../../assets/svg/cardio.svg"
 import IconHalter from "../../../../../assets/svg/halter.svg"
 import IconSupino from "../../../../../assets/svg/supino.svg"
@@ -11,8 +10,9 @@ import useTables from "../../../../state/hooks/useTables"
 import { Tables } from "../../../../models/Tables"
 import { MuscleGroup } from "../../../../models/MuscleGroup"
 import { useUpdateTables } from "../../../../state/hooks/useUpdateTables"
-import { JSXElement } from "@babel/types"
-import { IconType } from "react-icons/lib"
+import { ScrollView, Button, StyleSheet, Text, View } from "react-native"
+import { cor, font } from "../../../../utils/presetStyles"
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 interface StylesProps {
     preference: IPreferencesWorkout
 }
@@ -36,7 +36,7 @@ const Styles = ({ preference }: StylesProps) => {
         })
         const result = idIcon.split("-")
         let logo = result[0] + result[1]
-        if (result[1] === "GiWeightLiftingUp") {
+        if (idIcon === "weight-lifter") {
             logo = result[1]
         }
         currentTable.logo = logo
@@ -46,56 +46,126 @@ const Styles = ({ preference }: StylesProps) => {
     const icons = [
         {
             icon: IconCardio,
+            name: "",
             id: `icon-Cardio-${preference.nameMuscleGroup}`,
-            onClick: () => chooseIcon(`icon-Cardio-${preference.nameMuscleGroup}`),
+            onPress: () => chooseIcon(`icon-Cardio-${preference.nameMuscleGroup}`),
+            style: styles.icon
         }, {
             icon: IconHalter,
+            name: "",
             id: `icon-Halter-${preference.nameMuscleGroup}`,
-            onClick: () => chooseIcon(`icon-Halter-${preference.nameMuscleGroup}`),
+            onPress: () => chooseIcon(`icon-Halter-${preference.nameMuscleGroup}`),
+            style: styles.icon
         }, {
             icon: IconSupino,
+            name: "",
             id: `icon-Supino-${preference.nameMuscleGroup}`,
-            onClick: () => chooseIcon(`icon-Supino-${preference.nameMuscleGroup}`),
+            onPress: () => chooseIcon(`icon-Supino-${preference.nameMuscleGroup}`),
+            style: styles.icon
         }, {
             icon: IconLevantamentoTerra,
+            name: "",
             id: `icon-LevantamentoTerra-${preference.nameMuscleGroup}`,
-            onClick: () => chooseIcon(`icon-LevantamentoTerra-${preference.nameMuscleGroup}`),
+            onPress: () => chooseIcon(`icon-LevantamentoTerra-${preference.nameMuscleGroup}`),
+            style: styles.icon
         }, {
             icon: IconSeringa,
+            name: "",
             id: `icon-Seringa-${preference.nameMuscleGroup}`,
-            onClick: () => chooseIcon(`icon-Seringa-${preference.nameMuscleGroup}`),
-        },{
+            onPress: () => chooseIcon(`icon-Seringa-${preference.nameMuscleGroup}`),
+            style: styles.icon
+        }, {
             icon: IconWhey,
+            name: "",
             id: `icon-Whey-${preference.nameMuscleGroup}`,
-            onClick: () => chooseIcon(`icon-Whey-${preference.nameMuscleGroup}`),
-        },{
-            icon: GiWeightLiftingUp as IconType,
+            onPress: () => chooseIcon(`icon-Whey-${preference.nameMuscleGroup}`),
+            style: styles.icon
+        }, {
+            icon: Icon,
+            name: "weight-lifter",
             id: `icon-GiWeightLiftingUp-${preference.nameMuscleGroup}`,
-            onClick: () => chooseIcon(`icon-GiWeightLiftingUp-${preference.nameMuscleGroup}`),
+            onPress: () => chooseIcon(`icon-GiWeightLiftingUp-${preference.nameMuscleGroup}`),
+            style: styles.icon
         },
     ]
-
     return (
-        <div className="flex items-center justify-center px-6 w-full">
-            <div className="flex flex-col justify-center w-full border-2 border-cor-secundaria hover:animate-hoverBorderSH rounded-xl px-6 py-2 gap-3">
-                <div className="flex items-center gap-3">
-                    <p className="py-1 bg-transparent text-gray-200 font-medium text-2xl" >
+        <View style={styles.section}>
+            <View style={styles.sectionView}>
+                <View style={styles.titleGroup}>
+                    <Text style={styles.text} >
                         {preference.nameMuscleGroup}
-                    </p>
-                </div>
-                <div className="grid grid-cols-4 gap-y-5 pb-4 w-full">
+                    </Text>
+                </View>
+                <View style={styles.divExerciseInput}>
+                    <IconCardio width={50}
+                                height={50} color="#EEEEEE" fill="#EEEEEE" />
                     {icons.map(icon =>
-                        <div key={icon.id} className="flex justify-center">
+                        <View key={icon.id} style={styles.viewIcon}>
                             <icon.icon
+                                width={50}
+                                height={50}
+                                fill="#EEEEEE"
+                                name={icon.name}
                                 data-iconWorkout={preference.nameMuscleGroup}
                                 id={icon.id}
-                                onClick={icon.onClick}
-                                className="w-10 h-10 text-gray-500 hover:text-gray-300" />
-                        </div>
+                                onPress={icon.onPress}
+                                style={icon.style}
+                            />
+                        </View>
                     )}
-                </div>
-            </div>
-        </div>
+                </View>
+            </View>
+        </View>
     )
 }
+const styles = StyleSheet.create({
+    section: {
+        display: "flex",
+        justifyContent: "center",
+        paddingHorizontal: 24,
+    },
+    sectionView: {
+        display: "flex",
+        flexDirection: "column",
+        borderWidth: 2,
+        borderColor: cor.secundaria,
+        borderRadius: 10,
+        paddingHorizontal: 24,
+        paddingVertical: 8,
+        gap: 12
+    },
+    titleGroup: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12
+    },
+    text: {
+        paddingHorizontal: 4,
+        backgroundColor: "transparent",
+        color: cor.gray200,
+        fontWeight: font.medium,
+        fontSize: 20
+    },
+    divExerciseInput: {
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "space-between",
+        gap: 8,
+        paddingBottom: 12
+    },
+    viewIcon: {
+        //flex justify-center"
+        display: "flex",
+        justifyContent: "center"
+    },
+    icon: {
+        fontSize: 50,
+        width: 50,
+        height: 50,
+        color: cor.gray500, //200,
+        //hover: animate - hoverWH'
+    },
+})
 export default Styles
