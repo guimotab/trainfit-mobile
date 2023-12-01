@@ -4,14 +4,15 @@ import IconSupino from "../../../assets/svg/cardio.svg"
 import IconLevantamentoTerra from "../../../assets/svg/cardio.svg"
 import IconSeringa from "../../../assets/svg/cardio.svg"
 import IconWhey from "../../../assets/svg/cardio.svg"
+import IconBiceps from "../../../assets/svg/biceps.svg"
 import { IMuscleGroup } from "../../shared/interfaces/IMuscleGroup"
-import { Button, StyleSheet, Text, View } from "react-native"
+import { Pressable, Button, StyleSheet, Text, View } from "react-native"
 import { useNavigation } from "@react-navigation/native"
-import Icon from "react-native-vector-icons/MaterialCommunityIcons"
+import Weight from "react-native-vector-icons/MaterialCommunityIcons"
+import { cor } from "../../utils/presetStyles"
 interface AllWorkoutsProps {
     table: IMuscleGroup
 }
-
 
 const AllWorkouts = ({ table }: AllWorkoutsProps) => {
     const navigation = useNavigation()
@@ -27,65 +28,72 @@ const AllWorkouts = ({ table }: AllWorkoutsProps) => {
     }
     function renderIcons(logo: string) {
         if (logo === "iconCardio") {
-            return <IconCardio style={styles.icons} />
+            return <IconCardio width={40} height={40} style={styles.icons} />
         } else if (logo === "iconHalter") {
-            return <IconHalter style={styles.icons} />
+            return <IconHalter width={40} height={40} style={styles.icons} />
         } else if (logo === "iconSupino") {
-            return <IconSupino style={styles.icons} />
+            return <IconSupino width={40} height={40} style={styles.icons} />
         } else if (logo === "iconLevantamentoTerra") {
-            return <IconLevantamentoTerra style={styles.icons} />
+            return <IconLevantamentoTerra width={40} height={40} style={styles.icons} />
         } else if (logo === "iconSeringa") {
-            return <IconSeringa style={styles.icons} />
+            return <IconSeringa width={40} height={40} style={styles.icons} />
         } else if (logo === "iconWhey") {
-            return <IconWhey style={styles.icons} />
-        } else if (logo === "GiWeightLiftingUp") {
-            return <Icon name="weight-lifter" style={styles.icons} />
+            return <IconWhey width={40} height={40} style={styles.icons} />
+        } else if (logo === "weight") {
+            return <Weight name="weight-lifter" style={styles.icons} />
+        } else if (logo === "iconBiceps") {
+            return <IconBiceps width={40} height={40} style={styles.icons} />
         }
     }
     return (
-        <View style={styles.div}>
-            <Button title="" onPress={event=>navigation.navigate("Workout", { id: table.id } )}/>
-            {/* <Link
-                to={`/treino/${table.id}`}
-                key={table.id}
-                onMouseEnter={event => changeColor("enter")}
-                onMouseLeave={event => changeColor("leave")}
-                style="flex flex-col gap-5 bg-gray-700 max-h-56 h-fit rounded-2xl hover:bg-gray-700 p-4 w-full cursor-pointer max-w-lg">
-            </Link> */}
-            <View
-                id={`border-link-workout${table.id}`}
-                style={styles.borderLink}>
+        <Pressable
+            id={`border-link-workout${table.id}`}
+            style={styles.pressable}
+            onPress={event => navigation.navigate("Workout", { id: table.id })}>
+            <View style={styles.pressableView}>
                 {renderIcons(table.logo)}
-                <Text style={styles.h2}>{table.name}</Text>
+                <Text style={styles.text}>{table.name}</Text>
             </View>
-        </View>
+        </Pressable>
     )
 }
 const styles = StyleSheet.create({
-    div: {
+    pressable: {
         display: "flex",
-        justifyContent: "space-between"
-    },
-    borderLink: {
-        display: "flex",
-        flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
-        color: "gray",//200
-        paddingHorizontal: 3,
-        paddingVertical: 2,
+        minWidth: "47%",
+        maxWidth: "47%",
+        minHeight: 130,
+        maxHeight: 130,
+        borderRadius: 12,
+        color: cor.gray200,//200
+        backgroundColor: cor.gray700,
+        paddingVertical: 15,
+        paddingHorizontal: 15,
     },
-    h2: {
-        fontSize: 20,
+    pressableView: {
+        display: "flex",
+        minWidth: "100%",
+        flex: 1,
+        gap: 6,
+        justifyContent: "center",
+        borderColor: cor.gray200,
+        paddingHorizontal: 10,
+        alignItems: "center",
+        paddingVertical: 10,
+        borderRadius: 12,
+        borderWidth: 2,
+    },
+    text: {
+        fontSize: 17,
         fontWeight: "600",
-        color: "gray", //200
-        paddingHorizontal: 5,
-        paddingVertical: 3,
+        color: cor.gray200, //200
     },
     icons: {
-        width: 50,
-        height: 50,
-        color: "gray", //400
+        fontSize: 45,
+        width: 45,
+        height: 45,
+        color: cor.gray400, //400
     }
 });
 export default AllWorkouts

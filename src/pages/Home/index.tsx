@@ -7,9 +7,11 @@ import { useUpdatePreferences } from "../../state/hooks/useUpdatePreferences"
 import { useUpdateTables } from "../../state/hooks/useUpdateTables"
 import AllWorkouts from "./AllWorkouts"
 import { IPreferencesWorkout } from "../../shared/interfaces/IPreferencesWorkout"
-import Header from "../../components/Header"
-const Home = () => {
+import Header from "../../components/Navigation"
+import { cor, font } from "../../utils/presetStyles"
+const Navigation = () => {
     const tables = new Tables(useTables())
+
     const setTable = useUpdateTables()
     const preferences = new AllPreferences(usePreferences())
     const setPreferences = useUpdatePreferences()
@@ -33,23 +35,21 @@ const Home = () => {
 
     return (
         <>
-            <Header />
             <View style={styles.section}>
-                <View style={styles.section}>
+                <View style={styles.TitleTextGroup}>
+                    <Text style={styles.h1}>Train<Text style={styles.spanH1}>Fit</Text></Text>
                     <View style={styles.muscleButton}>
                         <Text style={styles.textMuscleButton}>Grupos Musculares</Text>
-                        <Button
-                            title="Novo Grupo Muscular"
-                            accessibilityLabel="Novo Grupo Muscular"
-                            onPress={event => createMuscularGroup()} />
-                    </View>
-                    <View style={styles.AllWokouts}>
-                        {tables.tables ? tables.tables.map(table =>
-                            <AllWorkouts key={table.id} table={table} />
-                        ).reverse() : <></>}
+                        <Text onPress={event => createMuscularGroup()} style={styles.buttonMuscle}>Adicionar Grupo</Text>
                     </View>
                 </View>
+                <View style={styles.AllWokouts}>
+                    {tables.tables ? tables.tables.map(table =>
+                        <AllWorkouts key={table.id} table={table} />
+                    ).reverse() : <></>}
+                </View>
             </View>
+            <Header />
         </>
     )
 }
@@ -57,11 +57,26 @@ const styles = StyleSheet.create({
     section: {
         display: "flex",
         flexDirection: "column",
-        backgroundColor: '#053B50',
+        gap: 30,
+        backgroundColor: cor.gray900,
         padding: 20,
         height: "100%",
         width: "100%",
         minHeight: "100%",
+    },
+    TitleTextGroup:{
+        display: "flex",
+        flexDirection: "column",
+        gap: 10
+    },
+    h1: {
+        marginTop: 25,
+        color: cor.gray200,
+        fontWeight: "800",
+        fontSize: 30
+    },
+    spanH1: {
+        color: cor.secundaria,
     },
     div: {
         display: "flex",
@@ -72,26 +87,33 @@ const styles = StyleSheet.create({
     },
     muscleButton: {
         display: "flex",
-        marginTop: 30,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
         width: "auto"
     },
     textMuscleButton: {
         fontSize: 20,
-        fontWeight: "600",
-        color: "#ebebeb"
+        fontWeight: font.semibold,
+        color: cor.gray200
+    },
+    buttonMuscle: {
+        backgroundColor: cor.secundaria,
+        fontSize: 16,
+        paddingHorizontal: 14,
+        paddingVertical: 3,
+        borderRadius: 5,
+        fontWeight: font.semibold,
+        color: cor.gray200
     },
     AllWokouts: {
-        width: 170,
-        height: "auto",
-        borderRadius: 10,
-        backgroundColor: "#374151"
-    }, iconNameWorkout: {
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: 5
-    }
+        flexDirection: "row",
+        gap: 20,
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+    },
 });
-export default Home
+export default Navigation
 
 

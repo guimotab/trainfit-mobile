@@ -1,4 +1,4 @@
-import Header from "../../components/Header";
+import Header from "../../components/Navigation";
 import Table from "./Table";
 
 function Workout() {

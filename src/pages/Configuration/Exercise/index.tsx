@@ -2,6 +2,9 @@ import { useState } from "react"
 import { IPreferencesWorkout } from "../../../shared/interfaces/IPreferencesWorkout"
 import { PreferencesWorkout } from "../../../models/PreferencesWorkout"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
+import { StyleSheet, Text, View, Pressable, TextInput } from "react-native"
+import Trash from "react-native-vector-icons/FontAwesome5"
+import { cor, font } from "../../../utils/presetStyles"
 
 interface ExerciseProps {
     exercise: string
@@ -13,7 +16,8 @@ interface ExerciseProps {
 const Exercise = ({ exercise, savePreferences, preference, setSavePreferences }: ExerciseProps) => {
     const [baseExercise, setBaseExercise] = useState(exercise)
     const setMessageProgram = useUpdateMessageProgram()
-    function editExercise(value: string) {
+    function editExercise() {
+        const value = baseExercise
         const findValueIquals = preference.basesExercises.find(thisExercise => thisExercise === value)
         const isThisElement = value === exercise
         if (value === "") {
@@ -43,17 +47,36 @@ const Exercise = ({ exercise, savePreferences, preference, setSavePreferences }:
         setSavePreferences(fakePreferences)
     }
     return (
-        <div className="flex items-center gap-3">
-            <input
+        <View style={styles.section}>
+            <TextInput
                 id={baseExercise}
                 value={baseExercise}
-                onChange={event => setBaseExercise(event.target.value)}
-                onBlur={event => editExercise(event.target.value)}
+                onChangeText={text => setBaseExercise(text)}
+                onEndEditing={event => editExercise()}
                 maxLength={20}
-                className="w-full max-w-[18rem] text-gray-800 font-medium sm:text-lg rounded-lg px-2 bg-gray-300 focus:bg-gray-100" />
-            {/* <IoMdTrash size={22} onClick={event => deleteExercise()} className="text-gray-200 hover:animate-hoverTrash" /> */}
-        </div>
+                style={styles.inicialTextInput} />
+            <Trash name="trash" onPress={event => deleteExercise()} style={styles.icon} />
+        </View>
     )
 }
-
+const styles = StyleSheet.create({
+    section: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12
+    },
+    inicialTextInput: {
+        width: "100%",
+        color: cor.gray800,
+        fontWeight: font.medium,
+        borderRadius: 7,
+        paddingHorizontal: 8,
+        backgroundColor: cor.gray300
+    },
+    icon: {
+        fontSize: 17,
+        color: cor.gray200, //200,
+    },
+})
 export default Exercise

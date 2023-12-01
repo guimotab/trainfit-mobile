@@ -7,7 +7,10 @@ import useTables from "../../../state/hooks/useTables"
 import { MuscleGroup } from "../../../models/MuscleGroup"
 import { IMuscleGroup } from "../../../shared/interfaces/IMuscleGroup"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
-import Icon from "react-native-vector-icons/AntDesign"
+import Trash from "react-native-vector-icons/FontAwesome5"
+import Plus from "react-native-vector-icons/AntDesign"
+import { StyleSheet, Text, View, Pressable, TextInput } from "react-native"
+import { cor, font } from "../../../utils/presetStyles"
 interface MuscularGroupProps {
     preference: IPreferencesWorkout
     savePreferences: IPreferencesWorkout[]
@@ -18,11 +21,13 @@ interface MuscularGroupProps {
 const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, setSavePreferences }: MuscularGroupProps) => {
     const [createNewExercise, setCreateNewExercise] = useState(false)
     const [valueInput, setValueInput] = useState(preference.nameMuscleGroup)
+    const [valueInicialInput, setValueInicialInput] = useState(preference.nameMuscleGroup)
     const setMessageProgram = useUpdateMessageProgram()
     const tables = new Tables(useTables())
     const saveTables = new Tables(saveTable)
 
-    function editNameMuscularGroup(value: string) {
+    function editNameMuscularGroup() {
+        const value = valueInput
         const findValueIquals = savePreferences.find(thisExercise => thisExercise.nameMuscleGroup === value)
         const isThisElement = value === preference.nameMuscleGroup
         if (value === "") {
@@ -50,7 +55,8 @@ const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, s
             }
         }
     }
-    function saveNewExercise(value: string) {
+    function saveNewExercise() {
+        const value = valueInicialInput
         const findThisPreference = savePreferences.findIndex(preference => preference.nameMuscleGroup === valueInput)
         const findValueIquals = savePreferences[findThisPreference].basesExercises.find(thisExercise => thisExercise === value)
         const isThisElement = value === preference.nameMuscleGroup
@@ -85,23 +91,21 @@ const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, s
         setSavePreferences(fakePreferences)
     }
     return (
-        <div className="flex justify-center w-full">
-            <div className="flex flex-col items-center lg:items-start h-full min-h-[5rem]">
-                <div className="flex items-center py-3">
-                    {/* <IoMdTrash size={22} onClick={event => deleteMuscularGroup()} className="text-gray-200 hover:animate-hoverTrash" /> */}
-                    <input
-                        maxLength={25}
-                        value={valueInput}
-                        onChange={event => setValueInput(event.target.value)}
-                        onBlur={event => editNameMuscularGroup(event.target.value)}
-                        className="bg-transparent sm:text-xl md:text-2xl font-semibold text-gray-200 mx-5 py-1 border-dashed-hover" />
-                        {/* <Icon name={"pluscircleo"} size={23} onPress={event => addNewMuscularGroup()} style={styles.icon} /> */}
-                {/* <AiOutlinePlusCircle size={30} onClick={event => setCreateNewExercise(true)} className='text-gray-200 font-bold hover:animate-hoverWH hover:cursor-pointer'/> */}
-                 {/* <button
-                        onClick={event => setCreateNewExercise(true)}
-                        className="text-gray-200 font-semibold px-3 py-[0.1rem] bg-cor-secundaria rounded-lg hover:animate-hoverBGSH">Novo Exercício</button> */}
-                </div>
-                <div className="flex flex-col w-full xl:items-start px-10 gap-4">
+        <View style={styles.section}>
+            <View style={styles.sectionView}>
+                <View style={styles.firstGroup}>
+                    <View style={styles.textPlusGroup}>
+                        <TextInput
+                            maxLength={25}
+                            value={valueInput}
+                            onChangeText={text => setValueInput(text)}
+                            onEndEditing={event => editNameMuscularGroup()}
+                            style={styles.textInput} />
+                        <Plus name={"pluscircleo"} onPress={event => setCreateNewExercise(true)} style={styles.iconPlus} />
+                    </View>
+                    <Trash name="trash" onPress={event => deleteMuscularGroup()} style={styles.iconTrash} />
+                </View>
+                <View style={styles.exercisesGroup}>
                     {preference.basesExercises.map(exercise =>
                         <Exercise
                             key={exercise}
@@ -111,16 +115,83 @@ const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, s
                             setSavePreferences={setSavePreferences} />
                     )}
                     {createNewExercise ?
-                        <input
-                            type="text"
-                            className="w-full max-w-[18rem] text-gray-800 font-medium sm:text-lg rounded-lg px-2 bg-gray-300 focus:bg-gray-100"
+                        <TextInput
+                            value={valueInicialInput}
+                            style={styles.inicialTextInput}
                             autoFocus
-                            onBlur={event => saveNewExercise(event.target.value)} />
+                            onChangeText={text => setValueInicialInput(text)}
+                            onEndEditing={event => saveNewExercise()}
+                        />
                         : <></>
                     }
-                </div>
-            </div>
-        </div>
+                </View>
+            </View>
+        </View>
     )
 }
+const styles = StyleSheet.create({
+    section: {
+        display: "flex",
+        justifyContent: "center",
+        backgroundColor: cor.gray700,
+        borderRadius: 10,
+        width: "100%",
+        paddingVertical: 10
+    },
+    sectionView: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 12
+    },
+    firstGroup: {
+        display: "flex",
+        width: "100%",
+        flexDirection: "row",
+        alignItems: "center",
+        paddingHorizontal: 20,
+        justifyContent: "space-between"
+    },
+    textPlusGroup:{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12,
+    },
+    textInput: {
+        backgroundColor: "transparent",
+        fontWeight: font.semibold,
+        fontSize: 16,
+        color: cor.gray200,
+        borderBottomWidth: 2,
+        borderColor: cor.secundaria,
+        width: "77%",
+        borderStyle: "dashed"
+    },
+    exercisesGroup: {
+        display: "flex",
+        flexDirection: "column",
+        width: "85%",
+        paddingHorizontal: 20,
+        gap: 16,
+        paddingBottom: 5
+    },
+    inicialTextInput: {
+        width: "100%",
+        color: cor.gray800,
+        fontWeight: font.medium,
+        borderRadius: 12,
+        paddingHorizontal: 8,
+        backgroundColor: cor.gray300
+    },
+    iconTrash: {
+        fontSize: 17,
+        color: cor.gray200, //200,
+        //hover: animate - hoverWH'
+    },
+    iconPlus: {
+        fontSize: 22,
+        color: cor.gray200, //200,
+        //hover: animate - hoverWH'
+    },
+})
 export default MuscularGroup

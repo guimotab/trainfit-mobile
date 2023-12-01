@@ -1,3 +1,5 @@
+import { StyleSheet, View, Text} from "react-native"
+import { cor, font } from "../../utils/presetStyles";
 interface ErrorProgramProps {
     text: string[]
 }
@@ -5,12 +7,30 @@ const ErrorProgram = ({ text }: ErrorProgramProps) => {
     return (
         <>
             {text[0] !== "" ?
-                <div className="fixed flex flex-col gap-1 items-center bg-red-900 w-fit rounded-lg px-4 top-10 animate-showMessage">
-                    {text.map(text=><p className="text-gray-200 text-lg font-medium">{text}</p>)}
-                </div>
+                <View style={styles.section}>
+                    {text.map(text=><Text style={styles.text}>{text}</Text>)}
+                </View>
                 : <></>
             }
         </>
     )
 }
+const styles = StyleSheet.create({
+    section: {
+        position: "absolute",
+        display: "flex",
+        flexDirection: "column",
+        gap: 4,
+        alignItems: "center",
+        backgroundColor: cor.gray900,
+        borderRadius: 12,
+        paddingHorizontal: 16,
+        top: 40
+    },
+    text: {
+        color:cor.gray200,
+        fontSize:12,
+        fontWeight: font.medium
+    },
+});
 export default ErrorProgram

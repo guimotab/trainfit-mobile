@@ -1,3 +1,4 @@
+import { Alert } from "react-native";
 import { IMuscleGroup } from "../shared/interfaces/IMuscleGroup"
 import { IPreferences } from "../shared/interfaces/IPreferences"
 import { IPreferencesWorkout } from "../shared/interfaces/IPreferencesWorkout"
@@ -5,9 +6,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export abstract class AsyncStorager {
     static async getInformations() {
+        try {
+            await AsyncStorage.clear();
+            Alert.alert('Dados Limpos', 'Todos os dados armazenados foram removidos.');
+          } catch (error) {
+            console.error('Erro ao limpar dados:', error);
+            Alert.alert('Erro', 'Ocorreu um erro ao limpar os dados armazenados.');
+          }
         let localStorageWorkout: IMuscleGroup[]
         if (await AsyncStorage.getItem("Workout") != null) {
-            localStorageWorkout = await AsyncStorage.getItem("Workout") as unknown as IMuscleGroup[]
+            localStorageWorkout = JSON.parse(await AsyncStorage.getItem("Workout") as string)
         } else {
             const preferences = await this.getPreferences()
             localStorageWorkout = [] as IMuscleGroup[]
@@ -30,7 +38,7 @@ export abstract class AsyncStorager {
     static async getPreferences() {
         let localStorageWorkout: IPreferences
         if (await AsyncStorage.getItem("PreferencesWorkout") != null) {
-            localStorageWorkout = await AsyncStorage.getItem("PreferencesWorkout") as unknown as IPreferences
+            localStorageWorkout = JSON.parse(await AsyncStorage.getItem("PreferencesWorkout") as string) 
         } else {
             localStorageWorkout = {
                 initializer: false,

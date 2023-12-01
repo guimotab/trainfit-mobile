@@ -1,4 +1,5 @@
 import IconCardio from "../../../../../assets/svg/cardio.svg"
+import IconBiceps from "../../../../../assets/svg/biceps.svg"
 import IconHalter from "../../../../../assets/svg/halter.svg"
 import IconSupino from "../../../../../assets/svg/supino.svg"
 import IconLevantamentoTerra from "../../../../../assets/svg/levantamentoTerra.svg"
@@ -12,7 +13,7 @@ import { MuscleGroup } from "../../../../models/MuscleGroup"
 import { useUpdateTables } from "../../../../state/hooks/useUpdateTables"
 import { ScrollView, Button, StyleSheet, Text, View } from "react-native"
 import { cor, font } from "../../../../utils/presetStyles"
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Weight  from 'react-native-vector-icons/MaterialCommunityIcons'
 interface StylesProps {
     preference: IPreferencesWorkout
 }
@@ -36,7 +37,9 @@ const Styles = ({ preference }: StylesProps) => {
         })
         const result = idIcon.split("-")
         let logo = result[0] + result[1]
-        if (idIcon === "weight-lifter") {
+        if (result[1] === "weight") {
+            logo = result[1] + result[2]
+        } else if(result[1] === "bolt"){
             logo = result[1]
         }
         currentTable.logo = logo
@@ -51,6 +54,12 @@ const Styles = ({ preference }: StylesProps) => {
             onPress: () => chooseIcon(`icon-Cardio-${preference.nameMuscleGroup}`),
             style: styles.icon
         }, {
+            icon: IconBiceps,
+            name: "",
+            id: `icon-biceps-${preference.nameMuscleGroup}`,
+            onClick: () => chooseIcon(`icon-biceps-${preference.nameMuscleGroup}`),
+            style: styles.icon
+        },{
             icon: IconHalter,
             name: "",
             id: `icon-Halter-${preference.nameMuscleGroup}`,
@@ -81,10 +90,10 @@ const Styles = ({ preference }: StylesProps) => {
             onPress: () => chooseIcon(`icon-Whey-${preference.nameMuscleGroup}`),
             style: styles.icon
         }, {
-            icon: Icon,
+            icon: Weight,
             name: "weight-lifter",
-            id: `icon-GiWeightLiftingUp-${preference.nameMuscleGroup}`,
-            onPress: () => chooseIcon(`icon-GiWeightLiftingUp-${preference.nameMuscleGroup}`),
+            id: `icon-weight-lifter-${preference.nameMuscleGroup}`,
+            onPress: () => chooseIcon(`icon-weight-lifter-${preference.nameMuscleGroup}`),
             style: styles.icon
         },
     ]
@@ -97,14 +106,11 @@ const Styles = ({ preference }: StylesProps) => {
                     </Text>
                 </View>
                 <View style={styles.divExerciseInput}>
-                    <IconCardio width={50}
-                                height={50} color="#EEEEEE" fill="#EEEEEE" />
                     {icons.map(icon =>
                         <View key={icon.id} style={styles.viewIcon}>
                             <icon.icon
                                 width={50}
                                 height={50}
-                                fill="#EEEEEE"
                                 name={icon.name}
                                 data-iconWorkout={preference.nameMuscleGroup}
                                 id={icon.id}
