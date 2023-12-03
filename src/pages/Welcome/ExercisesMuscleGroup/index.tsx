@@ -43,7 +43,6 @@ const ExercisesMuscleGroup = ({ preference }: ExercisesMuscleGroupProps) => {
         setNewExercise(false)
         setName("")
     }
-
     return (
         <View style={styles.section}>
             <View style={styles.sectionView}>

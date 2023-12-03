@@ -44,12 +44,12 @@ const PresetGroup = () => {
         setSavePreferences(fakePreferences)
         setSaveTable(saveTables.tables)
     }
-    function sucessAlert() {
+    async function sucessAlert() {
         setMessageProgram(["Treinos salvos com sucesso!"], "sucess")
         setTables(saveTable)
         setPreferences({ initializer: preferences.initializer, preferencesWorkout: savePreferences })
-        AsyncStorager.saveTables(saveTable)
-        AsyncStorager.savePreferences({ initializer: preferences.initializer, preferencesWorkout: savePreferences })
+        await AsyncStorager.saveTables(saveTable)
+        await AsyncStorager.savePreferences({ initializer: preferences.initializer, preferencesWorkout: savePreferences })
     }
     return (
         < View style={styles.sectionView} >
@@ -57,7 +57,7 @@ const PresetGroup = () => {
                 <Text style={styles.textTrain}>Predefinição dos Treinos</Text>
                 <Text
                     onPress={event => addNewMuscularGroup()}
-                    style={styles.buttonAdd}>Criar Novo</Text>
+                    style={styles.buttonAdd}>Criar novo</Text>
             </View>
             <View style={styles.viewSave}>
                 <Text style={styles.buttonSave}
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     sectionView: {
         display: "flex",
         flexDirection: "column",
+        marginTop: 25,
         gap: 20,
     },
     textGroup: {

@@ -12,6 +12,16 @@ import useWarningProgram from '../../../../state/hooks/useWarningProgram'
 import { useUpdateMessageProgram } from '../../../../state/hooks/useUpdateMessageProgram'
 import { useRoute } from '@react-navigation/native'
 import { ParamsProps } from '../../../../@types/navigation'
+import { StyleSheet, Text, View, Pressable, ScrollView, TextInput } from "react-native"
+import { cor, font } from '../../../../utils/presetStyles'
+import Plus from "react-native-vector-icons/AntDesign"
+import LaughBeam from "react-native-vector-icons/Fontisto"
+import Smile from "react-native-vector-icons/Fontisto"
+import Meh from "react-native-vector-icons/Fontisto"
+import FrownOpen from "react-native-vector-icons/Fontisto"
+import Frown from "react-native-vector-icons/Fontisto"
+import Trash from "react-native-vector-icons/FontAwesome5"
+
 interface HeaderTraininProps {
     workout: IMuscleGroupInformations
     setSaveTable: React.Dispatch<React.SetStateAction<IMuscleGroup[]>>
@@ -20,7 +30,7 @@ interface HeaderTraininProps {
 
 const HeaderTraining = ({ workout, saveTable, setSaveTable }: HeaderTraininProps) => {
     const route = useRoute()
-    const params =  route.params as ParamsProps
+    const params = route.params as ParamsProps
     const id = params.id.toString()
     const tables = new Tables(useTables())
     const saveTables = new Tables(saveTable)
@@ -29,17 +39,8 @@ const HeaderTraining = ({ workout, saveTable, setSaveTable }: HeaderTraininProps
     const [date, setDate] = useState(workout.date)
     const [exercise, setExercise] = useState(workout.exercise)
     const [feeling, setFeeling] = useState(workout.feeling)
-    const [mobile, setMobile] = useState(false)
     const warningProgram = useWarningProgram()
     const updadeMessageProgram = useUpdateMessageProgram()
-
-    window.addEventListener("resize", event=>{
-        if(window.innerWidth < 1000){
-            setMobile(true)
-        } else {
-            setMobile(false)
-        }
-    })
 
     function changeFeeling(feelingType: string) {
         if (warningProgram[0] === "") {
@@ -75,70 +76,109 @@ const HeaderTraining = ({ workout, saveTable, setSaveTable }: HeaderTraininProps
         setSaveTable(saveTables.tables)
         updadeMessageProgram(["Há alterações feitas!"], "warning")
     }
-    // const feelings = [
-    //     {
-    //         JSX: FaRegLaughBeam,
-    //         id: "muitoBem",
-    //         onClick: () => changeFeeling("muitoBem"),
-    //         className: feeling === "muitoBem" ? 'hover:cursor-pointer text-green-500' : 'hover:cursor-pointer hover:text-gray-300'
-    //     }, {
-    //         JSX: FaRegGrin,
-    //         id: "bem",
-    //         onClick: () => changeFeeling("bem"),
-    //         className: feeling === "bem" ? 'hover:cursor-pointer text-yellow-500' : 'hover:cursor-pointer hover:text-gray-300'
-    //     }, {
-    //         JSX: FaRegMeh,
-    //         id: "normal",
-    //         onClick: () => changeFeeling("normal"),
-    //         className: feeling === "normal" ? 'hover:cursor-pointer text-blue-400' : 'hover:cursor-pointer hover:text-gray-300'
-    //     }, {
-    //         JSX: FaRegFrownOpen,
-    //         id: "mal",
-    //         onClick: () => changeFeeling("mal"),
-    //         className: feeling === "mal" ? 'hover:cursor-pointer text-orange-500' : 'hover:cursor-pointer hover:text-gray-300'
-    //     }, {
-    //         JSX: FaRegFrown,
-    //         id: "muitoMal",
-    //         onClick: () => changeFeeling("muitoMal"),
-    //         className: feeling === "muitoMal" ? 'hover:cursor-pointer text-red-700' : 'hover:cursor-pointer hover:text-gray-300'
-    //     },
-
-    // ]
+    const feelings = [
+        {
+            JSX: LaughBeam,
+            name: "smiley",
+            id: "muitoBem",
+            onPress: () => changeFeeling("muitoBem"),
+            style: feeling === "muitoBem" ? { color: "#22c55e" } : { color: cor.gray300 }
+        }, {
+            JSX: Smile,
+            name: "slightly-smile",
+            id: "bem",
+            onPress: () => changeFeeling("bem"),
+            style: feeling === "bem" ? { color: "#eab308" } : { color: cor.gray300 }
+        }, {
+            JSX: Meh,
+            name: "neutral",
+            id: "normal",
+            onPress: () => changeFeeling("normal"),
+            style: feeling === "normal" ? { color: "#60a5fa" } : { color: cor.gray300 }
+        }, {
+            JSX: FrownOpen,
+            name: "expressionless",
+            id: "mal",
+            onPress: () => changeFeeling("mal"),
+            style: feeling === "mal" ? { color: "#f97316" } : { color: cor.gray300 }
+        }, {
+            JSX: Frown,
+            name: "frowning",
+            id: "muitoMal",
+            onPress: () => changeFeeling("muitoMal"),
+            style: feeling === "muitoMal" ? { color: "#b91c1c" } : { color: cor.gray300 }
+        },
+    ]
 
     return (
-        <div className='flex flex-col md:flex-row md:justify-between'>
-            <div className='flex items-start gap-3 mt-1'>
-                <h3 className="text-gray-200 font-semibold text-lg sm:text-2xl">{workout.date}</h3>
-                {/* {mobile ?
-                    <AiOutlinePlusCircle
-                        onClick={event => createNewExercise()}
-                        className='text-gray-200 w-7 h-7 font-bold hover:animate-hoverWH hover:cursor-pointer' />
-                    :
-                    <>
-                        <button
-                            onClick={event => createNewExercise()}
-                            className='text-gray-200 text-lg font-medium px-3.5 bg-cor-secundaria rounded-lg hover:animate-hoverBGSH'>Novo Exercício</button>
-                        <button
-                            onClick={event => deleteWorkout()}
-                            className='text-gray-200 text-lg font-medium px-3.5 bg-cor-delete rounded-lg hover:animate-hoverBGEH'>Deletar Treino</button>
-                    </>
-                } */}
-            </div>
-            <div className='flex flex-col md:items-center gap-2'>
-                <p className='text-gray-200 sm:font-medium sm:text-lg'>Como você está hoje?</p>
-                <div className='flex items-center gap-3 text-gray-400'>
-                    {/* {feelings.map(feeling =>
+        <View style={styles.section}>
+            <View style={styles.sectionView}>
+                <View style={styles.viewPlusText}>
+                    <Text style={styles.text}>{workout.date}</Text>
+                    <Plus name={"pluscircleo"} size={23} onPress={event => createNewExercise()} style={styles.icon} />
+                </View>
+                <Trash name="trash" size={21} onPress={event => deleteWorkout()} style={styles.icon} />
+            </View>
+            <View style={styles.textEmoteGroup}>
+                <Text style={styles.textEmote}>Como você está hoje?</Text>
+                <View style={styles.emoteView}>
+                    {feelings.map(feeling =>
                         <feeling.JSX
+                            name={feeling.name}
                             key={feeling.id}
                             data-change
                             id={feeling.id}
                             size={20}
-                            onClick={event => feeling.onClick()}
-                            className={feeling.className} />
-                    )} */}
-                </div>
-            </div>
-        </div>
+                            onPress={event => feeling.onPress()}
+                            style={feeling.style} />
+                    )}
+                </View>
+            </View>
+        </View>
     )
 }
+const styles = StyleSheet.create({
+    section: {
+        display: "flex",
+        gap: 8
+    },
+    sectionView: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginTop: 4,
+        gap: 12
+    },
+    viewPlusText: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12
+    },
+    text: {
+        fontWeight: font.semibold,
+        color: cor.gray200,
+        fontSize: 21
+    },
+    textEmoteGroup: {
+        display: "flex",
+        gap: 8
+    },
+    textEmote: {
+        color: cor.gray200,
+        fontSize: 16
+    },
+    emoteView: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12,
+        color: cor.gray400,
+    },
+    icon: {
+        color: cor.gray200, //200,
+        //hover: animate - hoverWH'
+    },
+})
 export default HeaderTraining

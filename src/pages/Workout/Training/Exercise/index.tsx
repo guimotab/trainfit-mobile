@@ -1,4 +1,4 @@
-import { Sets } from "./Sets"
+import Sets from "./Sets"
 import { Exercise as ExerciseClass } from "../../../../models/Exercise"
 import { IMuscleGroupInformations } from "../../../../shared/interfaces/IMuscleGroupInformations"
 import { ISets } from "../../../../shared/interfaces/ISets"
@@ -16,6 +16,11 @@ import { useUpdateMessageProgram } from "../../../../state/hooks/useUpdateMessag
 import useWarningProgram from "../../../../state/hooks/useWarningProgram"
 import { useRoute } from "@react-navigation/native"
 import { ParamsProps } from "../../../../@types/navigation"
+import Trash from "react-native-vector-icons/FontAwesome5"
+import { StyleSheet, Text, View, Pressable, ScrollView, TextInput } from "react-native"
+import { cor, font } from "../../../../utils/presetStyles"
+import Plus from "react-native-vector-icons/AntDesign"
+
 interface ExerciseProps {
     exercise: IExercise
     workout: IMuscleGroupInformations
@@ -25,7 +30,7 @@ interface ExerciseProps {
 
 const Exercise = ({ exercise, workout, saveTable, setSaveTable }: ExerciseProps) => {
     const route = useRoute()
-    const params =  route.params as ParamsProps
+    const params = route.params as ParamsProps
     const id = params.id.toString()
     const tables = new Tables(useTables())
     const saveTables = new Tables(saveTable)
@@ -59,7 +64,8 @@ const Exercise = ({ exercise, workout, saveTable, setSaveTable }: ExerciseProps)
             AsyncStorager.saveTables(tables.tables)
         }
     }
-    function changeNameExercise(value: string) {
+    function changeNameExercise() {
+        const value = nameExercise
         if (warningProgram[0] === "") {
             const findValueIquals = workout.exercise.find(thisExercise => thisExercise.name === value)
             const isThisElement = value === exercise.name
@@ -93,26 +99,55 @@ const Exercise = ({ exercise, workout, saveTable, setSaveTable }: ExerciseProps)
         setSaveTable(saveTables.tables)
         updadeMessageProgram(["Há alterações feitas!"], "warning")
     }
-
     return (
-        <div className='flex flex-col gap-3'>
-            <div className='flex items-center gap-3'>
-                {/* <IoMdTrash onClick={event => deleteSet()} className="text-gray-200 w-5 h-5 hover:animate-hoverTrash" /> */}
-                <input
-                    maxLength={20}
-                    onChange={event => setNameExercise(event.target.value)}
+        <View style={styles.section}>
+            <View style={styles.viewExercise}>
+                <Trash name="trash" size={17} onPress={event => deleteSet()} style={styles.icon} />
+                <TextInput
                     value={nameExercise}
-                    onBlur={event => changeNameExercise(event.target.value)}
-                    className='bg-transparent w-full max-w-[15rem] text-gray-200 font-semibold  sm:text-xl focus:outline-none border-dashed-hover' />
-                {/* <AiOutlinePlusCircle onClick={event => createNewSet()} className='text-gray-200 w-7 h-7 font-bold hover:animate-hoverWH hover:cursor-pointer' /> */}
-            </div>
+                    maxLength={20}
+                    onChangeText={text => setNameExercise(text)}
+                    onEndEditing={event => changeNameExercise()}
+                    style={styles.textInput} />
+                <Plus name={"pluscircleo"} size={23} onPress={event => createNewSet()} style={styles.icon} />
+            </View>
             {exercise.sets[0] ?
                 exercise.sets.map(sets => <Sets key={sets.numberSet} sets={sets} exercise={exercise} workout={workout} saveTable={saveTable}
                     setSaveTable={setSaveTable} />)
                 : <></>
             }
-        </div>
+        </View>
     )
 }
+const styles = StyleSheet.create({
+    section: {
+        display: "flex",
+        flexDirection: "column",
+        flex: 1,
+        gap: 12
+    },
+    viewExercise: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        flex: 1,
+        gap: 22
+    },
+    icon: {
+        // w-5 h-5
+        color: cor.gray200, //200,
+        //hover: animate - hoverWH'
+    },
+    textInput: {
+        backgroundColor: "transparent",
+        fontWeight: font.semibold,
+        fontSize: 16,
+        color: cor.gray200,
+        borderBottomWidth: 2,
+        borderColor: cor.secundaria,
+        flex: 1,
+        borderStyle: "dashed"
+    },
+});
 
 export default Exercise

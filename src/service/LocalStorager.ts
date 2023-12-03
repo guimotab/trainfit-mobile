@@ -6,13 +6,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export abstract class AsyncStorager {
     static async getInformations() {
-        try {
-            await AsyncStorage.clear();
-            Alert.alert('Dados Limpos', 'Todos os dados armazenados foram removidos.');
-          } catch (error) {
-            console.error('Erro ao limpar dados:', error);
-            Alert.alert('Erro', 'Ocorreu um erro ao limpar os dados armazenados.');
-          }
+        // try {
+        //     await AsyncStorage.clear();
+        //     Alert.alert('Dados Limpos', 'Todos os dados armazenados foram removidos.');
+        //   } catch (error) {
+        //     console.error('Erro ao limpar dados:', error);
+        //     Alert.alert('Erro', 'Ocorreu um erro ao limpar os dados armazenados.');
+        //   }
         let localStorageWorkout: IMuscleGroup[]
         if (await AsyncStorage.getItem("Workout") != null) {
             localStorageWorkout = JSON.parse(await AsyncStorage.getItem("Workout") as string)

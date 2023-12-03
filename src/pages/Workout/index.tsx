@@ -1,15 +1,22 @@
 import Header from "../../components/Navigation";
+import { cor } from "../../utils/presetStyles";
 import Table from "./Table";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native"
 
 function Workout() {
   return (
-    <>
-    <Header />
-    <div className="flex flex-col items-center bg-gray-900 h-full min-h-screen w-full py-10">
+    <View style={styles.screen}>
       <Table />
-    </div>
-    </>
+    </View>
   );
 }
-
+const styles = StyleSheet.create({
+  screen: {
+    display: "flex",
+    flexDirection: "column",
+    backgroundColor: cor.gray900,
+    flex: 1,
+    paddingVertical: 40
+  },
+});
 export default Workout;

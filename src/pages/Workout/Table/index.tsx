@@ -1,4 +1,5 @@
 import { Tables } from '../../../models/Tables'
+import IconMenuKebab from '../../../../assets/svg/menuKebab.svg'
 import useTables from '../../../state/hooks/useTables'
 import findCurrentTable from '../../../utils/findCurrentTable'
 import { MuscleGroup } from '../../../models/MuscleGroup'
@@ -21,10 +22,11 @@ import WarningProgram from '../../../components/WarningProgram'
 import { AsyncStorager } from '../../../service/LocalStorager'
 import { useRoute } from '@react-navigation/native'
 import { ParamsProps } from '../../../@types/navigation'
-
+import { StyleSheet, Text, View, Pressable, ScrollView, TextInput } from "react-native"
+import { cor, font } from '../../../utils/presetStyles'
 const Table = () => {
     const route = useRoute()
-    const params =  route.params as ParamsProps
+    const params = route.params as ParamsProps
     const id = params.id.toString()
     const tables = new Tables(useTables())
     const setTables = useUpdateTables()
@@ -39,8 +41,10 @@ const Table = () => {
     const [nameTable, setNameTable] = useState(currentTable.name)
     const [openFilter, setOpenFilter] = useState(false)
     const warningProgram = useWarningProgram()
+    const [openMenuKebab, setOpenMenuKebab] = useState(false)
     const errorProgram = useErrorProgram()
     const updadeMessageProgram = useUpdateMessageProgram()
+
     useEffect(() => {
         setNameTable(currentTable.name)
     }, [currentTable.name])
@@ -113,7 +117,8 @@ const Table = () => {
             }
         }
     }
-    function changeNameTable(value: string) {
+    function changeNameTable() {
+        const value = nameTable
         if (warningProgram[0] === "") {
             const findValueIquals = tables.tables.find(thisTables => thisTables.name === value)
             const isThisElement = value === currentTable.name
@@ -138,42 +143,163 @@ const Table = () => {
             }
         }
     }
+    function deleteTableClicked() {
+        setShowWarning(true)
+        setOpenMenuKebab(false)
+    }
     return (
-        <section className="max-w-7xl w-full px-6 sm:px-20">
-            <WarningDeleteTable currentTable={currentTable} setShowWarning={setShowWarning} showWarning={showWarning} />
-            <WarningProgram text={warningProgram} saveTable={saveTable} setSaveTable={setSaveTable} />
-            <div className='relative w-full flex justify-center'>
-                <ErrorProgram text={errorProgram} />
-                <Filter openFilter={openFilter} setOpenFilter={setOpenFilter} setTypeFilter={setTypeFilter} />
-            </div>
-            <div className='hidden justify-between items-center px-4 mb-8'>
-                <div className='flex items-center gap-5'>
-                    <input
-                        maxLength={25}
-                        value={nameTable}
-                        onChange={event => setNameTable(event.target.value)}
-                        onBlur={event => changeNameTable(event.target.value)}
-                        className="bg-transparent border-dashed-hover py-1 text-gray-200 font-bold text-2xl" />
-                    <button
-                        onClick={event => createWorkout()}
-                        className='h-fit text-gray-200 text-lg font-semibold px-4 py-[0.1rem] bg-cor-secundaria rounded-lg hover:animate-hoverBGSH'>Novo Treino</button>
-                    <button
-                        onClick={event => setShowWarning(true)}
-                        className='h-fit text-gray-200 text-lg font-medium px-4 py-[0.1rem] bg-cor-delete rounded-lg hover:animate-hoverBGEH'>Deletar Grupo</button>
-                </div>
-                <input
-                    type="text"
-                    value={typeFilter}
-                    onClick={event => setOpenFilter(true)}
-                    readOnly
-                    className='font-medium border border-cor-hover rounded-lg px-3 py-1' />
-            </div>
-            <div className="flex flex-col gap-10">
-                {currentTable.information[0] ? tableFilter.map(workout =>
-                    <Training key={workout.date} workout={workout} saveTable={saveTable} setSaveTable={setSaveTable} />
-                ).reverse() : ""}
-            </div>
-        </section>
+        <ScrollView>
+            <View style={styles.section}>
+                <WarningDeleteTable currentTable={currentTable} setShowWarning={setShowWarning} showWarning={showWarning} />
+                <WarningProgram text={warningProgram} saveTable={saveTable} setSaveTable={setSaveTable} />
+                <View style={styles.sectionView}>
+                    <ErrorProgram text={errorProgram} />
+                    <Filter openFilter={openFilter} setOpenFilter={setOpenFilter} setTypeFilter={setTypeFilter} />
+                </View>
+                <View style={styles.viewTextGroup}>
+                    <View style={styles.textInputGroup}>
+                        <TextInput
+                            maxLength={25}
+                            value={nameTable}
+                            onChangeText={text => setNameTable(text)}
+                            onEndEditing={event => changeNameTable()}
+                            style={styles.textInput} />
+                        <IconMenuKebab onPress={event => setOpenMenuKebab(true)} height={36} width={36} style={styles.icon} />
+                        {openMenuKebab ?
+                            <View style={styles.viewDeleteTable}>
+                                <Pressable style={styles.clickOutView} onPress={event => setOpenMenuKebab(false)}></Pressable>
+                                <View style={styles.viewTextDeleteTable}>
+                                    <Text onPress={event => deleteTableClicked()} style={styles.deleteTable}>Deletar Tabela</Text>
+                                </View>
+                            </View>
+                            : <></>
+                        }
+                    </View>
+                    <View style={styles.inputButtonGroup}>
+                        <TextInput
+                            value={typeFilter}
+                            onFocus={event => setOpenFilter(true)}
+                            // readOnly
+                            style={styles.filter} />
+                        <Text
+                            onPress={event => createWorkout()}
+                            style={styles.buttonNewExercise}>+ Treino</Text>
+                    </View>
+                </View>
+                <View style={styles.viewTraining}>
+                    {currentTable.information[0] ? currentTable.information.map(workout =>
+                        <Training key={workout.date} workout={workout} saveTable={saveTable} setSaveTable={setSaveTable} />
+                    ).reverse() : ""}
+                </View>
+            </View>
+        </ScrollView >
     )
 }
+const styles = StyleSheet.create({
+    section: {
+        paddingHorizontal: 24,
+        flex: 1,
+    },
+    sectionView: {
+        position: "relative",
+        display: "flex",
+        flex: 1,
+        justifyContent: "center"
+    },
+    viewTextGroup: {
+        display: "flex",
+        width: "100%",
+        flex: 1,
+        marginBottom: 32,
+        gap: 30
+    },
+    textInputGroup: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between"
+    },
+    inputButtonGroup: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between"
+    },
+    textInput: {
+        width: "80%",
+        backgroundColor: "transparent",
+        fontWeight: font.semibold,
+        fontSize: 19,
+        color: cor.gray200,
+        borderBottomWidth: 2,
+        borderColor: cor.secundaria,
+        borderStyle: "dashed"
+    },
+    viewDeleteTable: {
+        position: "absolute",
+        height: "100%",
+        width: "100%",
+        left: 0,
+        top: 0
+    },
+    clickOutView: {
+        height: "100%",
+        width: "100%",
+    },
+    viewTextDeleteTable: {
+        position: "absolute",
+        top: 80,
+        right: 24,
+        backgroundColor: cor.gray700,
+        borderRadius: 12,
+        paddingHorizontal: 20,
+        paddingVertical: 8
+    },
+    deleteTable: {
+        //'text-gray-200 font-medium'
+        color: cor.gray200,
+        fontWeight: font.medium
+    },
+    buttonNewExercise: {
+        color: cor.gray200,
+        fontSize: 16,
+        fontWeight: font.semibold,
+        paddingHorizontal: 20,
+        paddingVertical: 5,
+        backgroundColor: cor.secundaria,
+        borderRadius: 8
+    },
+    buttonDeleteGroup: {
+        color: cor.gray200,
+        fontSize: 16,
+        fontWeight: font.semibold,
+        paddingHorizontal: 20,
+        paddingVertical: 1,
+        backgroundColor: cor.delete,
+        borderRadius: 8
+    },
+    filter: {
+        color: cor.gray200,
+        fontSize: 15,
+        fontWeight: font.medium,
+        borderWidth: 1,
+        borderColor: cor.hover,
+        borderRadius: 8,
+        paddingHorizontal: 12,
+        paddingVertical: 4
+    },
+    viewTraining: {
+        //"flex flex-col gap-10"
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'column',
+        gap: 40
+    },
+    icon: {
+        //'lg:hidden w-8 h-8 text-gray-200'
+        width: 12,
+        height: 12,
+        fontSize: 12,
+        color: cor.gray200
+    }
+});
 export default Table

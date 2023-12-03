@@ -16,10 +16,10 @@ const StyleIcons = () => {
     useEffect(() => {
         setSaveTable(tables.tables)
     }, [])
-    function saveInformations() {
+    async function saveInformations() {
         setMessageProgram(["Ícones salvos com sucesso!"], "sucess")
         setTables(saveTable)
-        AsyncStorager.saveTables(saveTable)
+        await AsyncStorager.saveTables(saveTable)
     }
 
     return (

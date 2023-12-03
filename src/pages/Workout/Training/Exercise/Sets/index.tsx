@@ -13,6 +13,11 @@ import useWarningProgram from "../../../../../state/hooks/useWarningProgram";
 import { useUpdateMessageProgram } from "../../../../../state/hooks/useUpdateMessageProgram";
 import { useRoute } from "@react-navigation/native";
 import { ParamsProps } from "../../../../../@types/navigation";
+import { StyleSheet, Text, View, Pressable, ScrollView, TextInput } from "react-native"
+import { cor, font } from "../../../../../utils/presetStyles"
+import Trash from "react-native-vector-icons/FontAwesome5"
+import RNPickerSelect from "react-native-picker-select";
+
 export interface SetsProps {
     sets: ISets
     exercise: IExercise
@@ -20,9 +25,9 @@ export interface SetsProps {
     setSaveTable: React.Dispatch<React.SetStateAction<IMuscleGroup[]>>
     saveTable: IMuscleGroup[]
 }
-export const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsProps) => {
+const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsProps) => {
     const route = useRoute()
-    const params =  route.params as ParamsProps
+    const params = route.params as ParamsProps
     const id = params.id.toString()
     const tables = new Tables(useTables());
     const saveTables = new Tables(saveTable)
@@ -62,6 +67,21 @@ export const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsP
         setSaveTable(saveTables.tables)
         updadeMessageProgram(["Há alterações feitas!"], "warning")
     }
+    function verifyIsNumber(text: string, type: string) {
+        if (type === "weight") {
+            try {
+                setWeight(Number(text))
+            } catch {
+                setWeight(weight)
+            }
+        } else {
+            try {
+                setRepetitions(Number(text))
+            } catch {
+                setRepetitions(repetitions)
+            }
+        }
+    }
     const typeWeightArray = [
         "Kg",
         "Lb"
@@ -75,59 +95,161 @@ export const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsP
         "Super-Set"
     ];
     return (
-        <div className='flex flex-col gap-1.5 border-2 border-gray-200 rounded-xl px-5 py-3'>
-            <div className="flex w-full justify-between">
-                <h4 className='text-lg font-medium text-gray-200'>{numberSet}° Série</h4>
-                {/* <IoMdTrash size={24} onClick={event => deleteSet()} className="text-gray-200 hover:animate-hoverTrash" /> */}
-            </div>
-            <div className='flex flex-col gap-1.5 pl-3'>
-                <div className='flex items-center gap-3'>
-                    <p className='text-gray-200'>Peso: </p>
-                    <input
-                        type="number"
-                        value={weight}
-                        min={0}
-                        className='w-20 font-medium pl-1 rounded-lg'
-                        onChange={event => setWeight(Number(event.target.value))}
-                        onBlur={event => saveInformations()} />
-                    <select
-                        value={typeWeight}
-                        className=' font-medium rounded-lg'
-                        onChange={event => setTypeWeight(event.target.value)}>
-                        {typeWeightArray.map((typeWeight, index) => <option key={index} className='font-medium'>{typeWeight}</option>)}
-                    </select>
-                </div>
-                <div className='flex items-center gap-3'>
-                    <p className='text-gray-200'>Repetições: </p>
-                    <input
-                        type="number"
-                        value={repetitions}
-                        min={0}
-                        max={99}
-                        className='w-14 font-medium pl-1 rounded-lg'
-                        onChange={event => setRepetitions(Number(event.target.value))}
-                        onBlur={event => saveInformations()} />
-                </div>
-                <div className='flex items-center gap-3'>
-                    <p className='text-gray-200'>Técnica Avancada: </p>
-                    <select
-                        value={advancedTechnique}
-                        className='font-medium rounded-lg focus:outline-none'
-                        onChange={event => setAdvancedTechnique(event.target.value)}>
-                        {advancedTechniqueArray.map((technique, index) => <option key={index} className='font-medium'>{technique}</option>)}
-                    </select>
-                </div>
-                <div className='flex gap-3'>
-                    <p className='text-gray-200'>Observações: </p>
-                    <textarea
-                        rows={3}
+        <View style={styles.section}>
+            <View style={styles.viewSeries}>
+                <Text style={styles.textSeries}>{numberSet}° Série</Text>
+                <Trash name="trash" size={20} onPress={event => deleteSet()} style={styles.icon} />
+            </View>
+            <View style={styles.viewGroup}>
+                <View style={styles.viewInputTexts}>
+                    <View style={styles.viewInputWeightRep}>
+                        <Text style={styles.text}>Peso: </Text>
+                        <TextInput
+                            value={weight.toString()}
+                            onChangeText={text => verifyIsNumber(text, "weight")}
+                            onEndEditing={event => saveInformations()}
+                            style={styles.textInput}
+                        />
+                    </View>
+                    <View style={styles.viewInputTypeTech}>
+                        <Text style={styles.text}>Medida: </Text>
+                        <View style={styles.selectInput}>
+                            <Text style={styles.text}>Kg</Text>
+                            <Text style={styles.text}>Lg</Text>
+                            {/* <RNPickerSelect
+                                value={typeWeight}
+                                onValueChange={(value) => setTypeWeight(value)}
+                                items={[
+                                    { label: 'Kg', value: 'Kg', color: "black" },
+                                    { label: 'Lg', value: 'Lg', color: "black" }
+                                ]}
+                            /> */}
+                        </View>
+                    </View>
+                </View>
+                <View style={styles.viewInputTexts}>
+                    <View style={styles.viewInputWeightRep}>
+                        <Text style={styles.text}>Repetições: </Text>
+                        <TextInput
+                            value={repetitions.toString()}
+                            maxLength={2}
+                            style={styles.textInputRepetition}
+                            onChangeText={text => verifyIsNumber(text, "repetitions")}
+                            onEndEditing={event => saveInformations()}
+                        />
+                    </View>
+                    <View style={styles.viewInputTypeTech}>
+                        <Text style={styles.text}>Técnica Avançada: </Text>
+                        <View style={styles.selectInput}>
+                            <RNPickerSelect
+                                value={advancedTechnique}
+                                onValueChange={(value) => setAdvancedTechnique(value)}
+                                items={advancedTechniqueArray.map((typeWeight) => {
+                                    const teste = {
+                                        label: typeWeight,
+                                        value: typeWeight
+                                    }
+                                    return teste
+                                })}
+                            />
+                        </View>
+                    </View>
+                </View>
+                <View style={styles.viewInputObservation}>
+                    <Text style={styles.text}>Observações: </Text>
+                    <TextInput
+                        multiline={true}
+                        numberOfLines={3}
                         maxLength={110}
-                        className='w-full max-w-sm font-medium px-2 rounded-lg focus:outline-none'
+                        style={styles.inputObservation}
                         value={observations}
-                        onChange={event => setObservations(event.target.value)}
-                        onBlur={event => saveInformations()} />
-                </div>
-            </div>
-        </div>
+                        onChangeText={text => setObservations(text)}
+                        onEndEditing={event => saveInformations()} />
+                </View>
+            </View>
+        </View>
     );
 };
+const styles = StyleSheet.create({
+    section: {
+        display: "flex",
+        flexDirection: "column",
+        borderWidth: 2,
+        borderColor: cor.gray200,
+        borderRadius: 12,
+        paddingHorizontal: 26,
+        paddingVertical: 12,
+        gap: 5,
+    },
+    viewSeries: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    textSeries: {
+        fontSize: 17,
+        fontWeight: font.medium,
+        color: cor.gray200
+    },
+    viewGroup: {
+        display: "flex",
+        flexDirection: "column",
+        flex: 1,
+        gap: 5,
+        paddingLeft: 12
+    },
+    viewInputWeightRep: {
+        width: "30%",
+    },
+    viewInputTypeTech: {
+        width: "60%"
+    },
+    viewInputTexts: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        gap: 12,
+        alignItems: "center"
+    },
+    textInputRepetition: {
+        backgroundColor: cor.gray200,
+        fontWeight: font.medium,
+        paddingLeft: 4,
+        borderRadius: 8
+    },
+    viewInputObservation: {
+        display: "flex",
+        flex: 1,
+        gap: 12,
+    },
+    inputObservation: {
+        flex: 1,
+        backgroundColor: cor.gray200,
+        fontWeight: font.medium,
+        paddingHorizontal: 8,
+        borderRadius: 8
+    },
+    selectInput: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        borderRadius: 8,
+    },
+    icon: {
+        // w-5 h-5
+        color: cor.gray200, //200,
+        //hover: animate - hoverWH'
+    },
+    text: {
+        color: cor.gray200,
+        fontWeight: font.medium,
+    },
+    textInput: {
+        backgroundColor: cor.gray200,
+        fontWeight: font.medium,
+        paddingLeft: 4,
+        borderRadius: 8,
+    },
+});
+export default Sets

@@ -12,20 +12,26 @@ const Configuration = () => {
     const sucessProgram = useSucessProgram()
 
     return (
-        <ScrollView>
-            <View style={styles.section}>
-                <View style={styles.sectionView}>
-                    <PresetGroup />
-                    <StyleIcons />
+        <View style={styles.screen}>
+            <ScrollView>
+                <View style={styles.section}>
+                    <View style={styles.sectionView}>
+                        <PresetGroup />
+                        <StyleIcons />
+                    </View>
+                    <ErrorProgram text={erroProgram} />
+                    <SucessProgram text={sucessProgram} />
                 </View>
-                <ErrorProgram text={erroProgram} />
-                <SucessProgram text={sucessProgram} />
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
     )
 
 }
 const styles = StyleSheet.create({
+    screen:{
+        backgroundColor: cor.gray900,
+        flex: 1
+    },
     section: {
         position: "relative",
         alignItems: "center",
@@ -33,7 +39,6 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         gap: 30,
         paddingHorizontal: 20,
-        backgroundColor: cor.gray900,
         flex: 1
     },
     sectionView: {

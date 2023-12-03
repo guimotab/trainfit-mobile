@@ -11,6 +11,7 @@ import Header from "../../components/Navigation"
 import { cor, font } from "../../utils/presetStyles"
 const Navigation = () => {
     const tables = new Tables(useTables())
+    console.log("🚀 ~ file: index.tsx:14 ~ Navigation ~ tables:", tables)
 
     const setTable = useUpdateTables()
     const preferences = new AllPreferences(usePreferences())
