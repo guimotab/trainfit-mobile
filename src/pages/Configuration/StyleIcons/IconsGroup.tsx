@@ -93,8 +93,8 @@ const IconsGroup = ({ table, setSaveTable }: IconsGroupProps) => {
                         <View key={icon.id} style={styles.viewIcons}>
                             <icon.icon
                                 name={icon.name}
-                                width={35}
-                                height={35}
+                                width={40}
+                                height={40}
                                 data-iconWorkout={table.name}
                                 id={icon.id}
                                 onPress={icon.onPress}

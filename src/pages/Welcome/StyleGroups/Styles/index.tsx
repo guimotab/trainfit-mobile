@@ -36,30 +36,6 @@ const Styles = ({ preference }: StylesProps) => {
         tables.updateTables(currentTable)
         setTables(tables.tables)
     }
-    // function chooseIcon(idIcon: string) {
-    //     const elements = document.querySelectorAll("[data-iconWorkout]") as NodeListOf<HTMLElement>
-    //     elements.forEach(element => {
-    //         if (element.id === idIcon) {
-    //             element.classList.add("text-cor-hover")
-    //             element.classList.remove("text-gray-500")
-    //             element.classList.remove("hover:text-gray-300")
-    //         } else if (element.dataset.iconWorkout === preference.nameMuscleGroup) {
-    //             element.classList.remove("text-cor-hover")
-    //             element.classList.add("text-gray-500")
-    //             element.classList.add("hover:text-gray-300")
-    //         }
-    //     })
-    //     const result = idIcon.split("-")
-    //     let logo = result[0] + result[1]
-    //     if (result[1] === "weight") {
-    //         logo = result[1] + result[2]
-    //     } else if(result[1] === "bolt"){
-    //         logo = result[1]
-    //     }
-    //     currentTable.logo = logo
-    //     tables.updateTables(currentTable)
-    //     setTables(tables.tables)
-    // }
     const icons = [
         {
             icon: IconCardio,
@@ -69,8 +45,8 @@ const Styles = ({ preference }: StylesProps) => {
         }, {
             icon: IconBiceps,
             name: "",
-            id: `icon-biceps-${preference.nameMuscleGroup}`,
-            onClick: () => chooseIcon(`icon-biceps-${preference.nameMuscleGroup}`),
+            id: `icon-Biceps-${preference.nameMuscleGroup}`,
+            onPress: () => chooseIcon(`icon-Biceps-${preference.nameMuscleGroup}`),
         },{
             icon: IconHalter,
             name: "",
@@ -143,7 +119,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: cor.secundaria,
         borderRadius: 10,
-        paddingHorizontal: 24,
+        paddingHorizontal: 16,
         paddingVertical: 8,
         gap: 12
     },
@@ -166,6 +142,7 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         justifyContent: "space-between",
         gap: 8,
+        paddingHorizontal: 16,
         paddingBottom: 12
     },
     viewIcon: {

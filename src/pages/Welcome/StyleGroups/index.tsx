@@ -37,11 +37,11 @@ const StyleGroups = () => {
                             <Text
                                 onPress={event => navigation.goBack()}
                                 style={styles.button}
-                            >Voltar</Text>
+                            > Voltar</Text>
                             <Text
                                 onPress={event => saveInformations()}
                                 style={styles.button}
-                            >Próximo</Text>
+                            > Próximo</Text>
                         </View>
                     </View>
                 </View>

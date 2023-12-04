@@ -128,14 +128,19 @@ const Table = () => {
             } else {
                 if (!findValueIquals) {
                     currentTable.name = value
+                    //tables
                     tables.updateTables(currentTable)
                     setTables(tables.tables)
-                    setSaveTable(tables.tables)
-                    const indexPreference = preferences.preferences.findIndex(preference => preference.id === currentTable.id)
-                    preferences.updatePreferenceWorkout(indexPreference, value)
-                    updatePreferences(preferences.returnInformation())
                     AsyncStorager.saveTables(tables.tables)
-                    AsyncStorager.savePreferences(preferences.returnInformation())
+                    setSaveTable(tables.tables)
+                    //preferences
+                    try {
+                        const indexPreference = preferences.preferences.findIndex(preference => preference.id === currentTable.id)
+                        preferences.updatePreferenceWorkout(indexPreference, value)
+                        updatePreferences(preferences.returnInformation())
+                        AsyncStorager.savePreferences(preferences.returnInformation())
+                    } catch{
+                    }
                 } else if (!isThisElement) {
                     setNameTable(currentTable.name)
                     updadeMessageProgram(["Esse exercício já foi criado!"], "error")

@@ -11,6 +11,7 @@ import { useUpdatePreferences } from "../../../state/hooks/useUpdatePreferences"
 import { useUpdateTables } from "../../../state/hooks/useUpdateTables"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
 import { Button, StyleSheet, Text, TextInput, View } from "react-native"
+import { cor } from '../../../utils/presetStyles'
 
 interface InputNameMusclesProps {
     table: IMuscleGroup
@@ -82,25 +83,24 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         width: "auto",
+        paddingHorizontal: 26,
         gap: 12
     },
     divSection: {
         display: "flex",
         flexDirection: "row",
+        flex: 1,
         alignItems: "center",
-        justifyContent: "center",
         borderWidth: 2,
         borderRadius: 10,
         borderColor: "#176B87",
-        width: 250,
         rowGap: 15,
-        paddingHorizontal: 40
     },
     text: {
         paddingHorizontal: 16,
         paddingVertical: 4,
         backgroundColor: "transparent",
-        color: "gray", //200,
+        color: cor.gray200, //200,
         fontWeight: "500", //semibold
         fontSize: 20, //xl,
     },

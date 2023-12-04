@@ -15,7 +15,7 @@ const Teste = () =>{
     const preferences = new AllPreferences(usePreferences())
     const setPreferences = useUpdatePreferences()
     return(
-        <View>
+        <View style={{backgroundColor: "#000"}}>
             <Text>Olá pessoal e gameplay</Text>
         </View>
     )

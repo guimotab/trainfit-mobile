@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     section: {
         display: "flex",
         justifyContent: "center",
-        paddingHorizontal: 24,
+        paddingHorizontal: 16,
     },
     sectionView: {
         display: "flex",
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: cor.secundaria,
         borderRadius: 10,
-        paddingHorizontal: 24,
+        paddingHorizontal: 16,
         paddingVertical: 8,
         gap: 12
     },
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     divExerciseInput: {
         display: "flex",
         flexDirection: "column",
+        paddingHorizontal: 10,
         gap: 8,
         paddingBottom: 12
     },

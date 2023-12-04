@@ -8,7 +8,7 @@ const SucessProgram = ({ text }: SucessProgramProps) => {
         <>
             {text[0] !== "" ?
                 <View style={styles.section}>
-                    {text.map(text=><Text style={styles.text}>{text}</Text>)}
+                    {text.map((text, index)=><Text key={index} style={styles.text}>{text}</Text>)}
                 </View>
                 : <></>
             }

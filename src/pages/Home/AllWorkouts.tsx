@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         minWidth: "47%",
         maxWidth: "47%",
-        minHeight: 130,
-        maxHeight: 130,
+        minHeight: 145,
+        maxHeight: 145,
         borderRadius: 12,
         color: cor.gray200,//200
         backgroundColor: cor.gray700,

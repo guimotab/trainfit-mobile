@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text} from "react-native"
+import { StyleSheet, View, Text } from "react-native"
 import { cor, font } from "../../utils/presetStyles";
 interface ErrorProgramProps {
     text: string[]
@@ -9,7 +9,7 @@ const ErrorProgram = ({ text }: ErrorProgramProps) => {
             {text[0] !== "" ?
                 <View style={styles.section}>
 
-                    {text.map(text=><Text style={styles.text}>{text}</Text>)}
+                    {text.map((text, index) => <Text key={index} style={styles.text}>{text}</Text>)}
                 </View>
                 : <></>
             }
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingHorizontal: 18,
         backgroundColor: cor.deleteHover,
-        color:cor.gray200,
+        color: cor.gray200,
         fontSize: 17,
         fontWeight: font.medium
     },

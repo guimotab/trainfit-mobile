@@ -35,7 +35,7 @@ const WarningProgram = ({ text, saveTable, setSaveTable }: WarningProgramProps) 
                 <View style={styles.section}>
                     <View style={styles.viewSection}>
                         <View style={styles.viewText}>
-                            {text.map(text => <Text style={styles.text}>{text}</Text>)}
+                            {text.map((text, index) => <Text key={index} style={styles.text}>{text}</Text>)}
                         </View>
                         <View style={styles.viewButton}>
                             <Text onPress={event => saveChange()} style={styles.button}>Salvar</Text>
