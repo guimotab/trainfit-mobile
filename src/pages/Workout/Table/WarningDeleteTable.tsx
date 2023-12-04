@@ -5,9 +5,10 @@ import { AsyncStorager } from "../../../service/LocalStorager"
 import usePreferences from "../../../state/hooks/usePreferences"
 import useTables from "../../../state/hooks/useTables"
 import { useUpdatePreferences } from "../../../state/hooks/useUpdatePreferences"
-import { Button, StyleSheet, Text, View } from "react-native"
 import { useUpdateTables } from "../../../state/hooks/useUpdateTables"
 import { useNavigation } from "@react-navigation/native"
+import { StyleSheet, View, Text } from "react-native"
+import { cor, font } from "../../../utils/presetStyles";
 
 interface WarningDeleteTableProps {
     currentTable: MuscleGroup
@@ -37,26 +38,73 @@ const WarningDeleteTable = ({ currentTable, showWarning, setShowWarning }: Warni
     return (
         <>
             {showWarning ?
-                <div className="fixed flex justify-center w-screen h-screen z-10 left-0 top-0 px-8 pt-10">
-                    <div className="flex flex-col items-center gap-1 max-w-[20rem] h-fit w-full bg-cor-secundaria rounded-lg px-4 py-1">
-                        <div className="flex flex-col items-center">
-                            <p className="text-gray-200 text-lg font-medium">{`Você irá excluir "${currentTable.name}"`}</p>
-                            <p className="text-gray-200 text-lg font-medium">{"Você tem certeza?"}</p>
-                        </div>
-                        <div className="flex items-center justify-between w-full max-w-[10rem]">
-                            <Button title="Sim" onPress={event => deleteTable()} 
-                            //className="bg-cor-terciaria hover:bg-cor-hover text-white font-medium px-4 py-[0.1rem] rounded-lg"
-                            />
-                            <Button title="Não" onPress={event => cancelDelete()} 
-                            //className="bg-cor-terciaria hover:bg-cor-hover text-white font-medium px-4 py-[0.1rem] rounded-lg"
-                            />
-                        </div>
-                    </div>
-                </div>
+                <View style={styles.section}>
+                    <View style={styles.viewSection}>
+                        <View style={styles.viewText}>
+                            <Text style={styles.text}>{`Você irá excluir "${currentTable.name}"`}</Text>
+                            <Text style={styles.text}>{"Você tem certeza?"}</Text>
+                        </View>
+                        <View style={styles.viewButton}>
+                            <Text onPress={event => deleteTable()} style={styles.button}
+                            >Sim</Text>
+                            <Text onPress={event => cancelDelete()} style={styles.button}
+                            >Não</Text>
+                        </View>
+                    </View>
+                </View>
                 : <></>
             }
         </>
     )
 }
+const styles = StyleSheet.create({
+    section: {
+        zIndex: 10,
+        width: "115%",
+        position: "absolute",
+        display: "flex",
+        flexDirection: "column",
+        gap: 4,
+        justifyContent: "center",
+        alignItems: "center",
+        top: 0
+    },
+    viewSection: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
+        backgroundColor: cor.secundaria,
+        borderRadius: 5,
+        paddingHorizontal: 18,
+        paddingVertical: 8,
+
+    },
+    viewText: {
+        display: "flex",
+        flex: 1,
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    text: {
+        color: cor.gray200,
+        fontSize: 17,
+        fontWeight: font.medium
+    },
+    viewButton: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: 40
+    },
+    button: {
+        backgroundColor: cor.terciaria,
+        color: "#fff",
+        fontSize: 17,
+        paddingHorizontal: 12,
+        paddingVertical: 3,
+        borderRadius: 5,
+    }
+});
 
 export default WarningDeleteTable

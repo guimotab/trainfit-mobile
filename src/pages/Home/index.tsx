@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, View } from "react-native"
+import { Button, ScrollView, StyleSheet, Text, View } from "react-native"
 import { AllPreferences } from "../../models/AllPreferences"
 import { Tables } from "../../models/Tables"
 import usePreferences from "../../state/hooks/usePreferences"
@@ -7,15 +7,14 @@ import { useUpdatePreferences } from "../../state/hooks/useUpdatePreferences"
 import { useUpdateTables } from "../../state/hooks/useUpdateTables"
 import AllWorkouts from "./AllWorkouts"
 import { IPreferencesWorkout } from "../../shared/interfaces/IPreferencesWorkout"
-import Header from "../../components/Navigation"
 import { cor, font } from "../../utils/presetStyles"
-const Navigation = () => {
+import Navigation from "../../components/Navigation"
+const Home = () => {
     const tables = new Tables(useTables())
-    console.log("🚀 ~ file: index.tsx:14 ~ Navigation ~ tables:", tables)
-
     const setTable = useUpdateTables()
     const preferences = new AllPreferences(usePreferences())
     const setPreferences = useUpdatePreferences()
+    
     function createMuscularGroup() {
         let newId: number
         if (tables.tables[0]) {
@@ -33,39 +32,44 @@ const Navigation = () => {
         setPreferences(preferences.returnInformation())
         setTable(tables.tables)
     }
-
     return (
         <>
-            <View style={styles.section}>
-                <View style={styles.TitleTextGroup}>
-                    <Text style={styles.h1}>Train<Text style={styles.spanH1}>Fit</Text></Text>
-                    <View style={styles.muscleButton}>
-                        <Text style={styles.textMuscleButton}>Grupos Musculares</Text>
-                        <Text onPress={event => createMuscularGroup()} style={styles.buttonMuscle}>Adicionar Grupo</Text>
+            <View style={styles.body}>
+                <ScrollView>
+                    <View style={styles.section}>
+                        <View style={styles.TitleTextGroup}>
+                            <Text style={styles.h1}>Train<Text style={styles.spanH1}>Fit</Text></Text>
+                            <View style={styles.muscleButton}>
+                                <Text style={styles.textMuscleButton}>Grupos Musculares</Text>
+                                <Text onPress={event => createMuscularGroup()} style={styles.buttonMuscle}>Adicionar Grupo</Text>
+                            </View>
+                        </View>
+                        <View style={styles.AllWokouts}>
+                            {tables.tables ? tables.tables.map(table =>
+                                <AllWorkouts key={table.id} table={table} />
+                            ).reverse() : <></>}
+                        </View>
                     </View>
-                </View>
-                <View style={styles.AllWokouts}>
-                    {tables.tables ? tables.tables.map(table =>
-                        <AllWorkouts key={table.id} table={table} />
-                    ).reverse() : <></>}
-                </View>
+                </ScrollView>
             </View>
-            <Header />
+            <Navigation />
         </>
     )
 }
 const styles = StyleSheet.create({
+    body:{
+        backgroundColor: cor.gray900,
+        flex: 1
+    },
     section: {
         display: "flex",
+        flex: 1,
         flexDirection: "column",
         gap: 30,
-        backgroundColor: cor.gray900,
         padding: 20,
-        height: "100%",
-        width: "100%",
-        minHeight: "100%",
+        marginBottom: 70
     },
-    TitleTextGroup:{
+    TitleTextGroup: {
         display: "flex",
         flexDirection: "column",
         gap: 10
@@ -115,6 +119,6 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
     },
 });
-export default Navigation
+export default Home
 
 

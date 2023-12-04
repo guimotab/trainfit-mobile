@@ -31,7 +31,7 @@ const StyleGroups = () => {
                     </View>
                     <View style={styles.preferenceButtonsGroup}>
                         <View style={styles.preferences}>
-                            {preferences.preferences.map(preference => <Styles key={preference.id} preference={preference} />)}
+                            {preferences.preferences.map(preference => <Styles key={preference.id}  preference={preference} />)}
                         </View>
                         <View style={styles.buttonsGroup}>
                             <Text

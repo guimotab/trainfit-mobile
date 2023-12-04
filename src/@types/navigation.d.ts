@@ -34,7 +34,7 @@ export declare global {
             Workout: {
                 id: number
             }
-            Configuration: undefined
+            Presets: undefined
             Welcome: undefined
             CreateExercises: undefined
             StyleGroups: undefined

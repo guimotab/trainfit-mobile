@@ -14,6 +14,8 @@ import { useUpdateTables } from "../../../../state/hooks/useUpdateTables"
 import { ScrollView, Button, StyleSheet, Text, View } from "react-native"
 import { cor, font } from "../../../../utils/presetStyles"
 import Weight  from 'react-native-vector-icons/MaterialCommunityIcons'
+import { IMuscleGroup } from "../../../../shared/interfaces/IMuscleGroup"
+import { useState } from "react"
 interface StylesProps {
     preference: IPreferencesWorkout
 }
@@ -22,79 +24,83 @@ const Styles = ({ preference }: StylesProps) => {
     const tables = new Tables(useTables())
     const setTables = useUpdateTables()
     const currentTable = new MuscleGroup(findCurrentTable(tables.tables, preference.id.toString()))
+    const [iconTable, setIconTable] = useState(currentTable.logo)
     function chooseIcon(idIcon: string) {
-        const elements = document.querySelectorAll("[data-iconWorkout]") as NodeListOf<HTMLElement>
-        elements.forEach(element => {
-            if (element.id === idIcon) {
-                element.classList.add("text-cor-hover")
-                element.classList.remove("text-gray-500")
-                element.classList.remove("hover:text-gray-300")
-            } else if (element.dataset.iconWorkout === preference.nameMuscleGroup) {
-                element.classList.remove("text-cor-hover")
-                element.classList.add("text-gray-500")
-                element.classList.add("hover:text-gray-300")
-            }
-        })
         const result = idIcon.split("-")
         let logo = result[0] + result[1]
+        setIconTable(logo)
         if (result[1] === "weight") {
-            logo = result[1] + result[2]
-        } else if(result[1] === "bolt"){
             logo = result[1]
         }
         currentTable.logo = logo
         tables.updateTables(currentTable)
         setTables(tables.tables)
     }
+    // function chooseIcon(idIcon: string) {
+    //     const elements = document.querySelectorAll("[data-iconWorkout]") as NodeListOf<HTMLElement>
+    //     elements.forEach(element => {
+    //         if (element.id === idIcon) {
+    //             element.classList.add("text-cor-hover")
+    //             element.classList.remove("text-gray-500")
+    //             element.classList.remove("hover:text-gray-300")
+    //         } else if (element.dataset.iconWorkout === preference.nameMuscleGroup) {
+    //             element.classList.remove("text-cor-hover")
+    //             element.classList.add("text-gray-500")
+    //             element.classList.add("hover:text-gray-300")
+    //         }
+    //     })
+    //     const result = idIcon.split("-")
+    //     let logo = result[0] + result[1]
+    //     if (result[1] === "weight") {
+    //         logo = result[1] + result[2]
+    //     } else if(result[1] === "bolt"){
+    //         logo = result[1]
+    //     }
+    //     currentTable.logo = logo
+    //     tables.updateTables(currentTable)
+    //     setTables(tables.tables)
+    // }
     const icons = [
         {
             icon: IconCardio,
             name: "",
             id: `icon-Cardio-${preference.nameMuscleGroup}`,
             onPress: () => chooseIcon(`icon-Cardio-${preference.nameMuscleGroup}`),
-            style: styles.icon
         }, {
             icon: IconBiceps,
             name: "",
             id: `icon-biceps-${preference.nameMuscleGroup}`,
             onClick: () => chooseIcon(`icon-biceps-${preference.nameMuscleGroup}`),
-            style: styles.icon
         },{
             icon: IconHalter,
             name: "",
             id: `icon-Halter-${preference.nameMuscleGroup}`,
             onPress: () => chooseIcon(`icon-Halter-${preference.nameMuscleGroup}`),
-            style: styles.icon
         }, {
             icon: IconSupino,
             name: "",
             id: `icon-Supino-${preference.nameMuscleGroup}`,
             onPress: () => chooseIcon(`icon-Supino-${preference.nameMuscleGroup}`),
-            style: styles.icon
         }, {
             icon: IconLevantamentoTerra,
             name: "",
             id: `icon-LevantamentoTerra-${preference.nameMuscleGroup}`,
             onPress: () => chooseIcon(`icon-LevantamentoTerra-${preference.nameMuscleGroup}`),
-            style: styles.icon
         }, {
             icon: IconSeringa,
             name: "",
             id: `icon-Seringa-${preference.nameMuscleGroup}`,
             onPress: () => chooseIcon(`icon-Seringa-${preference.nameMuscleGroup}`),
-            style: styles.icon
         }, {
             icon: IconWhey,
             name: "",
             id: `icon-Whey-${preference.nameMuscleGroup}`,
             onPress: () => chooseIcon(`icon-Whey-${preference.nameMuscleGroup}`),
-            style: styles.icon
         }, {
             icon: Weight,
             name: "weight-lifter",
             id: `icon-weight-lifter-${preference.nameMuscleGroup}`,
             onPress: () => chooseIcon(`icon-weight-lifter-${preference.nameMuscleGroup}`),
-            style: styles.icon
         },
     ]
     return (
@@ -109,13 +115,14 @@ const Styles = ({ preference }: StylesProps) => {
                     {icons.map(icon =>
                         <View key={icon.id} style={styles.viewIcon}>
                             <icon.icon
-                                width={50}
-                                height={50}
+                                width={40}
+                                height={40}
                                 name={icon.name}
                                 data-iconWorkout={preference.nameMuscleGroup}
                                 id={icon.id}
                                 onPress={icon.onPress}
-                                style={icon.style}
+                                style={iconTable === "icon" + icon.id.split("-")[1] || iconTable === icon.id.split("-")[1] ?
+                                    styles.styleIcon1 : styles.styleIcon2}
                             />
                         </View>
                     )}
@@ -164,14 +171,20 @@ const styles = StyleSheet.create({
     viewIcon: {
         //flex justify-center"
         display: "flex",
-        justifyContent: "center"
+        justifyContent: "center",
+        width: "18%"
     },
-    icon: {
-        fontSize: 50,
-        width: 50,
-        height: 50,
-        color: cor.gray500, //200,
-        //hover: animate - hoverWH'
+    styleIcon1: {
+        color: cor.hover,
+        fontSize: 40,
+        height: 40,
+        width: 40
     },
+    styleIcon2: {
+        color: cor.gray500,
+        fontSize: 40,
+        height: 40,
+        width: 40
+    }
 })
 export default Styles

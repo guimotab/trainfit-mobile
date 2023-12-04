@@ -5,7 +5,7 @@ import CreateExercises from './src/pages/Welcome/CreateExercises';
 import StyleGroups from './src/pages/Welcome/StyleGroups';
 import Workout from './src/pages/Workout';
 import Home from './src/pages/Home';
-import Configuration from './src/pages/Configuration';
+import Presets from './src/pages/Configuration';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 export default function App() {
@@ -15,11 +15,11 @@ export default function App() {
       <RecoilRoot>
         <NavigationContainer>
           <Stack.Navigator initialRouteName='Home'>
-            <Stack.Group screenOptions={{ headerShown: false }}>
+            <Stack.Group screenOptions={{ headerShown: false }} >
               <Stack.Screen name='Home' component={Home} />
-              <Stack.Screen name='Workout' component={Workout} options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Treino" }}/>
-              <Stack.Screen name='Configuration' options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Configuração" }}
-                component={Configuration} />
+              <Stack.Screen name='Workout' component={Workout} options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Treinos" }}/>
+              <Stack.Screen name='Presets' options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Configurações" }}
+                component={Presets} />
               <Stack.Screen name='Welcome' component={Welcome} />
               <Stack.Screen name='CreateExercises' component={CreateExercises} />
               <Stack.Screen name='StyleGroups' component={StyleGroups} />

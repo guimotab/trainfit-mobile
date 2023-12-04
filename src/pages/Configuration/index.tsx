@@ -7,7 +7,7 @@ import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native"
 import { cor, font } from "../../utils/presetStyles"
 import StyleIcons from "./StyleIcons"
 
-const Configuration = () => {
+const Presets = () => {
     const erroProgram = useErrorProgram()
     const sucessProgram = useSucessProgram()
 
@@ -43,9 +43,10 @@ const styles = StyleSheet.create({
     },
     sectionView: {
         display: "flex",
+        width: "100%",
         flexDirection: "column",
         flex: 1,
         gap: 50
     },
 });
-export default Configuration
+export default Presets

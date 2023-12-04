@@ -8,6 +8,7 @@ const ErrorProgram = ({ text }: ErrorProgramProps) => {
         <>
             {text[0] !== "" ?
                 <View style={styles.section}>
+
                     {text.map(text=><Text style={styles.text}>{text}</Text>)}
                 </View>
                 : <></>
@@ -17,19 +18,21 @@ const ErrorProgram = ({ text }: ErrorProgramProps) => {
 }
 const styles = StyleSheet.create({
     section: {
+        zIndex: 10,
         position: "absolute",
         display: "flex",
+        width: "100%",
         flexDirection: "column",
         gap: 4,
         alignItems: "center",
-        backgroundColor: cor.gray900,
-        borderRadius: 12,
-        paddingHorizontal: 16,
-        top: 40
+        top: 40,
     },
     text: {
+        borderRadius: 5,
+        paddingHorizontal: 18,
+        backgroundColor: cor.deleteHover,
         color:cor.gray200,
-        fontSize:12,
+        fontSize: 17,
         fontWeight: font.medium
     },
 });

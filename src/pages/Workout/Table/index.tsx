@@ -236,21 +236,26 @@ const styles = StyleSheet.create({
     },
     viewDeleteTable: {
         position: "absolute",
-        height: "100%",
-        width: "100%",
-        left: 0,
-        top: 0
+        flex: 1,
+        zIndex: 20,
+        right: -20,
+        top: -40
     },
     clickOutView: {
-        height: "100%",
-        width: "100%",
+        flex: 1,
+        height: 10000,
+        width: 10000,
+        zIndex: 20,
+        left: 100,
+        top: -7000,
     },
     viewTextDeleteTable: {
         position: "absolute",
-        top: 80,
+        top: 70,
         right: 24,
+        zIndex: 30,
         backgroundColor: cor.gray700,
-        borderRadius: 12,
+        borderRadius: 7,
         paddingHorizontal: 20,
         paddingVertical: 8
     },

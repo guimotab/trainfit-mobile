@@ -7,7 +7,6 @@ import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessagePr
 import { AsyncStorager } from "../../../service/LocalStorager"
 import { StyleSheet, Text, View, Pressable } from "react-native"
 import { cor, font } from "../../../utils/presetStyles"
-
 const StyleIcons = () => {
     const tables = new Tables(useTables())
     const setTables = useUpdateTables()
@@ -16,25 +15,27 @@ const StyleIcons = () => {
     useEffect(() => {
         setSaveTable(tables.tables)
     }, [])
+
     async function saveInformations() {
         setMessageProgram(["Ícones salvos com sucesso!"], "sucess")
         setTables(saveTable)
         await AsyncStorager.saveTables(saveTable)
     }
-
     return (
         <View style={styles.section}>
             <View style={styles.textGroup}>
-                <Text style={styles.text}>Ícones Treinos</Text>
-                <Text
-                    onPress={event => saveInformations()}
-                    style={styles.buttonSave}>
-                    Salvar alterações
-                </Text>
+                <Text style={styles.text}>Ícones dos Treinos</Text>
+                <View>
+                    <Text
+                        onPress={event => saveInformations()}
+                        style={styles.buttonSave}>
+                        Salvar alterações
+                    </Text>
+                </View>
             </View>
             <View style={styles.viewMuscularGroup}>
                 {tables.tables.map(table =>
-                    <IconsGroup key={table.id} saveTable={saveTable} table={table} setSaveTable={setSaveTable} />
+                    <IconsGroup key={table.id} table={table} setSaveTable={setSaveTable} />
                 )}
             </View>
         </View>
@@ -58,12 +59,13 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: cor.gray200
     },
-    textGroup:{
+    textGroup: {
         display: "flex",
         flexDirection: "column",
         gap: 10,
     },
     buttonSave: {
+        width: 145,
         fontWeight: font.semibold,
         fontSize: 15,
         paddingHorizontal: 13,

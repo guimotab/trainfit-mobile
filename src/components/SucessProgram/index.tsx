@@ -17,6 +17,7 @@ const SucessProgram = ({ text }: SucessProgramProps) => {
 }
 const styles = StyleSheet.create({
     section: {
+        zIndex: 10,
         position: "absolute",
         display: "flex",
         flexDirection: "column",

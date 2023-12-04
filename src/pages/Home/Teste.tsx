@@ -7,7 +7,7 @@ import { useUpdatePreferences } from "../../state/hooks/useUpdatePreferences"
 import { useUpdateTables } from "../../state/hooks/useUpdateTables"
 import AllWorkouts from "./AllWorkouts"
 import { IPreferencesWorkout } from "../../shared/interfaces/IPreferencesWorkout"
-import Header from "../../components/Navigation"
+import Navigation from "../../components/Navigation"
 import { cor, font } from "../../utils/presetStyles"
 const Teste = () =>{
     const tables = new Tables(useTables())

@@ -16,7 +16,8 @@ import { ParamsProps } from "../../../../../@types/navigation";
 import { StyleSheet, Text, View, Pressable, ScrollView, TextInput } from "react-native"
 import { cor, font } from "../../../../../utils/presetStyles"
 import Trash from "react-native-vector-icons/FontAwesome5"
-import RNPickerSelect from "react-native-picker-select";
+import Selector from "../../../../../components/Selector";
+import { Picker } from "@react-native-picker/picker";
 
 export interface SetsProps {
     sets: ISets
@@ -42,6 +43,7 @@ const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsProps) =
     const [repetitions, setRepetitions] = useState(sets.repetitions)
     const [advancedTechnique, setAdvancedTechnique] = useState(sets.advancedTechnique)
     const [observations, setObservations] = useState(sets.observations)
+
     useEffect(() => {
         setDateId(workout.date + "%" + exercise.id + "%" + sets.numberSet)
         setNumberSet(sets.numberSet)
@@ -52,9 +54,12 @@ const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsProps) =
         setObservations(sets.observations)
     }, [sets])
 
-    function saveInformations() {
+    function saveInformations(newSets?: ISets) {
+        if (!newSets) {
+            newSets = { advancedTechnique, numberSet, observations, repetitions, typeWeight, weight }
+        }
         if (warningProgram[0] === "") {
-            currentTable.updateSets(dateId, { advancedTechnique, numberSet, observations, repetitions, typeWeight, weight })
+            currentTable.updateSets(dateId, newSets)
             tables.updateTables(currentTable)
             setTables(tables.tables)
             setSaveTable(tables.tables)
@@ -69,18 +74,30 @@ const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsProps) =
     }
     function verifyIsNumber(text: string, type: string) {
         if (type === "weight") {
-            try {
+            if (text === "") {
                 setWeight(Number(text))
-            } catch {
-                setWeight(weight)
+            } else {
+                if (Number(text)) {
+                    setWeight(Number(text))
+                } else {
+                    setWeight(weight)
+                }
             }
         } else {
-            try {
+            if (text === "") {
                 setRepetitions(Number(text))
-            } catch {
-                setRepetitions(repetitions)
+            } else {
+                if (Number(text)) {
+                    setRepetitions(Number(text))
+                } else {
+                    setRepetitions(repetitions)
+                }
             }
         }
+    }
+    function changeTypeWeight(thisTypeWeight: string) {
+        setTypeWeight(thisTypeWeight),
+            saveInformations({ advancedTechnique, numberSet, observations, repetitions, typeWeight: thisTypeWeight, weight })
     }
     const typeWeightArray = [
         "Kg",
@@ -98,13 +115,14 @@ const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsProps) =
         <View style={styles.section}>
             <View style={styles.viewSeries}>
                 <Text style={styles.textSeries}>{numberSet}° Série</Text>
-                <Trash name="trash" size={20} onPress={event => deleteSet()} style={styles.icon} />
+                <Trash name="trash" size={18} onPress={event => deleteSet()} style={styles.icon} />
             </View>
             <View style={styles.viewGroup}>
                 <View style={styles.viewInputTexts}>
                     <View style={styles.viewInputWeightRep}>
                         <Text style={styles.text}>Peso: </Text>
                         <TextInput
+                            maxLength={4}
                             value={weight.toString()}
                             onChangeText={text => verifyIsNumber(text, "weight")}
                             onEndEditing={event => saveInformations()}
@@ -114,16 +132,11 @@ const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsProps) =
                     <View style={styles.viewInputTypeTech}>
                         <Text style={styles.text}>Medida: </Text>
                         <View style={styles.selectInput}>
-                            <Text style={styles.text}>Kg</Text>
-                            <Text style={styles.text}>Lg</Text>
-                            {/* <RNPickerSelect
-                                value={typeWeight}
-                                onValueChange={(value) => setTypeWeight(value)}
-                                items={[
-                                    { label: 'Kg', value: 'Kg', color: "black" },
-                                    { label: 'Lg', value: 'Lg', color: "black" }
-                                ]}
-                            /> */}
+                            {typeWeightArray.map(thisTypeWeight =>
+                                <Text key={thisTypeWeight}
+                                    onPress={event => (changeTypeWeight(thisTypeWeight))}
+                                    style={typeWeight === thisTypeWeight ? { color: cor.gray200, fontWeight: font.medium } : { color: cor.gray400, fontWeight: font.medium }}>{thisTypeWeight}</Text>)
+                            }
                         </View>
                     </View>
                 </View>
@@ -132,7 +145,7 @@ const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsProps) =
                         <Text style={styles.text}>Repetições: </Text>
                         <TextInput
                             value={repetitions.toString()}
-                            maxLength={2}
+                            maxLength={3}
                             style={styles.textInputRepetition}
                             onChangeText={text => verifyIsNumber(text, "repetitions")}
                             onEndEditing={event => saveInformations()}
@@ -140,18 +153,15 @@ const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsProps) =
                     </View>
                     <View style={styles.viewInputTypeTech}>
                         <Text style={styles.text}>Técnica Avançada: </Text>
-                        <View style={styles.selectInput}>
-                            <RNPickerSelect
-                                value={advancedTechnique}
-                                onValueChange={(value) => setAdvancedTechnique(value)}
-                                items={advancedTechniqueArray.map((typeWeight) => {
-                                    const teste = {
-                                        label: typeWeight,
-                                        value: typeWeight
-                                    }
-                                    return teste
-                                })}
-                            />
+                        <View style={styles.technique}>
+                            <Picker
+                                style={styles.picker}
+                                selectedValue={advancedTechnique}
+                                onValueChange={(itemValue, itemIndex) => saveInformations({ advancedTechnique: itemValue, numberSet, observations, repetitions, typeWeight, weight })}>
+                                {advancedTechniqueArray.map((technique, index) =>
+                                    <Picker.Item key={index} label={technique} value={technique} />)
+                                }
+                            </Picker>
                         </View>
                     </View>
                 </View>
@@ -177,7 +187,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: cor.gray200,
         borderRadius: 12,
-        paddingHorizontal: 26,
+        paddingHorizontal: 15,
         paddingVertical: 12,
         gap: 5,
     },
@@ -188,7 +198,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     textSeries: {
-        fontSize: 17,
+        fontSize: 16,
         fontWeight: font.medium,
         color: cor.gray200
     },
@@ -196,14 +206,25 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         flex: 1,
-        gap: 5,
-        paddingLeft: 12
+        gap: 10,
+        paddingHorizontal: 10
     },
     viewInputWeightRep: {
-        width: "30%",
+        width: "40%",
     },
     viewInputTypeTech: {
-        width: "60%"
+        width: "52%"
+    },
+    technique: {
+        backgroundColor: cor.gray200,
+        borderRadius: 8,
+        height: 30
+    },
+    picker: {
+        width: 145,
+        position: "relative",
+        left: -10,
+        top: -11
     },
     viewInputTexts: {
         display: "flex",
@@ -221,7 +242,6 @@ const styles = StyleSheet.create({
     viewInputObservation: {
         display: "flex",
         flex: 1,
-        gap: 12,
     },
     inputObservation: {
         flex: 1,
@@ -234,7 +254,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        borderRadius: 8,
+        gap: 16
     },
     icon: {
         // w-5 h-5

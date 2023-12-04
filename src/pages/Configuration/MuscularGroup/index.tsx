@@ -1,6 +1,6 @@
 import { IPreferencesWorkout } from "../../../shared/interfaces/IPreferencesWorkout"
 import Exercise from "../Exercise"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { PreferencesWorkout } from "../../../models/PreferencesWorkout"
 import { Tables } from "../../../models/Tables"
 import useTables from "../../../state/hooks/useTables"
@@ -21,7 +21,7 @@ interface MuscularGroupProps {
 const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, setSavePreferences }: MuscularGroupProps) => {
     const [createNewExercise, setCreateNewExercise] = useState(false)
     const [valueInput, setValueInput] = useState(preference.nameMuscleGroup)
-    const [valueInicialInput, setValueInicialInput] = useState(preference.nameMuscleGroup)
+    const [valueInicialInput, setValueInicialInput] = useState("")
     const setMessageProgram = useUpdateMessageProgram()
     const tables = new Tables(useTables())
     const saveTables = new Tables(saveTable)
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         justifyContent: "space-between"
     },
-    textPlusGroup:{
+    textPlusGroup: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
         width: "100%",
         color: cor.gray800,
         fontWeight: font.medium,
-        borderRadius: 12,
+        borderRadius: 7,
         paddingHorizontal: 8,
         backgroundColor: cor.gray300
     },

@@ -24,7 +24,7 @@ const PresetGroup = () => {
     const setTables = useUpdateTables()
     const [saveTable, setSaveTable] = useState(tables.tables)
     const [savePreferences, setSavePreferences] = useState(preferences.preferences)
-
+    
     function addNewMuscularGroup() {
         const saveTables = new Tables(saveTable)
         let newId: number
@@ -44,12 +44,12 @@ const PresetGroup = () => {
         setSavePreferences(fakePreferences)
         setSaveTable(saveTables.tables)
     }
-    async function sucessAlert() {
+    function sucessAlert() {
         setMessageProgram(["Treinos salvos com sucesso!"], "sucess")
         setTables(saveTable)
         setPreferences({ initializer: preferences.initializer, preferencesWorkout: savePreferences })
-        await AsyncStorager.saveTables(saveTable)
-        await AsyncStorager.savePreferences({ initializer: preferences.initializer, preferencesWorkout: savePreferences })
+        AsyncStorager.saveTables(saveTable)
+        AsyncStorager.savePreferences({ initializer: preferences.initializer, preferencesWorkout: savePreferences })
     }
     return (
         < View style={styles.sectionView} >
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     sectionView: {
         display: "flex",
         flexDirection: "column",
-        marginTop: 25,
+        marginTop: 15,
         gap: 20,
     },
     textGroup: {

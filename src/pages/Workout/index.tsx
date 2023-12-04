@@ -1,4 +1,3 @@
-import Header from "../../components/Navigation";
 import { cor } from "../../utils/presetStyles";
 import Table from "./Table";
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native"
@@ -16,7 +15,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: cor.gray900,
     flex: 1,
-    paddingVertical: 40
+    paddingVertical: 10
   },
 });
 export default Workout;

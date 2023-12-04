@@ -3,7 +3,7 @@ import { Tables } from '../../../../models/Tables'
 import useTables from '../../../../state/hooks/useTables'
 import findCurrentTable from '../../../../utils/findCurrentTable'
 import { IMuscleGroupInformations } from '../../../../shared/interfaces/IMuscleGroupInformations'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useUpdateTables } from '../../../../state/hooks/useUpdateTables'
 import { AsyncStorager } from '../../../../service/LocalStorager'
 import { MuscleGroupInformation } from '../../../../models/MuscleGroupInformation'
@@ -35,12 +35,18 @@ const HeaderTraining = ({ workout, saveTable, setSaveTable }: HeaderTraininProps
     const tables = new Tables(useTables())
     const saveTables = new Tables(saveTable)
     const setTables = useUpdateTables()
-    const currentTable = new MuscleGroup(findCurrentTable(tables.tables, id!))
+    let currentTable = new MuscleGroup(findCurrentTable(tables.tables, id!))
     const [date, setDate] = useState(workout.date)
     const [exercise, setExercise] = useState(workout.exercise)
     const [feeling, setFeeling] = useState(workout.feeling)
     const warningProgram = useWarningProgram()
     const updadeMessageProgram = useUpdateMessageProgram()
+    useEffect(() => {
+        currentTable = new MuscleGroup(findCurrentTable(tables.tables, id!))
+        setDate(workout.date)
+        setExercise(workout.exercise)
+        setFeeling(workout.feeling)
+    }, [tables.tables])
 
     function changeFeeling(feelingType: string) {
         if (warningProgram[0] === "") {
@@ -115,9 +121,9 @@ const HeaderTraining = ({ workout, saveTable, setSaveTable }: HeaderTraininProps
             <View style={styles.sectionView}>
                 <View style={styles.viewPlusText}>
                     <Text style={styles.text}>{workout.date}</Text>
-                    <Plus name={"pluscircleo"} size={23} onPress={event => createNewExercise()} style={styles.icon} />
+                    <Plus name={"pluscircleo"} size={21} onPress={event => createNewExercise()} style={styles.icon} />
                 </View>
-                <Trash name="trash" size={21} onPress={event => deleteWorkout()} style={styles.icon} />
+                <Trash name="trash" size={18} onPress={event => deleteWorkout()} style={styles.icon} />
             </View>
             <View style={styles.textEmoteGroup}>
                 <Text style={styles.textEmote}>Como você está hoje?</Text>

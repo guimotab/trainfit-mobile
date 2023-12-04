@@ -4,9 +4,9 @@ import { StyleSheet, Text, View, Pressable } from "react-native"
 import { cor, font } from "../../utils/presetStyles"
 import { useEffect } from "react"
 import Home from 'react-native-vector-icons/Ionicons'
-import Gear from 'react-native-vector-icons/FontAwesome'
+import Gear from 'react-native-vector-icons/MaterialCommunityIcons'
 
-const Header = () => {
+const Navigation = () => {
     const preferences = usePreferences()
     const navigation = useNavigation()
     useEffect(() => {
@@ -22,9 +22,9 @@ const Header = () => {
                     <Home style={styles.icons} name="home-sharp"/>
                     <Text style={styles.text}>Home</Text>
                 </Pressable>
-                <Pressable style={styles.pressable} onPress={event => navigation.navigate("Configuration")}>
-                    <Gear style={styles.icons} name="gear"/>
-                    <Text style={styles.text}>Configurações</Text>
+                <Pressable style={styles.pressable} onPress={event => navigation.navigate("Presets")}>
+                    <Gear style={styles.icons} name="clipboard-list-outline"/>
+                    <Text style={styles.text}>Treinos</Text>
                 </Pressable>
             </View>
         </View>
@@ -65,4 +65,4 @@ const styles = StyleSheet.create({
         fontSize: 22
     }
 })
-export default Header
+export default Navigation

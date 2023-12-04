@@ -20,11 +20,17 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#111827"
+      },
+      "package": "com.guimotab.trainfitmobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ad5c3f27-b3f7-4d02-b281-9fb6625cf6f6"
+      }
     }
   }
 }

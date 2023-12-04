@@ -13,16 +13,17 @@ import { useState } from "react"
 import { StyleSheet, Text, View, Pressable } from "react-native"
 import { cor, font } from "../../../utils/presetStyles"
 import Weight from 'react-native-vector-icons/MaterialCommunityIcons'
+import useTables from "../../../state/hooks/useTables"
 
 interface IconsGroupProps {
     table: IMuscleGroup
-    saveTable: IMuscleGroup[]
     setSaveTable: React.Dispatch<React.SetStateAction<IMuscleGroup[]>>
 }
 
-const IconsGroup = ({ table, saveTable, setSaveTable }: IconsGroupProps) => {
-    const saveTables = new Tables(saveTable)
-    const currentTable = new MuscleGroup(findCurrentTable(saveTables.tables, table.id.toString()))
+const IconsGroup = ({ table, setSaveTable }: IconsGroupProps) => {
+    const tables = new Tables(useTables())
+    const saveTables = new Tables(tables.tables)
+    const currentTable = new MuscleGroup(findCurrentTable(tables.tables, table.id.toString()))
     const [iconTable, setIconTable] = useState(currentTable.logo)
 
     function chooseIcon(idIcon: string) {
