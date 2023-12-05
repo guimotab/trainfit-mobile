@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "TrainFit Mobile",
-    "slug": "TrainFit Mobile",
+    "slug": "TrainFit-Mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/TrainFitIcon.png",
@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/TrainFitSplash.png",
+        "foregroundImage": "./assets/TrainFitIcon.png",
         "backgroundColor": "#111827"
       },
       "package": "com.guimotab.trainfitmobile"
