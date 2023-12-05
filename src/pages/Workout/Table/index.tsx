@@ -55,7 +55,7 @@ const Table = () => {
         let tablesFiltered = [] as IMuscleGroupInformations[]
         let startDay: Date
         let endDay: Date
-        if (typeFilter !== "Todos") {
+        if (typeFilter !== "Todos os dias") {
             if (!typeFilter.split("-")[1]) {
                 [startDay, endDay] = newFindFilterDays(typeFilter)
             } else {
@@ -139,7 +139,7 @@ const Table = () => {
                         preferences.updatePreferenceWorkout(indexPreference, value)
                         updatePreferences(preferences.returnInformation())
                         AsyncStorager.savePreferences(preferences.returnInformation())
-                    } catch{
+                    } catch {
                     }
                 } else if (!isThisElement) {
                     setNameTable(currentTable.name)
@@ -181,11 +181,10 @@ const Table = () => {
                         }
                     </View>
                     <View style={styles.inputButtonGroup}>
-                        <TextInput
-                            value={typeFilter}
-                            onFocus={event => setOpenFilter(true)}
-                            // readOnly
-                            style={styles.filter} />
+                        <Pressable
+                            onPress={event => setOpenFilter(true)}>
+                            <Text style={styles.filter}>{typeFilter}</Text>
+                        </Pressable>
                         <Text
                             onPress={event => createWorkout()}
                             style={styles.buttonNewExercise}>+ Treino</Text>
@@ -203,18 +202,17 @@ const Table = () => {
 const styles = StyleSheet.create({
     section: {
         paddingHorizontal: 24,
+        minHeight: 1000,
         flex: 1,
     },
     sectionView: {
         position: "relative",
         display: "flex",
-        flex: 1,
         justifyContent: "center"
     },
     viewTextGroup: {
         display: "flex",
         width: "100%",
-        flex: 1,
         marginBottom: 32,
         gap: 30
     },

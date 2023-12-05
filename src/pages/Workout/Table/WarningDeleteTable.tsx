@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     viewSection: {
         display: "flex",
         flexDirection: "column",
+        alignItems: "center",
         gap: 12,
         backgroundColor: cor.secundaria,
         borderRadius: 5,
@@ -95,7 +96,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        paddingHorizontal: 40
+        paddingHorizontal: 40,
+        gap: 80
     },
     button: {
         backgroundColor: cor.terciaria,

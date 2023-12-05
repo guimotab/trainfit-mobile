@@ -25,10 +25,11 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         gap: 4,
         alignItems: "center",
-        top: 40,
+        top: 20
     },
     text: {
         borderRadius: 5,
+        paddingVertical: 3,
         paddingHorizontal: 18,
         backgroundColor: cor.deleteHover,
         color: cor.gray200,

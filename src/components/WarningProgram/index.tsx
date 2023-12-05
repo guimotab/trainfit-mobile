@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: cor.gray200,
-        fontSize: 17,
+        fontSize: 18,
         fontWeight: font.medium
     },
     viewButton: {
