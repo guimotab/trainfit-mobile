@@ -135,8 +135,9 @@ const styles = StyleSheet.create({
         display: "flex",
         top: 40,
         flex: 1,
+        paddingTop: 7,
         paddingHorizontal: 24,
-        gap: 16
+        gap: 12
     },
     viewTable: {
         display: 'flex',
@@ -144,27 +145,26 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         flexWrap: "wrap",
-        marginVertical: 10,
+        marginBottom: 10,
     },
     viewTbodyDontSelect: {
-        width: 70,
+        width: 82,
+        height: 30,
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        borderWidth: 2,
+        borderColor: cor.gray400
+    },
+    viewTbodySelect: {
+        width: 82,
         height: 30,
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: cor.gray300,
-        borderWidth: 2,
-        borderColor: cor.gray500
-    },
-    viewTbodySelect: {
-        width: 70,
-        height: 30,
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: cor.primaria,
         borderWidth: 2,
         borderColor: cor.secundaria
     },
