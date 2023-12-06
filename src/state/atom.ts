@@ -23,3 +23,7 @@ export const warningProgram = atom<string[]>({
     key: 'warningProgram',
     default: [""]
 })
+export const changedWarning = atom<string[]>({
+    key: 'changedWarning',
+    default: [""]
+})

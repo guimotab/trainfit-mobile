@@ -2,8 +2,10 @@ import useErrorProgram from "../../state/hooks/useErrorProgram"
 import ErrorProgram from "../../components/ErrorProgram"
 import SucessProgram from "../../components/SucessProgram"
 import useSucessProgram from "../../state/hooks/useSucessProgram"
+import PresetGroup from "./PresetGroup"
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native"
 import { cor, font } from "../../utils/presetStyles"
+import StyleIcons from "./StyleIcons"
 import useChangedWarning from "../../state/hooks/useChangedWarning"
 import ChangedWarning from "../../components/ChangedWarning"
 
@@ -18,6 +20,8 @@ const Presets = () => {
                 <ScrollView>
                     <View style={styles.section}>
                         <View style={styles.sectionView}>
+                            <PresetGroup />
+                            <StyleIcons />
                         </View>
                     </View>
                 </ScrollView>

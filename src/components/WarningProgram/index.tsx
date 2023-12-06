@@ -51,29 +51,23 @@ const WarningProgram = ({ text, saveTable, setSaveTable }: WarningProgramProps) 
 const styles = StyleSheet.create({
     section: {
         zIndex: 10,
-        width: "120%",
-        position: "absolute",
         display: "flex",
-        flexDirection: "column",
         gap: 4,
         justifyContent: "center",
         alignItems: "center",
         top: 0
     },
     viewSection: {
+        width: "100%",
         display: "flex",
-        flexDirection: "column",
-        width: "55%",
-        gap: 8,
+        gap: 10,
         backgroundColor: cor.secundaria,
-        borderRadius: 5,
         paddingHorizontal: 18,
-        paddingVertical: 8,
+        paddingVertical: 15,
 
     },
     viewText: {
         display: "flex",
-        flexDirection: "column",
         alignItems: "center",
     },
     text: {
@@ -85,7 +79,9 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between"
+        justifyContent: "center",
+        marginBottom: 6,
+        gap: 30
     },
     button: {
         backgroundColor: cor.terciaria,

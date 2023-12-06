@@ -27,7 +27,7 @@ const Selector = ({ arrayElements }: Selector) => {
 }
 const styles = StyleSheet.create({
     section: {
-        zIndex: 100,
+        zIndex: 10,
         position: "absolute",
         display: "flex",
         alignItems: "center",

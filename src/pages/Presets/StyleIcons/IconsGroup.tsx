@@ -9,7 +9,7 @@ import { MuscleGroup } from "../../../models/MuscleGroup"
 import { Tables } from "../../../models/Tables"
 import findCurrentTable from "../../../utils/findCurrentTable"
 import { IMuscleGroup } from "../../../shared/interfaces/IMuscleGroup"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { StyleSheet, Text, View, Pressable } from "react-native"
 import { cor, font } from "../../../utils/presetStyles"
 import Weight from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -17,14 +17,18 @@ import useTables from "../../../state/hooks/useTables"
 
 interface IconsGroupProps {
     table: IMuscleGroup
+    saveTable: IMuscleGroup[]
     setSaveTable: React.Dispatch<React.SetStateAction<IMuscleGroup[]>>
 }
 
-const IconsGroup = ({ table, setSaveTable }: IconsGroupProps) => {
+const IconsGroup = ({ table, saveTable,  setSaveTable }: IconsGroupProps) => {
     const tables = new Tables(useTables())
-    const saveTables = new Tables(tables.tables)
+    let saveTables = new Tables(saveTable)
     const currentTable = new MuscleGroup(findCurrentTable(tables.tables, table.id.toString()))
     const [iconTable, setIconTable] = useState(currentTable.logo)
+    useEffect(() => {
+        saveTables = new Tables(saveTable)
+    }, [saveTable])
 
     function chooseIcon(idIcon: string) {
         const result = idIcon.split("-")

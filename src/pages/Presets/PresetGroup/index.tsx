@@ -2,19 +2,16 @@ import { Tables } from "../../../models/Tables"
 import useTables from "../../../state/hooks/useTables"
 import usePreferences from "../../../state/hooks/usePreferences"
 import MuscularGroup from "../MuscularGroup"
-import useErrorProgram from "../../../state/hooks/useErrorProgram"
-import ErrorProgram from "../../../components/ErrorProgram"
 import { AsyncStorager } from "../../../service/LocalStorager"
 import { useUpdatePreferences } from "../../../state/hooks/useUpdatePreferences"
 import { IPreferencesWorkout } from "../../../shared/interfaces/IPreferencesWorkout"
 import { useUpdateTables } from "../../../state/hooks/useUpdateTables"
-import SucessProgram from "../../../components/SucessProgram"
-import useSucessProgram from "../../../state/hooks/useSucessProgram"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { StyleSheet, Text, View, Pressable } from "react-native"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
 import { AllPreferences } from "../../../models/AllPreferences"
 import { cor, font } from "../../../utils/presetStyles"
+import useChangedWarning from "../../../state/hooks/useChangedWarning"
 
 const PresetGroup = () => {
     const preferences = new AllPreferences(usePreferences())
@@ -24,7 +21,11 @@ const PresetGroup = () => {
     const setTables = useUpdateTables()
     const [saveTable, setSaveTable] = useState(tables.tables)
     const [savePreferences, setSavePreferences] = useState(preferences.preferences)
-    
+    const thereIsChange = useChangedWarning()
+    useEffect(() => {
+        setMessageProgram([""], "none")
+    }, [])
+
     function addNewMuscularGroup() {
         const saveTables = new Tables(saveTable)
         let newId: number
@@ -43,8 +44,12 @@ const PresetGroup = () => {
         fakePreferences.push(newPreference)
         setSavePreferences(fakePreferences)
         setSaveTable(saveTables.tables)
+        setMessageProgram(["Há alterações feitas!"], "changed")
     }
     function sucessAlert() {
+        if (thereIsChange[0] === "") {
+            setMessageProgram([""], "none")
+        }
         setMessageProgram(["Treinos salvos com sucesso!"], "sucess")
         setTables(saveTable)
         setPreferences({ initializer: preferences.initializer, preferencesWorkout: savePreferences })
@@ -66,9 +71,10 @@ const PresetGroup = () => {
                 </Text>
             </View>
             <View style={styles.viewMuscularGroup}>
-                {savePreferences.map(preference =>
+                {savePreferences.map((preference, index) =>
                     <MuscularGroup
                         key={preference.nameMuscleGroup}
+                        inicialPreference={preferences.preferences[index]}
                         preference={preference}
                         savePreferences={savePreferences}
                         saveTable={saveTable}
