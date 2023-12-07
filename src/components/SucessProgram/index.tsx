@@ -18,18 +18,15 @@ const SucessProgram = ({ text }: SucessProgramProps) => {
 const styles = StyleSheet.create({
     section: {
         zIndex: 10,
-        position: "absolute",
         display: "flex",
         flexDirection: "column",
         gap: 4,
         alignItems: "center",
         backgroundColor: cor.green700,
-        borderRadius: 5,
-        paddingHorizontal: 18,
-        paddingVertical: 3,
-        top: 20
     },
     text: {
+        paddingHorizontal: 18,
+        paddingVertical: 8,
         color:cor.gray200,
         fontSize: 17,
         fontWeight: font.medium

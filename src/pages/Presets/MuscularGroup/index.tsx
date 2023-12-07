@@ -1,9 +1,8 @@
 import { IPreferencesWorkout } from "../../../shared/interfaces/IPreferencesWorkout"
 import Exercise from "../Exercise"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { PreferencesWorkout } from "../../../models/PreferencesWorkout"
 import { Tables } from "../../../models/Tables"
-import useTables from "../../../state/hooks/useTables"
 import { MuscleGroup } from "../../../models/MuscleGroup"
 import { IMuscleGroup } from "../../../shared/interfaces/IMuscleGroup"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
@@ -11,21 +10,30 @@ import Trash from "react-native-vector-icons/FontAwesome5"
 import Plus from "react-native-vector-icons/AntDesign"
 import { StyleSheet, Text, View, Pressable, TextInput } from "react-native"
 import { cor, font } from "../../../utils/presetStyles"
+import useChangedWarning from "../../../state/hooks/useChangedWarning"
 interface MuscularGroupProps {
     preference: IPreferencesWorkout
+    inicialPreference: IPreferencesWorkout
     savePreferences: IPreferencesWorkout[]
     saveTable: IMuscleGroup[]
     setSaveTable: React.Dispatch<React.SetStateAction<IMuscleGroup[]>>
     setSavePreferences: React.Dispatch<React.SetStateAction<IPreferencesWorkout[]>>
 }
-const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, setSavePreferences }: MuscularGroupProps) => {
+const MuscularGroup = ({ preference, inicialPreference, savePreferences, saveTable, setSaveTable, setSavePreferences }: MuscularGroupProps) => {
     const [createNewExercise, setCreateNewExercise] = useState(false)
+    const [inicialValueInput, setInicialValueInput] = useState(inicialNameMuscleGroup())
     const [valueInput, setValueInput] = useState(preference.nameMuscleGroup)
     const [valueInicialInput, setValueInicialInput] = useState("")
     const setMessageProgram = useUpdateMessageProgram()
-    const tables = new Tables(useTables())
+    const thereIsChange = useChangedWarning()
     const saveTables = new Tables(saveTable)
-
+    function inicialNameMuscleGroup() {
+        try {
+            return inicialPreference.nameMuscleGroup
+        } catch {
+            return preference.nameMuscleGroup
+        }
+    }
     function editNameMuscularGroup() {
         const value = valueInput
         const findValueIquals = savePreferences.find(thisExercise => thisExercise.nameMuscleGroup === value)
@@ -49,6 +57,7 @@ const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, s
                 fakePreferences.splice(indexPreferences, 1, preferenceWorkout.returnPreferences())
                 setSavePreferences(fakePreferences)
                 setValueInput(value)
+                setMessageProgram(["Há alterações feitas!"], "changed")
             } else if (!isThisElement) {
                 setValueInput(preference.nameMuscleGroup)
                 setMessageProgram(["Esse grupo muscular já foi criado!"], "error")
@@ -72,10 +81,13 @@ const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, s
             const findIndexPreference = fakePreferences.findIndex(thisPreference => thisPreference.nameMuscleGroup === preference.nameMuscleGroup)
             fakePreferences.splice(findIndexPreference, 1, preferenceWorkout.returnPreferences())
             setSavePreferences(fakePreferences)
+            setMessageProgram(["Há alterações feitas!"], "changed")
+
         } else if (!isThisElement) {
             setMessageProgram(["Esse grupo muscular já foi criado!"], "error")
         }
         setCreateNewExercise(false)
+        setValueInicialInput("")
     }
     function deleteMuscularGroup() {
         //save on the table
@@ -84,11 +96,15 @@ const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, s
             saveTables.removeTable(preference.id)
             setSaveTable(saveTables.tables)
         }
+        setMessageProgram(["Há alterações feitas!"], "changed")
         //save on the preferences
         const fakePreferences = [...savePreferences]
         const indexPreferences = fakePreferences.findIndex(thisPreference => thisPreference.nameMuscleGroup === preference.nameMuscleGroup)
         fakePreferences.splice(indexPreferences, 1)
         setSavePreferences(fakePreferences)
+    }
+    function addNewExercise() {
+        setCreateNewExercise(true)
     }
     return (
         <View style={styles.section}>
@@ -101,7 +117,7 @@ const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, s
                             onChangeText={text => setValueInput(text)}
                             onEndEditing={event => editNameMuscularGroup()}
                             style={styles.textInput} />
-                        <Plus name={"pluscircleo"} onPress={event => setCreateNewExercise(true)} style={styles.iconPlus} />
+                        <Plus name={"pluscircleo"} onPress={event => addNewExercise()} style={styles.iconPlus} />
                     </View>
                     <Trash name="trash" onPress={event => deleteMuscularGroup()} style={styles.iconTrash} />
                 </View>

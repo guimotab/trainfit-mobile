@@ -38,20 +38,22 @@ const WarningDeleteTable = ({ currentTable, showWarning, setShowWarning }: Warni
     return (
         <>
             {showWarning ?
-                <View style={styles.section}>
-                    <View style={styles.viewSection}>
-                        <View style={styles.viewText}>
-                            <Text style={styles.text}>{`Você irá excluir "${currentTable.name}"`}</Text>
-                            <Text style={styles.text}>{"Você tem certeza?"}</Text>
-                        </View>
-                        <View style={styles.viewButton}>
-                            <Text onPress={event => deleteTable()} style={styles.button}
-                            >Sim</Text>
-                            <Text onPress={event => cancelDelete()} style={styles.button}
-                            >Não</Text>
+                <>
+                    <View style={{position: "absolute", flex: 1, height: 10000, width: 10000, zIndex: 20, left: -100, top: -7000,}}/>
+                    <View style={styles.section}>
+                        <View style={styles.viewSection}>
+                            <View style={styles.viewText}>
+                                <Text style={styles.text}>{`Você irá excluir "${currentTable.name}"...`}</Text>
+                            </View>
+                            <View style={styles.viewButton}>
+                                <Text onPress={event => deleteTable()} style={styles.button}
+                                >Excluir</Text>
+                                <Text onPress={event => cancelDelete()} style={styles.button2}
+                                >Manter</Text>
+                            </View>
                         </View>
                     </View>
-                </View>
+                </>
                 : <></>
             }
         </>
@@ -59,11 +61,8 @@ const WarningDeleteTable = ({ currentTable, showWarning, setShowWarning }: Warni
 }
 const styles = StyleSheet.create({
     section: {
-        zIndex: 10,
-        width: "115%",
-        position: "absolute",
+        zIndex: 30,
         display: "flex",
-        flexDirection: "column",
         gap: 4,
         justifyContent: "center",
         alignItems: "center",
@@ -71,33 +70,43 @@ const styles = StyleSheet.create({
     },
     viewSection: {
         display: "flex",
-        flexDirection: "column",
-        gap: 12,
+        alignItems: "center",
+        width: "100%",
+        gap: 10,
         backgroundColor: cor.secundaria,
-        borderRadius: 5,
-        paddingHorizontal: 18,
-        paddingVertical: 8,
+        paddingVertical: 15,
 
     },
     viewText: {
         display: "flex",
-        flex: 1,
         flexDirection: "column",
         alignItems: "center",
     },
     text: {
         color: cor.gray200,
-        fontSize: 17,
-        fontWeight: font.medium
+        fontSize: 19,
+        fontWeight: font.semibold
     },
     viewButton: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        paddingHorizontal: 40
+        paddingHorizontal: 40,
+        marginBottom: 6,
+        gap: 80
     },
     button: {
+        backgroundColor: cor.terciaria,
+        color: "#fff",
+        fontSize: 17,
+        paddingHorizontal: 12,
+        paddingVertical: 3,
+        borderRadius: 5,
+    },
+    button2: {
+        // backgroundColor: "#fff",
+        // color: cor.terciaria,
         backgroundColor: cor.terciaria,
         color: "#fff",
         fontSize: 17,

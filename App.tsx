@@ -5,7 +5,7 @@ import CreateExercises from './src/pages/Welcome/CreateExercises';
 import StyleGroups from './src/pages/Welcome/StyleGroups';
 import Workout from './src/pages/Workout';
 import Home from './src/pages/Home';
-import Presets from './src/pages/Configuration';
+import Presets from './src/pages/Presets';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';

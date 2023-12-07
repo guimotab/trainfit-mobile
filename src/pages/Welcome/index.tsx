@@ -78,6 +78,7 @@ const Welcome = () => {
 const styles = StyleSheet.create({
     section: {
         display: "flex",
+        position: "relative",
         flex: 1,
         backgroundColor: cor.gray900, //900,
         paddingTop: 60,
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     divTextWelcome: {
         display: "flex",
         flexDirection: "column",
-        gap: 20,
+        gap: 15,
         paddingHorizontal: 25
     },
     divInputButton: {

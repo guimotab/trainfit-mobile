@@ -14,7 +14,7 @@ const StyleIcons = () => {
     const setMessageProgram = useUpdateMessageProgram()
     useEffect(() => {
         setSaveTable(tables.tables)
-    }, [])
+    }, [tables.tables])
 
     async function saveInformations() {
         setMessageProgram(["Ícones salvos com sucesso!"], "sucess")
@@ -35,7 +35,7 @@ const StyleIcons = () => {
             </View>
             <View style={styles.viewMuscularGroup}>
                 {tables.tables.map(table =>
-                    <IconsGroup key={table.id} table={table} setSaveTable={setSaveTable} />
+                    <IconsGroup key={table.id} table={table} saveTable={saveTable} setSaveTable={setSaveTable} />
                 )}
             </View>
         </View>

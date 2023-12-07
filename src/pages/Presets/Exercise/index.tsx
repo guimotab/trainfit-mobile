@@ -31,6 +31,7 @@ const Exercise = ({ exercise, savePreferences, preference, setSavePreferences }:
                 preferenceWorkout.updateBaseExercise(exercise, value)
                 fakePreferences.splice(indexPreferences, 1, preferenceWorkout.returnPreferences())
                 setSavePreferences(fakePreferences)
+                setMessageProgram(["Há alterações feitas!"], "changed")
                 setBaseExercise(value)
             } else if (!isThisElement) {
                 setBaseExercise(exercise)
@@ -44,6 +45,7 @@ const Exercise = ({ exercise, savePreferences, preference, setSavePreferences }:
         const indexPreferences = fakePreferences.findIndex(preference => preference.nameMuscleGroup === preferenceWorkout.nameMuscleGroup)
         preferenceWorkout.deleteExercise(exercise)
         fakePreferences.splice(indexPreferences, 1, preferenceWorkout.returnPreferences())
+        setMessageProgram(["Há alterações feitas!"], "changed")
         setSavePreferences(fakePreferences)
     }
     return (

@@ -1,9 +1,9 @@
 import { StyleSheet, View, Text } from "react-native"
 import { cor, font } from "../../utils/presetStyles";
-interface ErrorProgramProps {
+interface ChangedWarningProps {
     text: string[]
 }
-const ErrorProgram = ({ text }: ErrorProgramProps) => {
+const ChangedWarning = ({ text }: ChangedWarningProps) => {
     return (
         <>
             {text[0] !== "" ?
@@ -17,7 +17,6 @@ const ErrorProgram = ({ text }: ErrorProgramProps) => {
 }
 const styles = StyleSheet.create({
     section: {
-        zIndex: 10,
         display: "flex",
         flexDirection: "column",
         gap: 4,
@@ -28,10 +27,9 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingVertical: 8,
         paddingHorizontal: 18,
-        backgroundColor: cor.deleteHover,
         color: cor.gray200,
         fontSize: 17,
         fontWeight: font.medium
     },
 });
-export default ErrorProgram
+export default ChangedWarning

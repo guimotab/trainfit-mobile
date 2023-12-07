@@ -55,7 +55,7 @@ const Table = () => {
         let tablesFiltered = [] as IMuscleGroupInformations[]
         let startDay: Date
         let endDay: Date
-        if (typeFilter !== "Todos") {
+        if (typeFilter !== "Todos os dias") {
             if (!typeFilter.split("-")[1]) {
                 [startDay, endDay] = newFindFilterDays(typeFilter)
             } else {
@@ -139,7 +139,7 @@ const Table = () => {
                         preferences.updatePreferenceWorkout(indexPreference, value)
                         updatePreferences(preferences.returnInformation())
                         AsyncStorager.savePreferences(preferences.returnInformation())
-                    } catch{
+                    } catch {
                     }
                 } else if (!isThisElement) {
                     setNameTable(currentTable.name)
@@ -151,70 +151,76 @@ const Table = () => {
     function deleteTableClicked() {
         setShowWarning(true)
         setOpenMenuKebab(false)
+        updadeMessageProgram([""], "none")
+        if (setSaveTable) {
+            setSaveTable(tables.tables)
+        }
     }
     return (
-        <ScrollView>
-            <View style={styles.section}>
-                <WarningDeleteTable currentTable={currentTable} setShowWarning={setShowWarning} showWarning={showWarning} />
-                <WarningProgram text={warningProgram} saveTable={saveTable} setSaveTable={setSaveTable} />
-                <View style={styles.sectionView}>
-                    <ErrorProgram text={errorProgram} />
-                    <Filter openFilter={openFilter} setOpenFilter={setOpenFilter} setTypeFilter={setTypeFilter} />
-                </View>
-                <View style={styles.viewTextGroup}>
-                    <View style={styles.textInputGroup}>
-                        <TextInput
-                            maxLength={25}
-                            value={nameTable}
-                            onChangeText={text => setNameTable(text)}
-                            onEndEditing={event => changeNameTable()}
-                            style={styles.textInput} />
-                        <IconMenuKebab onPress={event => setOpenMenuKebab(true)} height={36} width={36} style={styles.icon} />
-                        {openMenuKebab ?
-                            <View style={styles.viewDeleteTable}>
-                                <Pressable style={styles.clickOutView} onPress={event => setOpenMenuKebab(false)}></Pressable>
-                                <View style={styles.viewTextDeleteTable}>
-                                    <Text onPress={event => deleteTableClicked()} style={styles.deleteTable}>Deletar Tabela</Text>
+        <>
+            <ScrollView>
+                <View style={styles.section}>
+
+                    <View style={styles.sectionView}>
+                        <Filter openFilter={openFilter} setOpenFilter={setOpenFilter} setTypeFilter={setTypeFilter} />
+                    </View>
+                    <View style={styles.viewTextGroup}>
+                        <View style={styles.textInputGroup}>
+                            <TextInput
+                                maxLength={25}
+                                value={nameTable}
+                                onChangeText={text => setNameTable(text)}
+                                onEndEditing={event => changeNameTable()}
+                                style={styles.textInput} />
+                            <IconMenuKebab onPress={event => setOpenMenuKebab(true)} height={36} width={36} style={styles.icon} />
+                            {openMenuKebab ?
+                                <View style={styles.viewDeleteTable}>
+                                    <Pressable style={styles.clickOutView} onPress={event => setOpenMenuKebab(false)}></Pressable>
+                                    <View style={styles.viewTextDeleteTable}>
+                                        <Text onPress={event => deleteTableClicked()} style={styles.deleteTable}>Deletar Tabela</Text>
+                                    </View>
                                 </View>
-                            </View>
-                            : <></>
-                        }
+                                : <></>
+                            }
+                        </View>
+                        <View style={styles.inputButtonGroup}>
+                            <Pressable
+                                onPress={event => setOpenFilter(true)}>
+                                <Text style={styles.filter}>{typeFilter}</Text>
+                            </Pressable>
+                            <Text
+                                onPress={event => createWorkout()}
+                                style={styles.buttonNewExercise}>+ Treino</Text>
+                        </View>
                     </View>
-                    <View style={styles.inputButtonGroup}>
-                        <TextInput
-                            value={typeFilter}
-                            onFocus={event => setOpenFilter(true)}
-                            // readOnly
-                            style={styles.filter} />
-                        <Text
-                            onPress={event => createWorkout()}
-                            style={styles.buttonNewExercise}>+ Treino</Text>
+                    <View style={styles.viewTraining}>
+                        {currentTable.information[0] ? currentTable.information.map(workout =>
+                            <Training key={workout.date} workout={workout} saveTable={saveTable} setSaveTable={setSaveTable} />
+                        ).reverse() : ""}
                     </View>
                 </View>
-                <View style={styles.viewTraining}>
-                    {currentTable.information[0] ? currentTable.information.map(workout =>
-                        <Training key={workout.date} workout={workout} saveTable={saveTable} setSaveTable={setSaveTable} />
-                    ).reverse() : ""}
-                </View>
-            </View>
-        </ScrollView >
+            </ScrollView >
+            <WarningDeleteTable currentTable={currentTable} setShowWarning={setShowWarning} showWarning={showWarning} />
+            <WarningProgram text={warningProgram} saveTable={saveTable} setSaveTable={setSaveTable} />
+            <ErrorProgram text={errorProgram} />
+        </>
     )
 }
 const styles = StyleSheet.create({
     section: {
         paddingHorizontal: 24,
+        paddingVertical: 30,
+        minHeight: 1000,
         flex: 1,
     },
     sectionView: {
         position: "relative",
         display: "flex",
-        flex: 1,
         justifyContent: "center"
     },
     viewTextGroup: {
         display: "flex",
         width: "100%",
-        flex: 1,
         marginBottom: 32,
         gap: 30
     },
@@ -251,7 +257,6 @@ const styles = StyleSheet.create({
         height: 10000,
         width: 10000,
         zIndex: 20,
-        left: 100,
         top: -7000,
     },
     viewTextDeleteTable: {

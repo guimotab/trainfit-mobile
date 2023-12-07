@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     },
     text: {
         paddingHorizontal: 16,
+        width: "100%",
         paddingVertical: 4,
         backgroundColor: "transparent",
         color: cor.gray200, //200,

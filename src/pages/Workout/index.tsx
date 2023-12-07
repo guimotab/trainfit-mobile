@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: cor.gray900,
     flex: 1,
-    paddingVertical: 10
   },
 });
 export default Workout;
