@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 import { IMuscleGroup } from "../shared/interfaces/IMuscleGroup";
-import { AsyncStorager } from "../service/LocalStorager";
+import { AsyncStorager } from "../service/AsyncStorager";
 import { IPreferences } from "../shared/interfaces/IPreferences";
 
 export const tablesInformations = atom<IMuscleGroup[]>({

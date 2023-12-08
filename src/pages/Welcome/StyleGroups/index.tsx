@@ -1,7 +1,7 @@
 import { Tables } from "../../../models/Tables"
 import usePreferences from "../../../state/hooks/usePreferences"
 import useTables from "../../../state/hooks/useTables"
-import { AsyncStorager } from "../../../service/LocalStorager"
+import { AsyncStorager } from "../../../service/AsyncStorager"
 import { AllPreferences } from "../../../models/AllPreferences"
 import { useUpdatePreferences } from "../../../state/hooks/useUpdatePreferences"
 import Styles from "./Styles"

@@ -19,7 +19,7 @@ import { AllPreferences } from '../../../models/AllPreferences'
 import ErrorProgram from '../../../components/ErrorProgram'
 import Filter from '../../../components/Filter'
 import WarningProgram from '../../../components/WarningProgram'
-import { AsyncStorager } from '../../../service/LocalStorager'
+import { AsyncStorager } from '../../../service/AsyncStorager'
 import { useRoute } from '@react-navigation/native'
 import { ParamsProps } from '../../../@types/navigation'
 import { StyleSheet, Text, View, Pressable, ScrollView, TextInput } from "react-native"
@@ -158,9 +158,9 @@ const Table = () => {
     }
     return (
         <>
+            <WarningDeleteTable currentTable={currentTable} setShowWarning={setShowWarning} showWarning={showWarning} />
             <ScrollView>
                 <View style={styles.section}>
-
                     <View style={styles.sectionView}>
                         <Filter openFilter={openFilter} setOpenFilter={setOpenFilter} setTypeFilter={setTypeFilter} />
                     </View>
@@ -200,7 +200,6 @@ const Table = () => {
                     </View>
                 </View>
             </ScrollView >
-            <WarningDeleteTable currentTable={currentTable} setShowWarning={setShowWarning} showWarning={showWarning} />
             <WarningProgram text={warningProgram} saveTable={saveTable} setSaveTable={setSaveTable} />
             <ErrorProgram text={errorProgram} />
         </>

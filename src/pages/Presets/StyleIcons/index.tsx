@@ -4,7 +4,7 @@ import useTables from "../../../state/hooks/useTables"
 import { useUpdateTables } from "../../../state/hooks/useUpdateTables"
 import IconsGroup from "./IconsGroup"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
-import { AsyncStorager } from "../../../service/LocalStorager"
+import { AsyncStorager } from "../../../service/AsyncStorager"
 import { StyleSheet, Text, View, Pressable } from "react-native"
 import { cor, font } from "../../../utils/presetStyles"
 const StyleIcons = () => {

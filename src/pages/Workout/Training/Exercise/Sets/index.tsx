@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useUpdateTables } from "../../../../../state/hooks/useUpdateTables";
 import { IExercise } from "../../../../../shared/interfaces/IExercise";
 import { IMuscleGroupInformations } from "../../../../../shared/interfaces/IMuscleGroupInformations";
-import { AsyncStorager } from "../../../../../service/LocalStorager";
+import { AsyncStorager } from "../../../../../service/AsyncStorager";
 import { IMuscleGroup } from "../../../../../shared/interfaces/IMuscleGroup";
 import useWarningProgram from "../../../../../state/hooks/useWarningProgram";
 import { useUpdateMessageProgram } from "../../../../../state/hooks/useUpdateMessageProgram";

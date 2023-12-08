@@ -3,8 +3,8 @@ import { useNavigation } from "@react-navigation/native"
 import { StyleSheet, Text, View, Pressable } from "react-native"
 import { cor, font } from "../../utils/presetStyles"
 import { useEffect } from "react"
-import Home from 'react-native-vector-icons/Ionicons'
-import Gear from 'react-native-vector-icons/MaterialCommunityIcons'
+import Gear from 'react-native-vector-icons/FontAwesome'
+import List from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const Navigation = () => {
     const preferences = usePreferences()
@@ -18,13 +18,13 @@ const Navigation = () => {
     return (
         <View style={styles.section}>
             <View style={styles.sectionView}>
-                <Pressable style={styles.pressable} onPress={event => navigation.navigate("Home")}>
-                    <Home style={styles.icons} name="home-sharp"/>
-                    <Text style={styles.text}>Home</Text>
-                </Pressable>
                 <Pressable style={styles.pressable} onPress={event => navigation.navigate("Presets")}>
-                    <Gear style={styles.icons} name="clipboard-list-outline"/>
+                    <List style={styles.icons} name="clipboard-list-outline" />
                     <Text style={styles.text}>Treinos</Text>
+                </Pressable>
+                <Pressable style={styles.pressable} onPress={event => navigation.navigate("Configuration")}>
+                    <Gear style={styles.icons} name="gear" />
+                    <Text style={styles.text}>Opções</Text>
                 </Pressable>
             </View>
         </View>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 17
     },
-    icons:{
+    icons: {
         color: "#fff",
         fontSize: 22
     }

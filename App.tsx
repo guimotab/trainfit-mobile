@@ -1,5 +1,4 @@
 import { RecoilRoot } from 'recoil';
-import { Suspense } from 'react';
 import Welcome from './src/pages/Welcome';
 import CreateExercises from './src/pages/Welcome/CreateExercises';
 import StyleGroups from './src/pages/Welcome/StyleGroups';
@@ -10,6 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import Configuration from './src/pages/Configuration';
 export default function App() {
   const Stack = createNativeStackNavigator();
   return (
@@ -17,12 +17,14 @@ export default function App() {
       <RecoilRoot>
         <NavigationContainer>
           <StatusBar backgroundColor="#111827" style='light' />
-          <Stack.Navigator screenOptions={{gestureDirection: 'horizontal', gestureEnabled: true}} initialRouteName='Home'>
+          <Stack.Navigator screenOptions={{ gestureDirection: 'horizontal', gestureEnabled: true }} initialRouteName='Home'>
             <Stack.Group screenOptions={{ headerShown: false, animation: 'default' }} >
               <Stack.Screen name='Home' component={Home} />
               <Stack.Screen name='Workout' component={Workout} options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Treinos" }} />
-              <Stack.Screen name='Presets' options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Configurações" }}
+              <Stack.Screen name='Presets' options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Predefinições" }}
                 component={Presets} />
+              <Stack.Screen name='Configuration' options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Configurações" }}
+                component={Configuration} />
               <Stack.Screen name='Welcome' component={Welcome} />
               <Stack.Screen name='CreateExercises' component={CreateExercises} />
               <Stack.Screen name='StyleGroups' component={StyleGroups} />

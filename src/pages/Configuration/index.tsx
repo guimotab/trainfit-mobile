@@ -6,19 +6,35 @@ import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native"
 import { cor, font } from "../../utils/presetStyles"
 import useChangedWarning from "../../state/hooks/useChangedWarning"
 import ChangedWarning from "../../components/ChangedWarning"
+import UploadDownloadInformation from "./UploadDownloadInformations"
+import DeleteInformations from "./DeleteInformations"
+import Animated, { Keyframe } from 'react-native-reanimated';
+import { useState } from "react"
 
-const Presets = () => {
+const Configuration = () => {
     const erroProgram = useErrorProgram()
     const sucessProgram = useSucessProgram()
-    const changedWarning= useChangedWarning()
+    const changedWarning = useChangedWarning()
 
+    // const rotationKeyFrame = new Keyframe({
+    //     0: {
+    //         transform: [{
+    //             rotate: "0"
+    //         }]
+    //     },
+    //     100: {
+    //         transform: [{
+    //             rotate: "360deg"
+    //         }]
+    //     }
+    // })
     return (
         <>
             <View style={styles.screen}>
                 <ScrollView>
                     <View style={styles.section}>
-                        <View style={styles.sectionView}>
-                        </View>
+                        <UploadDownloadInformation/>
+                        <DeleteInformations />
                     </View>
                 </ScrollView>
             </View>
@@ -30,25 +46,48 @@ const Presets = () => {
 
 }
 const styles = StyleSheet.create({
+    absolute: {
+        position: "absolute",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
+        width: "100%",
+        zIndex: 20,
+    },
+    opacity: {
+        position: "absolute",
+        height: "100%",
+        width: "100%",
+        opacity: 0.4,
+        backgroundColor: "#000",
+    },
+    loading: {
+        height: 70,
+        width: 70
+    },
+    icon: {
+        position: "absolute",
+        top: -100,
+        width: 70,
+        height: 70,
+        borderRightColor: "#fff",
+        borderTopColor: "#fff",
+        borderBottomColor: "#fff",
+        borderLeftColor: cor.secundaria,
+        borderWidth: 6,
+        borderRadius: 35,
+    },
     screen: {
         backgroundColor: cor.gray900,
         flex: 1
     },
     section: {
-        position: "relative",
-        alignItems: "center",
         display: "flex",
         flexDirection: "column",
         gap: 30,
         paddingHorizontal: 20,
         flex: 1
     },
-    sectionView: {
-        display: "flex",
-        width: "100%",
-        flexDirection: "column",
-        flex: 1,
-        gap: 50
-    },
 });
-export default Presets
+export default Configuration

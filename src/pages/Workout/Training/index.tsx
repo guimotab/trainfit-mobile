@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         //"flex flex-col bg-gray-700 rounded-2xl px-7 py-4 gap-3"
         display: "flex",
         flexDirection: "column",
-        backgroundColor: cor.gray700,
+        backgroundColor: cor.gray800,
         borderRadius: 12,
         gap: 28,
         paddingVertical: 15,

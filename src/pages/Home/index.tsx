@@ -40,7 +40,7 @@ const Home = () => {
                         <View style={styles.TitleTextGroup}>
                             <Text style={styles.h1}>Train<Text style={styles.spanH1}>Fit</Text></Text>
                             <View style={styles.muscleButton}>
-                                <Text style={styles.textMuscleButton}>Grupos Musculares</Text>
+                                <Text style={styles.textMuscleButton}>Seus Grupos</Text>
                                 <Text onPress={event => createMuscularGroup()} style={styles.buttonMuscle}>Adicionar Grupo</Text>
                             </View>
                         </View>
@@ -65,17 +65,17 @@ const styles = StyleSheet.create({
         display: "flex",
         flex: 1,
         flexDirection: "column",
-        gap: 30,
+        gap: 15,
         padding: 20,
         marginBottom: 70
     },
     TitleTextGroup: {
         display: "flex",
         flexDirection: "column",
-        gap: 10
+        gap: 20
     },
     h1: {
-        marginTop: 25,
+        marginTop:35,
         color: cor.gray200,
         fontWeight: "800",
         fontSize: 30
@@ -93,9 +93,8 @@ const styles = StyleSheet.create({
     muscleButton: {
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-between",
         alignItems: "center",
-        width: "auto"
+        gap: 20
     },
     textMuscleButton: {
         fontSize: 20,
@@ -115,7 +114,6 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         gap: 20,
-        justifyContent: "space-between",
         flexWrap: "wrap",
     },
 });

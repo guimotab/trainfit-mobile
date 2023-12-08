@@ -149,8 +149,8 @@ const styles = StyleSheet.create({
     section: {
         display: "flex",
         justifyContent: "center",
-        backgroundColor: cor.gray700,
-        borderRadius: 10,
+        backgroundColor: cor.gray800,
+        borderRadius: 7,
         width: "100%",
         paddingVertical: 10
     },

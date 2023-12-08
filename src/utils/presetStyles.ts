@@ -8,6 +8,7 @@ export const cor = {
     outline: '#002b3b',
     hover: '#1f86a8',
     erro: "#df3636",
+    erroLight: '#df0606',
     delete: "#8d2323",
     deleteHover: "#a32b2b",
     green700: "#15803d",

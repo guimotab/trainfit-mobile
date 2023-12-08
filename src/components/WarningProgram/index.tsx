@@ -1,4 +1,4 @@
-import { AsyncStorager } from "../../service/LocalStorager"
+import { AsyncStorager } from "../../service/AsyncStorager"
 import { IMuscleGroup } from "../../shared/interfaces/IMuscleGroup"
 import useTables from "../../state/hooks/useTables"
 import { useUpdateTables } from "../../state/hooks/useUpdateTables"
@@ -61,10 +61,10 @@ const styles = StyleSheet.create({
         width: "100%",
         display: "flex",
         gap: 10,
-        backgroundColor: cor.secundaria,
         paddingHorizontal: 18,
         paddingVertical: 15,
-
+        borderWidth: 0.5,
+        backgroundColor: cor.gray800,
     },
     viewText: {
         display: "flex",
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         gap: 30
     },
     button: {
-        backgroundColor: cor.terciaria,
+        backgroundColor: cor.secundaria,
         color: "#fff",
         fontSize: 17,
         paddingHorizontal: 12,

@@ -61,23 +61,19 @@ const styles = StyleSheet.create({
     pressable: {
         display: "flex",
         alignItems: "center",
-        minWidth: "47%",
-        maxWidth: "47%",
-        minHeight: 145,
-        maxHeight: 145,
         borderRadius: 12,
         color: cor.gray200,//200
-        backgroundColor: cor.gray700,
+        backgroundColor: cor.gray800,
         paddingVertical: 15,
         paddingHorizontal: 15,
     },
     pressableView: {
         display: "flex",
+        flexDirection: "row",
         minWidth: "100%",
         flex: 1,
-        gap: 6,
-        justifyContent: "center",
-        borderColor: cor.gray200,
+        gap: 10,
+        borderColor: cor.gray300,
         paddingHorizontal: 10,
         alignItems: "center",
         paddingVertical: 10,
@@ -90,9 +86,10 @@ const styles = StyleSheet.create({
         color: cor.gray200, //200
     },
     icons: {
-        fontSize: 45,
-        width: 45,
-        height: 45,
+        marginHorizontal: 10,
+        fontSize: 40,
+        width: 40,
+        height: 40,
         color: cor.gray400, //400
     }
 });

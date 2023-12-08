@@ -12,6 +12,7 @@ import ErrorProgram from '../../components/ErrorProgram'
 import useErrorProgram from '../../state/hooks/useErrorProgram'
 import { useNavigation } from '@react-navigation/native'
 import { cor, font } from '../../utils/presetStyles'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Welcome = () => {
     const tables = new Tables(useTables())

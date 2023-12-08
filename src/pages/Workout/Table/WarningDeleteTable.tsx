@@ -1,7 +1,7 @@
 import { AllPreferences } from "../../../models/AllPreferences"
 import { MuscleGroup } from "../../../models/MuscleGroup"
 import { Tables } from "../../../models/Tables"
-import { AsyncStorager } from "../../../service/LocalStorager"
+import { AsyncStorager } from "../../../service/AsyncStorager"
 import usePreferences from "../../../state/hooks/usePreferences"
 import useTables from "../../../state/hooks/useTables"
 import { useUpdatePreferences } from "../../../state/hooks/useUpdatePreferences"
@@ -39,16 +39,23 @@ const WarningDeleteTable = ({ currentTable, showWarning, setShowWarning }: Warni
         <>
             {showWarning ?
                 <>
-                    <View style={{position: "absolute", flex: 1, height: 10000, width: 10000, zIndex: 20, left: -100, top: -7000,}}/>
+                    <View style={styles.absolute} />
                     <View style={styles.section}>
                         <View style={styles.viewSection}>
                             <View style={styles.viewText}>
-                                <Text style={styles.text}>{`Você irá excluir "${currentTable.name}"...`}</Text>
+                                {currentTable.name.length > 15 ?
+                                    <>
+                                        <Text style={styles.text}>{`Você irá excluir`}</Text>
+                                        <Text style={styles.text}>{`"${currentTable.name}"...`}</Text>
+                                    </>
+                                    :
+                                    <Text style={styles.text}>{`Você irá excluir "${currentTable.name}"...`}</Text>
+                                }
                             </View>
                             <View style={styles.viewButton}>
-                                <Text onPress={event => deleteTable()} style={styles.button}
+                                <Text onPress={event => deleteTable()} style={styles.buttonDelete}
                                 >Excluir</Text>
-                                <Text onPress={event => cancelDelete()} style={styles.button2}
+                                <Text onPress={event => cancelDelete()} style={styles.buttonSave}
                                 >Manter</Text>
                             </View>
                         </View>
@@ -60,20 +67,36 @@ const WarningDeleteTable = ({ currentTable, showWarning, setShowWarning }: Warni
     )
 }
 const styles = StyleSheet.create({
+    absolute: {
+        position: "absolute",
+        flex: 1,
+        height: 10000,
+        width: 10000,
+        zIndex: 20,
+        left: -100,
+        top: -7000,
+        backgroundColor: "#fff",
+        opacity: 0.09
+    },
     section: {
         zIndex: 30,
         display: "flex",
         gap: 4,
         justifyContent: "center",
         alignItems: "center",
-        top: 0
     },
     viewSection: {
         display: "flex",
+        position: "absolute",
         alignItems: "center",
-        width: "100%",
-        gap: 10,
-        backgroundColor: cor.secundaria,
+        width: "85%",
+        maxHeight: 130,
+        top: 300,
+        gap: 15,
+        borderColor: cor.gray400,
+        borderWidth: 0.5,
+        backgroundColor: cor.gray900,
+        borderRadius: 8,
         paddingVertical: 15,
 
     },
@@ -96,21 +119,25 @@ const styles = StyleSheet.create({
         marginBottom: 6,
         gap: 80
     },
-    button: {
-        backgroundColor: cor.terciaria,
-        color: "#fff",
-        fontSize: 17,
-        paddingHorizontal: 12,
+    buttonDelete: {
+        backgroundColor: cor.gray700,
+        color: cor.erroLight,
+        fontSize: 15,
+        fontWeight: font.medium,
+        borderColor: cor.gray500,
+        borderWidth: 0.5,
+        paddingHorizontal: 16,
         paddingVertical: 3,
         borderRadius: 5,
     },
-    button2: {
-        // backgroundColor: "#fff",
-        // color: cor.terciaria,
-        backgroundColor: cor.terciaria,
+    buttonSave: {
+        backgroundColor: cor.gray700,
         color: "#fff",
-        fontSize: 17,
-        paddingHorizontal: 12,
+        fontSize: 15,
+        fontWeight: font.medium,
+        borderColor: cor.gray500,
+        borderWidth: 0.5,
+        paddingHorizontal: 16,
         paddingVertical: 3,
         borderRadius: 5,
     }
