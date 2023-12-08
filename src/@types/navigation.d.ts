@@ -14,9 +14,15 @@ export declare global {
             StyleGroups: undefined
             Pagination: undefined
             Configuration: undefined
+            EditWorkout: {
+                id: number
+            }
         }
         interface ParamListBase {
             Workout: {
+                id: number
+            },
+            EditWorkout: {
                 id: number
             }
         }

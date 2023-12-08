@@ -8,8 +8,6 @@ import useChangedWarning from "../../state/hooks/useChangedWarning"
 import ChangedWarning from "../../components/ChangedWarning"
 import UploadDownloadInformation from "./UploadDownloadInformations"
 import DeleteInformations from "./DeleteInformations"
-import Animated, { Keyframe } from 'react-native-reanimated';
-import { useState } from "react"
 
 const Configuration = () => {
     const erroProgram = useErrorProgram()

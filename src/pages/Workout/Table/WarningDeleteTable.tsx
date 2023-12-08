@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         left: -100,
         top: -7000,
         backgroundColor: "#fff",
-        opacity: 0.09
+        opacity: 0.05
     },
     section: {
         zIndex: 30,

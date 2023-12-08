@@ -1,35 +1,23 @@
-import useErrorProgram from "../../state/hooks/useErrorProgram"
-import ErrorProgram from "../../components/ErrorProgram"
-import SucessProgram from "../../components/SucessProgram"
-import useSucessProgram from "../../state/hooks/useSucessProgram"
-import PresetGroup from "./PresetGroup"
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native"
 import { cor, font } from "../../utils/presetStyles"
-import StyleIcons from "./StyleIcons"
-import useChangedWarning from "../../state/hooks/useChangedWarning"
-import ChangedWarning from "../../components/ChangedWarning"
-
+import { Tables } from "../../models/Tables"
+import useTables from "../../state/hooks/useTables"
+import WorkoutCards from "./WorkoutCards"
 const Presets = () => {
-    const erroProgram = useErrorProgram()
-    const sucessProgram = useSucessProgram()
-    const changedWarning= useChangedWarning()
-
+    const tables = new Tables(useTables())
     return (
-        <>
-            <View style={styles.screen}>
-                <ScrollView>
-                    <View style={styles.section}>
-                        <View style={styles.sectionView}>
-                            <PresetGroup />
-                            <StyleIcons />
+        <View style={styles.screen}>
+            <ScrollView>
+                <View style={styles.section}>
+                    <View style={styles.sectionView}>
+                        <Text style={{ color: cor.gray200, fontWeight: font.semibold, fontSize: 22 }}>Escolha um treino para editar:</Text>
+                        <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap", gap: 20 }}>
+                            {tables.tables.map(table => <WorkoutCards key={table.id} table={table} />)}
                         </View>
                     </View>
-                </ScrollView>
-            </View>
-            <ErrorProgram text={erroProgram} />
-            <ChangedWarning text={changedWarning} />
-            <SucessProgram text={sucessProgram} />
-        </>
+                </View>
+            </ScrollView>
+        </View>
     )
 
 }
@@ -52,7 +40,8 @@ const styles = StyleSheet.create({
         width: "100%",
         flexDirection: "column",
         flex: 1,
-        gap: 50
+        marginTop: 10,
+        gap: 20
     },
 });
 export default Presets

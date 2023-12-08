@@ -6,34 +6,25 @@ import { Tables } from "../../../models/Tables"
 import { MuscleGroup } from "../../../models/MuscleGroup"
 import { IMuscleGroup } from "../../../shared/interfaces/IMuscleGroup"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
-import Trash from "react-native-vector-icons/FontAwesome5"
-import Plus from "react-native-vector-icons/AntDesign"
+import AddGroup from "react-native-vector-icons/MaterialIcons"
 import { StyleSheet, Text, View, Pressable, TextInput } from "react-native"
 import { cor, font } from "../../../utils/presetStyles"
 import useChangedWarning from "../../../state/hooks/useChangedWarning"
 interface MuscularGroupProps {
     preference: IPreferencesWorkout
-    inicialPreference: IPreferencesWorkout
     savePreferences: IPreferencesWorkout[]
     saveTable: IMuscleGroup[]
     setSaveTable: React.Dispatch<React.SetStateAction<IMuscleGroup[]>>
     setSavePreferences: React.Dispatch<React.SetStateAction<IPreferencesWorkout[]>>
 }
-const MuscularGroup = ({ preference, inicialPreference, savePreferences, saveTable, setSaveTable, setSavePreferences }: MuscularGroupProps) => {
+const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, setSavePreferences }: MuscularGroupProps) => {
     const [createNewExercise, setCreateNewExercise] = useState(false)
-    const [inicialValueInput, setInicialValueInput] = useState(inicialNameMuscleGroup())
     const [valueInput, setValueInput] = useState(preference.nameMuscleGroup)
     const [valueInicialInput, setValueInicialInput] = useState("")
     const setMessageProgram = useUpdateMessageProgram()
     const thereIsChange = useChangedWarning()
     const saveTables = new Tables(saveTable)
-    function inicialNameMuscleGroup() {
-        try {
-            return inicialPreference.nameMuscleGroup
-        } catch {
-            return preference.nameMuscleGroup
-        }
-    }
+
     function editNameMuscularGroup() {
         const value = valueInput
         const findValueIquals = savePreferences.find(thisExercise => thisExercise.nameMuscleGroup === value)
@@ -110,16 +101,15 @@ const MuscularGroup = ({ preference, inicialPreference, savePreferences, saveTab
         <View style={styles.section}>
             <View style={styles.sectionView}>
                 <View style={styles.firstGroup}>
-                    <View style={styles.textPlusGroup}>
-                        <TextInput
-                            maxLength={25}
-                            value={valueInput}
-                            onChangeText={text => setValueInput(text)}
-                            onEndEditing={event => editNameMuscularGroup()}
-                            style={styles.textInput} />
-                        <Plus name={"pluscircleo"} onPress={event => addNewExercise()} style={styles.iconPlus} />
-                    </View>
-                    <Trash name="trash" onPress={event => deleteMuscularGroup()} style={styles.iconTrash} />
+                    <TextInput
+                        maxLength={25}
+                        value={valueInput}
+                        onChangeText={text => setValueInput(text)}
+                        onEndEditing={event => editNameMuscularGroup()}
+                        style={styles.textInput} />
+                    <Pressable onPress={event => addNewExercise()} style={styles.createGroup}>
+                        <AddGroup name="my-library-add" style={styles.icon}/><Text style={styles.textButton}>Novo</Text>
+                    </Pressable>
                 </View>
                 <View style={styles.exercisesGroup}>
                     {preference.basesExercises.map(exercise =>
@@ -161,10 +151,10 @@ const styles = StyleSheet.create({
     },
     firstGroup: {
         display: "flex",
-        width: "100%",
         flexDirection: "row",
         alignItems: "center",
         paddingHorizontal: 20,
+        gap: 14,
         justifyContent: "space-between"
     },
     textPlusGroup: {
@@ -180,7 +170,7 @@ const styles = StyleSheet.create({
         color: cor.gray200,
         borderBottomWidth: 2,
         borderColor: cor.secundaria,
-        width: "77%",
+        flex: 1,
         borderStyle: "dashed"
     },
     exercisesGroup: {
@@ -199,15 +189,24 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8,
         backgroundColor: cor.gray300
     },
-    iconTrash: {
-        fontSize: 17,
-        color: cor.gray200, //200,
-        //hover: animate - hoverWH'
+    createGroup: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 7,
+        backgroundColor: cor.secundaria,
+        paddingHorizontal: 12,
+        paddingVertical: 5,
+        borderRadius: 7
     },
-    iconPlus: {
-        fontSize: 22,
-        color: cor.gray200, //200,
-        //hover: animate - hoverWH'
+    textButton: {
+        color: cor.gray200,
+        fontWeight: font.semibold,
+        fontSize: 15
     },
+    icon:{
+        color: cor.gray200,
+        fontSize: 19
+    }
 })
 export default MuscularGroup

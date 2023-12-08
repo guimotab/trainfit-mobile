@@ -16,16 +16,6 @@ interface AllWorkoutsProps {
 
 const AllWorkouts = ({ table }: AllWorkoutsProps) => {
     const navigation = useNavigation()
-    function changeColor(type: string) {
-        const borderLink = document.getElementById(`border-link-workout${table.id}`)!
-        if (type === "enter") {
-            borderLink.classList.remove("border-gray-200")
-            borderLink.classList.add("animate-hoverBorderWH")
-        } else if ("leave") {
-            borderLink.classList.remove("animate-hoverBorderWH")
-            borderLink.classList.add("border-gray-200")
-        }
-    }
     function renderIcons(logo: string) {
         if (logo === "iconCardio") {
             return <IconCardio width={40} height={40} style={styles.icons} />
@@ -64,8 +54,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         color: cor.gray200,//200
         backgroundColor: cor.gray800,
-        paddingVertical: 15,
-        paddingHorizontal: 15,
+        padding: 10,
     },
     pressableView: {
         display: "flex",

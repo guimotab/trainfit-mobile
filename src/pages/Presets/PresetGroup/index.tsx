@@ -1,86 +1,38 @@
-import { Tables } from "../../../models/Tables"
-import useTables from "../../../state/hooks/useTables"
-import usePreferences from "../../../state/hooks/usePreferences"
 import MuscularGroup from "../MuscularGroup"
-import { AsyncStorager } from "../../../service/AsyncStorager"
-import { useUpdatePreferences } from "../../../state/hooks/useUpdatePreferences"
 import { IPreferencesWorkout } from "../../../shared/interfaces/IPreferencesWorkout"
-import { useUpdateTables } from "../../../state/hooks/useUpdateTables"
 import { useEffect, useState } from "react"
 import { StyleSheet, Text, View } from "react-native"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
-import { AllPreferences } from "../../../models/AllPreferences"
 import { cor, font } from "../../../utils/presetStyles"
-import useChangedWarning from "../../../state/hooks/useChangedWarning"
+import { IMuscleGroup } from "../../../shared/interfaces/IMuscleGroup"
+import findCurrentPreference from "../../../utils/findCurrentPreference"
 
-const PresetGroup = () => {
-    const preferences = new AllPreferences(usePreferences())
-    const setPreferences = useUpdatePreferences()
+interface PresetGroupProps {
+    id: string
+    saveTable: IMuscleGroup[]
+    savePreferences: IPreferencesWorkout[]
+    setSaveTable: React.Dispatch<React.SetStateAction<IMuscleGroup[]>>
+    setSavePreferences: React.Dispatch<React.SetStateAction<IPreferencesWorkout[]>>
+}
+
+const PresetGroup = ({ id, saveTable, savePreferences, setSavePreferences, setSaveTable }: PresetGroupProps) => {
     const setMessageProgram = useUpdateMessageProgram()
-    const tables = new Tables(useTables())
-    const setTables = useUpdateTables()
-    const [saveTable, setSaveTable] = useState(tables.tables)
-    const [savePreferences, setSavePreferences] = useState(preferences.preferences)
-    const thereIsChange = useChangedWarning()
+    const savePreference = findCurrentPreference(savePreferences, id)
     useEffect(() => {
         setMessageProgram([""], "none")
     }, [])
-
-    function addNewMuscularGroup() {
-        const saveTables = new Tables(saveTable)
-        let newId: number
-        if (saveTables.tables[0]) {
-            newId = saveTables.tables[saveTables.tables.length - 1].id + 1
-        } else {
-            newId = 1
-        }
-        const newPreference = {
-            id: newId,
-            nameMuscleGroup: "Novo Grupo " + newId,
-            basesExercises: []
-        } as IPreferencesWorkout
-        saveTables.addNewTable(newPreference.id, newPreference.nameMuscleGroup, [])
-        const fakePreferences = [...savePreferences]
-        fakePreferences.push(newPreference)
-        setSavePreferences(fakePreferences)
-        setSaveTable(saveTables.tables)
-        setMessageProgram(["Há alterações feitas!"], "changed")
-    }
-    function sucessAlert() {
-        if (thereIsChange[0] === "") {
-            setMessageProgram([""], "none")
-        }
-        setMessageProgram(["Treinos salvos com sucesso!"], "sucess")
-        setTables(saveTable)
-        setPreferences({ initializer: preferences.initializer, preferencesWorkout: savePreferences })
-        AsyncStorager.saveTables(saveTable)
-        AsyncStorager.savePreferences({ initializer: preferences.initializer, preferencesWorkout: savePreferences })
-    }
+    
     return (
-        < View style={styles.sectionView} >
-            <View style={styles.textGroup}>
-                <Text style={styles.textTrain}>Predefinição dos Treinos</Text>
-                <Text
-                    onPress={event => addNewMuscularGroup()}
-                    style={styles.buttonAdd}>Criar novo</Text>
-            </View>
-            <View style={styles.viewSave}>
-                <Text style={styles.buttonSave}
-                    onPress={event => sucessAlert()}>
-                    Salvar alterações
-                </Text>
-            </View>
+        <View style={styles.sectionView} >
+            <Text style={styles.textTrain}>Predefinição</Text>
             <View style={styles.viewMuscularGroup}>
-                {savePreferences.map((preference, index) =>
-                    <MuscularGroup
-                        key={preference.nameMuscleGroup}
-                        inicialPreference={preferences.preferences[index]}
-                        preference={preference}
-                        savePreferences={savePreferences}
-                        saveTable={saveTable}
-                        setSaveTable={setSaveTable}
-                        setSavePreferences={setSavePreferences} />
-                ).reverse()}
+                <MuscularGroup
+                    key={savePreference.nameMuscleGroup}
+                    preference={savePreference}
+                    savePreferences={savePreferences}
+                    saveTable={saveTable}
+                    setSaveTable={setSaveTable}
+                    setSavePreferences={setSavePreferences} />
             </View>
         </View >
     )
@@ -90,13 +42,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         marginTop: 15,
-        gap: 20,
-    },
-    textGroup: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between"
+        gap: 10,
     },
     textTrain: {
         fontWeight: font.bold,
@@ -118,23 +64,5 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         gap: 30
     },
-    viewSave: {
-        display: "flex",
-        alignItems: "flex-start",
-        color: cor.gray200,
-        fontWeight: font.semibold,
-        fontSize: 16,
-        borderRadius: 8
-    },
-    buttonSave: {
-        fontWeight: font.semibold,
-        fontSize: 15,
-        paddingHorizontal: 13,
-        paddingVertical: 6,
-        color: cor.gray200,
-        borderRadius: 6,
-        backgroundColor: cor.secundaria
-    },
-
 });
 export default PresetGroup

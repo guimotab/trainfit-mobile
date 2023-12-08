@@ -10,6 +10,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import Configuration from './src/pages/Configuration';
+import EditWorkout from './src/pages/Presets/EditWorkout';
 export default function App() {
   const Stack = createNativeStackNavigator();
   return (
@@ -21,6 +22,7 @@ export default function App() {
             <Stack.Group screenOptions={{ headerShown: false, animation: 'default' }} >
               <Stack.Screen name='Home' component={Home} />
               <Stack.Screen name='Workout' component={Workout} options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Treinos" }} />
+              <Stack.Screen name='EditWorkout' component={EditWorkout} options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Editar Treino" }} />
               <Stack.Screen name='Presets' options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Predefinições" }}
                 component={Presets} />
               <Stack.Screen name='Configuration' options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Configurações" }}

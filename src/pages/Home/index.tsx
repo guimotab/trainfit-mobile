@@ -1,4 +1,4 @@
-import { Button, ScrollView, StyleSheet, Text, View } from "react-native"
+import { Button, Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
 import { AllPreferences } from "../../models/AllPreferences"
 import { Tables } from "../../models/Tables"
 import usePreferences from "../../state/hooks/usePreferences"
@@ -9,12 +9,13 @@ import AllWorkouts from "./AllWorkouts"
 import { IPreferencesWorkout } from "../../shared/interfaces/IPreferencesWorkout"
 import { cor, font } from "../../utils/presetStyles"
 import Navigation from "../../components/Navigation"
+import Add from 'react-native-vector-icons/Ionicons'
 const Home = () => {
     const tables = new Tables(useTables())
     const setTable = useUpdateTables()
     const preferences = new AllPreferences(usePreferences())
     const setPreferences = useUpdatePreferences()
-    
+
     function createMuscularGroup() {
         let newId: number
         if (tables.tables[0]) {
@@ -41,7 +42,10 @@ const Home = () => {
                             <Text style={styles.h1}>Train<Text style={styles.spanH1}>Fit</Text></Text>
                             <View style={styles.muscleButton}>
                                 <Text style={styles.textMuscleButton}>Seus Grupos</Text>
-                                <Text onPress={event => createMuscularGroup()} style={styles.buttonMuscle}>Adicionar Grupo</Text>
+                                <Pressable style={styles.buttonMuscle}>
+                                    <Add name="add" style={styles.icon} />
+                                    <Text onPress={event => createMuscularGroup()} style={styles.textButton}>Adicionar Novo </Text>
+                                </Pressable>
                             </View>
                         </View>
                         <View style={styles.AllWokouts}>
@@ -57,7 +61,7 @@ const Home = () => {
     )
 }
 const styles = StyleSheet.create({
-    body:{
+    body: {
         backgroundColor: cor.gray900,
         flex: 1
     },
@@ -75,7 +79,7 @@ const styles = StyleSheet.create({
         gap: 20
     },
     h1: {
-        marginTop:35,
+        marginTop: 35,
         color: cor.gray200,
         fontWeight: "800",
         fontSize: 30
@@ -102,13 +106,25 @@ const styles = StyleSheet.create({
         color: cor.gray200
     },
     buttonMuscle: {
-        backgroundColor: cor.secundaria,
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: cor.secundaria,        
         fontSize: 16,
-        paddingHorizontal: 14,
+        paddingHorizontal: 10,
         paddingVertical: 3,
         borderRadius: 5,
         fontWeight: font.semibold,
         color: cor.gray200
+    },
+    icon:{
+        color: cor.gray200,
+        fontSize: 21
+    },
+    textButton:{
+        color: cor.gray200,
+        fontWeight: font.semibold,
+        fontSize: 15
     },
     AllWokouts: {
         display: "flex",
@@ -118,5 +134,3 @@ const styles = StyleSheet.create({
     },
 });
 export default Home
-
-

@@ -29,7 +29,6 @@ const IconsGroup = ({ table, saveTable,  setSaveTable }: IconsGroupProps) => {
     useEffect(() => {
         saveTables = new Tables(saveTable)
     }, [saveTable])
-
     function chooseIcon(idIcon: string) {
         const result = idIcon.split("-")
         let logo = result[0] + result[1]
@@ -123,8 +122,6 @@ const styles = StyleSheet.create({
     sectionView: {
         display: "flex",
         justifyContent: "center",
-        flexDirection: "column",
-        width: "100%",
         borderWidth: 2,
         borderColor: cor.secundaria,
         borderRadius: 8,
@@ -149,7 +146,6 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-evenly",
-        flex: 1,
         flexWrap: "wrap",
         paddingHorizontal: 20,
         paddingBottom: 10,

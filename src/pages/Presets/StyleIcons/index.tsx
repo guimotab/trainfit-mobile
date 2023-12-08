@@ -7,36 +7,31 @@ import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessagePr
 import { AsyncStorager } from "../../../service/AsyncStorager"
 import { StyleSheet, Text, View, Pressable } from "react-native"
 import { cor, font } from "../../../utils/presetStyles"
-const StyleIcons = () => {
+import { IMuscleGroup } from "../../../shared/interfaces/IMuscleGroup"
+import { MuscleGroup } from "../../../models/MuscleGroup"
+import findCurrentTable from "../../../utils/findCurrentTable"
+interface StyleIconsProps {
+    id: string
+    saveTable: IMuscleGroup[]
+    setSaveTable: React.Dispatch<React.SetStateAction<IMuscleGroup[]>>
+}
+const StyleIcons = ({ id, saveTable, setSaveTable }: StyleIconsProps) => {
     const tables = new Tables(useTables())
+    const currentTable = new MuscleGroup(findCurrentTable(saveTable, id!))
     const setTables = useUpdateTables()
-    const [saveTable, setSaveTable] = useState(tables.tables)
     const setMessageProgram = useUpdateMessageProgram()
     useEffect(() => {
         setSaveTable(tables.tables)
     }, [tables.tables])
 
-    async function saveInformations() {
-        setMessageProgram(["Ícones salvos com sucesso!"], "sucess")
-        setTables(saveTable)
-        await AsyncStorager.saveTables(saveTable)
-    }
+    
     return (
         <View style={styles.section}>
             <View style={styles.textGroup}>
-                <Text style={styles.text}>Ícones dos Treinos</Text>
-                <View>
-                    <Text
-                        onPress={event => saveInformations()}
-                        style={styles.buttonSave}>
-                        Salvar alterações
-                    </Text>
-                </View>
+                <Text style={styles.text}>Ícones</Text>
             </View>
             <View style={styles.viewMuscularGroup}>
-                {tables.tables.map(table =>
-                    <IconsGroup key={table.id} table={table} saveTable={saveTable} setSaveTable={setSaveTable} />
-                )}
+                <IconsGroup key={currentTable.id} table={currentTable} saveTable={saveTable} setSaveTable={setSaveTable} />
             </View>
         </View>
     )
@@ -45,9 +40,9 @@ const styles = StyleSheet.create({
     section: {
         display: "flex",
         flexDirection: "column",
-        gap: 20,
+        gap: 10,
         alignItems: "flex-start",
-        marginBottom: 30
+        marginBottom: 10
     },
     sectionView: {
         display: "flex",
