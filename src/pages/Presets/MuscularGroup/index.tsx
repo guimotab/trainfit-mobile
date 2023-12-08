@@ -80,20 +80,6 @@ const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, s
         setCreateNewExercise(false)
         setValueInicialInput("")
     }
-    function deleteMuscularGroup() {
-        //save on the table
-        const indexTable = saveTables.tables.findIndex(table => table.id === preference.id)
-        if (!saveTables.tables[indexTable].information[0]) {
-            saveTables.removeTable(preference.id)
-            setSaveTable(saveTables.tables)
-        }
-        setMessageProgram(["Há alterações feitas!"], "changed")
-        //save on the preferences
-        const fakePreferences = [...savePreferences]
-        const indexPreferences = fakePreferences.findIndex(thisPreference => thisPreference.nameMuscleGroup === preference.nameMuscleGroup)
-        fakePreferences.splice(indexPreferences, 1)
-        setSavePreferences(fakePreferences)
-    }
     function addNewExercise() {
         setCreateNewExercise(true)
     }

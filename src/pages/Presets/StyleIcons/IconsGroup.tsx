@@ -14,6 +14,7 @@ import { StyleSheet, Text, View, Pressable } from "react-native"
 import { cor, font } from "../../../utils/presetStyles"
 import Weight from 'react-native-vector-icons/MaterialCommunityIcons'
 import useTables from "../../../state/hooks/useTables"
+import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
 
 interface IconsGroupProps {
     table: IMuscleGroup
@@ -21,11 +22,13 @@ interface IconsGroupProps {
     setSaveTable: React.Dispatch<React.SetStateAction<IMuscleGroup[]>>
 }
 
-const IconsGroup = ({ table, saveTable,  setSaveTable }: IconsGroupProps) => {
+const IconsGroup = ({ table, saveTable, setSaveTable }: IconsGroupProps) => {
     const tables = new Tables(useTables())
     let saveTables = new Tables(saveTable)
     const currentTable = new MuscleGroup(findCurrentTable(tables.tables, table.id.toString()))
     const [iconTable, setIconTable] = useState(currentTable.logo)
+    const setMessageProgram = useUpdateMessageProgram()
+    
     useEffect(() => {
         saveTables = new Tables(saveTable)
     }, [saveTable])
@@ -36,6 +39,7 @@ const IconsGroup = ({ table, saveTable,  setSaveTable }: IconsGroupProps) => {
         if (result[1] === "weight") {
             logo = result[1]
         }
+        setMessageProgram(["Há alterações feitas!"], "changed")
         currentTable.logo = logo
         saveTables.updateTables(currentTable)
         setSaveTable(saveTables.tables)

@@ -21,10 +21,13 @@ const PresetGroup = ({ id, saveTable, savePreferences, setSavePreferences, setSa
     useEffect(() => {
         setMessageProgram([""], "none")
     }, [])
-    
+
     return (
         <View style={styles.sectionView} >
-            <Text style={styles.textTrain}>Predefinição</Text>
+            <View style={{display: "flex"}}>
+                <Text style={styles.titleTrain}>Defina Seus Exercícios</Text>
+                <Text style={styles.textTrain}>Adicione seus exercícios para faciliar suas anotações!</Text>
+            </View>
             <View style={styles.viewMuscularGroup}>
                 <MuscularGroup
                     key={savePreference.nameMuscleGroup}
@@ -42,11 +45,16 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         marginTop: 15,
-        gap: 10,
+        gap: 16,
+    },
+    titleTrain: {
+        fontWeight: font.bold,
+        fontSize: 22,
+        color: cor.gray200
     },
     textTrain: {
-        fontWeight: font.bold,
-        fontSize: 20,
+        fontWeight: font.medium,
+        fontSize: 15,
         color: cor.gray200
     },
     buttonAdd: {

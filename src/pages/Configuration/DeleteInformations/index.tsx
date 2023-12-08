@@ -5,39 +5,34 @@ import { useNavigation } from "@react-navigation/native";
 import { useUpdatePreferences } from "../../../state/hooks/useUpdatePreferences";
 import { useUpdateTables } from "../../../state/hooks/useUpdateTables";
 import { IPreferencesWorkout } from "../../../shared/interfaces/IPreferencesWorkout";
+import WarningDeleteInformations from "./WarningInformations";
+import { useState } from "react";
+interface DeleteInformationsprops{
+    showWarning: boolean
+    setShowWarning: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-const DeleteInformations = () => {
-    const navigation = useNavigation()
-    const setPreferences = useUpdatePreferences()
-    const setTables = useUpdateTables()
-
+const DeleteInformations = ({setShowWarning, showWarning}: DeleteInformationsprops) => {
     async function deleteAll() {
-        try {
-            await AsyncStorage.clear();
-            Alert.alert('Dados Limpos', 'Todos os dados armazenados foram removidos.');
-            navigation.navigate("Welcome")
-        } catch (error) {
-            console.error('Erro ao limpar dados:', error);
-            Alert.alert('Erro', 'Ocorreu um erro ao limpar os dados armazenados.');
-        }
-        setPreferences({initializer: false, preferencesWorkout: [] as IPreferencesWorkout[]})
-        setTables([])
+        setShowWarning(true)
     }
     return (
-        <View>
-            < View style={styles.sectionView} >
-                <View>
-                    <Text style={styles.textTrain}>Delete Todas Informações</Text>
-                    <Text style={{ color: cor.gray200 }}>Não há volta! Salve suas informações antes de excluir!</Text>
-                </View>
-                <View style={styles.viewSave}>
-                    <Text style={styles.buttonDelete}
-                        onPress={event => deleteAll()}>
-                        Apagar Tudo
-                    </Text>
-                </View>
-            </View >
-        </View>
+        <>
+            <View>
+                <View style={styles.sectionView} >
+                    <View>
+                        <Text style={styles.textTrain}>Delete Todas Informações</Text>
+                        <Text style={{ color: cor.gray200 }}>Não há volta! Salve suas informações antes de excluir!</Text>
+                    </View>
+                    <View style={styles.viewSave}>
+                        <Text style={styles.buttonDelete}
+                            onPress={event => deleteAll()}>
+                            Apagar Tudo
+                        </Text>
+                    </View>
+                </View >
+            </View>
+        </>
     )
 }
 const styles = StyleSheet.create({

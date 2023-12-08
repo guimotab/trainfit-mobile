@@ -27,8 +27,9 @@ const StyleIcons = ({ id, saveTable, setSaveTable }: StyleIconsProps) => {
     
     return (
         <View style={styles.section}>
-            <View style={styles.textGroup}>
-                <Text style={styles.text}>Ícones</Text>
+            <View style={{display: "flex"}}>
+                <Text style={styles.titleTrain}>Ícones</Text>
+                <Text style={styles.textTrain}>Escolha um ícone para seu treino!</Text>
             </View>
             <View style={styles.viewMuscularGroup}>
                 <IconsGroup key={currentTable.id} table={currentTable} saveTable={saveTable} setSaveTable={setSaveTable} />
@@ -54,10 +55,15 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: cor.gray200
     },
-    textGroup: {
-        display: "flex",
-        flexDirection: "column",
-        gap: 10,
+    titleTrain: {
+        fontWeight: font.bold,
+        fontSize: 22,
+        color: cor.gray200
+    },
+    textTrain: {
+        fontWeight: font.medium,
+        fontSize: 15,
+        color: cor.gray200
     },
     buttonSave: {
         width: 145,

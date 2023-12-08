@@ -8,11 +8,14 @@ import useChangedWarning from "../../state/hooks/useChangedWarning"
 import ChangedWarning from "../../components/ChangedWarning"
 import UploadDownloadInformation from "./UploadDownloadInformations"
 import DeleteInformations from "./DeleteInformations"
+import WarningDeleteInformations from "./DeleteInformations/WarningInformations"
+import { useState } from "react"
 
 const Configuration = () => {
     const erroProgram = useErrorProgram()
     const sucessProgram = useSucessProgram()
     const changedWarning = useChangedWarning()
+    const [showWarning, setShowWarning] = useState(false)
 
     // const rotationKeyFrame = new Keyframe({
     //     0: {
@@ -28,11 +31,12 @@ const Configuration = () => {
     // })
     return (
         <>
+            <WarningDeleteInformations setShowWarning={setShowWarning} showWarning={showWarning} />
             <View style={styles.screen}>
                 <ScrollView>
                     <View style={styles.section}>
-                        <UploadDownloadInformation/>
-                        <DeleteInformations />
+                        <UploadDownloadInformation />
+                        <DeleteInformations showWarning={showWarning} setShowWarning={setShowWarning}/>
                     </View>
                 </ScrollView>
             </View>
