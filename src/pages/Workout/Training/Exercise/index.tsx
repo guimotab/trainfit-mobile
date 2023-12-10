@@ -20,6 +20,7 @@ import Trash from "react-native-vector-icons/FontAwesome5"
 import { StyleSheet, Text, View, Pressable, ScrollView, TextInput } from "react-native"
 import { cor, font } from "../../../../utils/presetStyles"
 import Plus from "react-native-vector-icons/AntDesign"
+import { FlatList } from "react-native"
 
 interface ExerciseProps {
     exercise: IExercise
@@ -111,11 +112,19 @@ const Exercise = ({ exercise, workout, saveTable, setSaveTable }: ExerciseProps)
                     style={styles.textInput} />
                 <Plus name={"pluscircleo"} size={23} onPress={event => createNewSet()} style={styles.icon} />
             </View>
-            {exercise.sets[0] ?
-                exercise.sets.map(sets => <Sets key={sets.numberSet} sets={sets} exercise={exercise} workout={workout} saveTable={saveTable}
-                    setSaveTable={setSaveTable} />)
-                : <></>
-            }
+            <FlatList
+                style={{ gap: 15 }}
+                data={exercise.sets}
+                renderItem={({ item, index }) =>
+                    <Sets
+                        key={item.numberSet}
+                        sets={item}
+                        exercise={exercise} workout={workout}
+                        saveTable={saveTable}
+                        setSaveTable={setSaveTable}
+                    />
+                }
+            />
         </View>
     )
 }
@@ -124,7 +133,12 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         flex: 1,
-        gap: 12
+        gap: 12,
+        backgroundColor: cor.gray800,
+        borderRadius: 7,
+        paddingVertical: 15,
+        paddingHorizontal: 22,
+        marginBottom: 10,
     },
     viewExercise: {
         display: "flex",

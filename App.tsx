@@ -11,6 +11,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import Configuration from './src/pages/Configuration';
 import EditWorkout from './src/pages/Presets/EditWorkout';
+import TrainingWorkout from './src/pages/Workout/TrainingWorkout';
 export default function App() {
   const Stack = createNativeStackNavigator();
   return (
@@ -21,7 +22,8 @@ export default function App() {
           <Stack.Navigator screenOptions={{ gestureDirection: 'horizontal', gestureEnabled: true }} initialRouteName='Home'>
             <Stack.Group screenOptions={{ headerShown: false, animation: 'default' }} >
               <Stack.Screen name='Home' component={Home} />
-              <Stack.Screen name='Workout' component={Workout} options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Treinos" }} />
+              <Stack.Screen name='Workout' component={Workout} options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Grupos" }} />
+              <Stack.Screen name='TrainingWorkout' component={TrainingWorkout} options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Treinos" }} />
               <Stack.Screen name='EditWorkout' component={EditWorkout} options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Editar Treino" }} />
               <Stack.Screen name='Presets' options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Predefinições" }}
                 component={Presets} />

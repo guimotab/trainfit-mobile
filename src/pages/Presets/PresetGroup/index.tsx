@@ -1,59 +1,60 @@
 import MuscularGroup from "../MuscularGroup"
 import { IPreferencesWorkout } from "../../../shared/interfaces/IPreferencesWorkout"
 import { useEffect, useState } from "react"
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, View, TextInput } from "react-native"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
 import { cor, font } from "../../../utils/presetStyles"
 import { IMuscleGroup } from "../../../shared/interfaces/IMuscleGroup"
 import findCurrentPreference from "../../../utils/findCurrentPreference"
+import { MuscleGroup } from "../../../models/MuscleGroup"
+import { PreferencesWorkout } from "../../../models/PreferencesWorkout"
+import { Tables } from "../../../models/Tables"
 
 interface PresetGroupProps {
-    id: string
-    saveTable: IMuscleGroup[]
+    valueInput: string
+    savePreference: IPreferencesWorkout
     savePreferences: IPreferencesWorkout[]
     setSaveTable: React.Dispatch<React.SetStateAction<IMuscleGroup[]>>
     setSavePreferences: React.Dispatch<React.SetStateAction<IPreferencesWorkout[]>>
 }
 
-const PresetGroup = ({ id, saveTable, savePreferences, setSavePreferences, setSaveTable }: PresetGroupProps) => {
+const PresetGroup = ({ valueInput, savePreference, savePreferences, setSavePreferences, setSaveTable }: PresetGroupProps) => {
     const setMessageProgram = useUpdateMessageProgram()
-    const savePreference = findCurrentPreference(savePreferences, id)
     useEffect(() => {
         setMessageProgram([""], "none")
     }, [])
-
+    
     return (
-        <View style={styles.sectionView} >
-            <View style={{display: "flex"}}>
+        <View style={styles.sectionView}>
+            <View style={{ display: "flex" }}>
                 <Text style={styles.titleTrain}>Defina Seus Exercícios</Text>
                 <Text style={styles.textTrain}>Adicione seus exercícios para faciliar suas anotações!</Text>
             </View>
             <View style={styles.viewMuscularGroup}>
                 <MuscularGroup
                     key={savePreference.nameMuscleGroup}
+                    valueInput={valueInput}
                     preference={savePreference}
                     savePreferences={savePreferences}
-                    saveTable={saveTable}
-                    setSaveTable={setSaveTable}
                     setSavePreferences={setSavePreferences} />
             </View>
-        </View >
+        </View>
     )
 }
 const styles = StyleSheet.create({
     sectionView: {
         display: "flex",
+        marginTop: 5,
         flexDirection: "column",
-        marginTop: 15,
+        paddingTop: 15,
         gap: 16,
     },
     titleTrain: {
         fontWeight: font.bold,
-        fontSize: 22,
+        fontSize: 20,
         color: cor.gray200
     },
     textTrain: {
-        fontWeight: font.medium,
         fontSize: 15,
         color: cor.gray200
     },

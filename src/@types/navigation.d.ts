@@ -1,5 +1,6 @@
 export type ParamsProps = {
     id: number
+    date: string
 }
 export declare global {
     namespace ReactNavigation {
@@ -7,6 +8,10 @@ export declare global {
             Home: undefined
             Workout: {
                 id: number
+            }
+            TrainingWorkout: {
+                id: number
+                date: string
             }
             Presets: undefined
             Welcome: undefined
@@ -24,6 +29,10 @@ export declare global {
             },
             EditWorkout: {
                 id: number
+            }
+            TrainingWorkout: {
+                id: number
+                date: string
             }
         }
     }

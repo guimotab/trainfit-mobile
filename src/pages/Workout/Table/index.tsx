@@ -24,6 +24,7 @@ import { useRoute } from '@react-navigation/native'
 import { ParamsProps } from '../../../@types/navigation'
 import { StyleSheet, Text, View, Pressable, ScrollView, TextInput } from "react-native"
 import { cor, font } from '../../../utils/presetStyles'
+import { FlatList } from 'react-native'
 const Table = () => {
     const route = useRoute()
     const params = route.params as ParamsProps
@@ -35,6 +36,7 @@ const Table = () => {
     const updateTables = useUpdateTables()
     const [saveTable, setSaveTable] = useState(tables.tables)
     const currentTable = new MuscleGroup(findCurrentTable(saveTable, id!))
+    const [currentTableInform, setCurrentTableInform] = useState([...currentTable.information].reverse())
     const [typeFilter, setTypeFilter] = useState<string>("Últimos 7 dias")
     const [tableFilter, setTableFilter] = useState(filterDays(true)!)
     const [showWarning, setShowWarning] = useState(false)
@@ -112,6 +114,7 @@ const Table = () => {
                     currentTable.createNewInformation({ date: date, exercise: [], feeling: "" })
                 }
                 tables.updateTables(currentTable)
+                setCurrentTableInform([...currentTable.information].reverse())
                 setSaveTable(tables.tables)
                 updateTables(tables.tables)
             }
@@ -159,47 +162,53 @@ const Table = () => {
     return (
         <>
             <WarningDeleteTable currentTable={currentTable} setShowWarning={setShowWarning} showWarning={showWarning} />
-            <ScrollView>
-                <View style={styles.section}>
-                    <View style={styles.sectionView}>
-                        <Filter openFilter={openFilter} setOpenFilter={setOpenFilter} setTypeFilter={setTypeFilter} />
-                    </View>
-                    <View style={styles.viewTextGroup}>
-                        <View style={styles.textInputGroup}>
-                            <TextInput
-                                maxLength={25}
-                                value={nameTable}
-                                onChangeText={text => setNameTable(text)}
-                                onEndEditing={event => changeNameTable()}
-                                style={styles.textInput} />
-                            <IconMenuKebab onPress={event => setOpenMenuKebab(true)} height={36} width={36} style={styles.icon} />
-                            {openMenuKebab ?
-                                <View style={styles.viewDeleteTable}>
-                                    <Pressable style={styles.clickOutView} onPress={event => setOpenMenuKebab(false)}></Pressable>
-                                    <View style={styles.viewTextDeleteTable}>
-                                        <Text onPress={event => deleteTableClicked()} style={styles.deleteTable}>Deletar Tabela</Text>
-                                    </View>
+            <View style={styles.section}>
+                <View style={styles.sectionView}>
+                    <Filter openFilter={openFilter} setOpenFilter={setOpenFilter} setTypeFilter={setTypeFilter} />
+                </View>
+                <View style={styles.viewTextGroup}>
+                    <View style={styles.textInputGroup}>
+                        <TextInput
+                            maxLength={25}
+                            value={nameTable}
+                            onChangeText={text => setNameTable(text)}
+                            onEndEditing={event => changeNameTable()}
+                            style={styles.textInput} />
+                        <IconMenuKebab onPress={event => setOpenMenuKebab(true)} height={36} width={36} style={styles.icon} />
+                        {openMenuKebab ?
+                            <View style={styles.viewDeleteTable}>
+                                <Pressable style={styles.clickOutView} onPress={event => setOpenMenuKebab(false)}></Pressable>
+                                <View style={styles.viewTextDeleteTable}>
+                                    <Text onPress={event => deleteTableClicked()} style={styles.deleteTable}>Deletar Tabela</Text>
                                 </View>
-                                : <></>
-                            }
-                        </View>
-                        <View style={styles.inputButtonGroup}>
-                            <Pressable
-                                onPress={event => setOpenFilter(true)}>
-                                <Text style={styles.filter}>{typeFilter}</Text>
-                            </Pressable>
-                            <Text
-                                onPress={event => createWorkout()}
-                                style={styles.buttonNewExercise}>+ Treino</Text>
-                        </View>
+                            </View>
+                            : <></>
+                        }
                     </View>
-                    <View style={styles.viewTraining}>
-                        {currentTable.information[0] ? currentTable.information.map(workout =>
-                            <Training key={workout.date} workout={workout} saveTable={saveTable} setSaveTable={setSaveTable} />
-                        ).reverse() : ""}
+                    <View style={styles.inputButtonGroup}>
+                        <Pressable
+                            onPress={event => setOpenFilter(true)}>
+                            <Text style={styles.filter}>{typeFilter}</Text>
+                        </Pressable>
+                        <Pressable
+                            onPress={event => createWorkout()}>
+                            <Text style={styles.buttonNewExercise}>+ Treino</Text>
+                        </Pressable>
                     </View>
                 </View>
-            </ScrollView >
+                <FlatList
+                    contentContainerStyle={{ gap: 20}}
+                    data={currentTableInform}
+                    renderItem={({ item, index }) =>
+                        <Training
+                            key={item.date}
+                            workout={item}
+                            saveTable={saveTable}
+                            setSaveTable={setSaveTable}
+                        />
+                    }
+                />
+            </View>
             <WarningProgram text={warningProgram} saveTable={saveTable} setSaveTable={setSaveTable} />
             <ErrorProgram text={errorProgram} />
         </>
@@ -303,9 +312,7 @@ const styles = StyleSheet.create({
     },
     viewTraining: {
         //"flex flex-col gap-10"
-        display: 'flex',
         flex: 1,
-        flexDirection: 'column',
         gap: 40
     },
     icon: {

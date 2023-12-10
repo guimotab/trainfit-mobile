@@ -3,9 +3,7 @@ import { Tables } from '../../../../models/Tables'
 import useTables from '../../../../state/hooks/useTables'
 import findCurrentTable from '../../../../utils/findCurrentTable'
 import { IMuscleGroupInformations } from '../../../../shared/interfaces/IMuscleGroupInformations'
-import { useEffect, useState } from 'react'
 import { useUpdateTables } from '../../../../state/hooks/useUpdateTables'
-import { AsyncStorager } from '../../../../service/AsyncStorager'
 import { MuscleGroupInformation } from '../../../../models/MuscleGroupInformation'
 import { IMuscleGroup } from '../../../../shared/interfaces/IMuscleGroup'
 import useWarningProgram from '../../../../state/hooks/useWarningProgram'
@@ -21,37 +19,45 @@ import Meh from "react-native-vector-icons/Fontisto"
 import FrownOpen from "react-native-vector-icons/Fontisto"
 import Frown from "react-native-vector-icons/Fontisto"
 import Trash from "react-native-vector-icons/FontAwesome5"
+import { AsyncStorager } from '../../../../service/AsyncStorager'
+import { useEffect, useState } from 'react'
+import { IExercise } from '../../../../shared/interfaces/IExercise'
 
 interface HeaderTraininProps {
+    saveTable: IMuscleGroup[]
     workout: IMuscleGroupInformations
     setSaveTable: React.Dispatch<React.SetStateAction<IMuscleGroup[]>>
-    saveTable: IMuscleGroup[]
 }
 
-const HeaderTraining = ({ workout, saveTable, setSaveTable }: HeaderTraininProps) => {
+const HeaderTraining = ({ saveTable, workout, setSaveTable }: HeaderTraininProps) => {
     const route = useRoute()
     const params = route.params as ParamsProps
     const id = params.id.toString()
+    const setTables = useUpdateTables()
     const tables = new Tables(useTables())
     const saveTables = new Tables(saveTable)
-    const setTables = useUpdateTables()
-    let currentTable = new MuscleGroup(findCurrentTable(tables.tables, id!))
+    const updadeMessageProgram = useUpdateMessageProgram()
+    let currentTable = new MuscleGroup(findCurrentTable(tables.tables, id.toString()!))
     const [date, setDate] = useState(workout.date)
     const [exercise, setExercise] = useState(workout.exercise)
     const [feeling, setFeeling] = useState(workout.feeling)
     const warningProgram = useWarningProgram()
-    const updadeMessageProgram = useUpdateMessageProgram()
     useEffect(() => {
         currentTable = new MuscleGroup(findCurrentTable(tables.tables, id!))
         setDate(workout.date)
         setExercise(workout.exercise)
         setFeeling(workout.feeling)
     }, [tables.tables])
-
+    function deleteWorkout() {
+        currentTable.deleteInformations(workout.date)
+        saveTables.updateTables(currentTable)
+        setSaveTable(saveTables.tables)
+        updadeMessageProgram(["Há alterações feitas!"], "warning")
+    }
     function changeFeeling(feelingType: string) {
         if (warningProgram[0] === "") {
             const feeling = feelingType
-            setFeeling(feelingType)
+            setFeeling(feeling)
             currentTable.updateInformations(workout.date, { date, exercise, feeling })
             tables.updateTables(currentTable)
             setTables(tables.tables)
@@ -75,12 +81,6 @@ const HeaderTraining = ({ workout, saveTable, setSaveTable }: HeaderTraininProps
             setSaveTable(tables.tables)
             AsyncStorager.saveTables(tables.tables)
         }
-    }
-    function deleteWorkout() {
-        currentTable.deleteInformations(workout.date)
-        saveTables.updateTables(currentTable)
-        setSaveTable(saveTables.tables)
-        updadeMessageProgram(["Há alterações feitas!"], "warning")
     }
     const feelings = [
         {
@@ -118,12 +118,13 @@ const HeaderTraining = ({ workout, saveTable, setSaveTable }: HeaderTraininProps
 
     return (
         <View style={styles.section}>
-            <View style={styles.sectionView}>
-                <View style={styles.viewPlusText}>
-                    <Text style={styles.text}>{workout.date}</Text>
-                    <Plus name={"pluscircleo"} size={21} onPress={event => createNewExercise()} style={styles.icon} />
-                </View>
-                <Trash name="trash" size={18} onPress={event => deleteWorkout()} style={styles.icon} />
+            <View style={styles.viewHeader}>
+                <Text style={styles.textHeader}>{workout.date}</Text>
+                <Pressable style={styles.pressable} onPress={event => createNewExercise()}>
+                    <Plus name={"pluscircleo"} size={18}  style={styles.icon} />
+                    <Text style={styles.textButton}>Exercício</Text>
+                </Pressable>
+                {/* <Trash name="trash" size={18} onPress={event => deleteWorkout()} style={styles.icon} /> */}
             </View>
             <View style={styles.textEmoteGroup}>
                 <Text style={styles.textEmote}>Como você está hoje?</Text>
@@ -148,24 +149,29 @@ const styles = StyleSheet.create({
         display: "flex",
         gap: 8
     },
-    sectionView: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginTop: 4,
-        gap: 12
-    },
-    viewPlusText: {
-        display: "flex",
+    viewHeader: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 12
+        justifyContent: "space-between"
     },
-    text: {
-        fontWeight: font.semibold,
+    pressable: {
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderRadius: 7,
+        backgroundColor: cor.secundaria,
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 7
+    },
+    textHeader: {
         color: cor.gray200,
-        fontSize: 21
+        fontWeight: font.semibold,
+        fontSize: 22
+    },
+    textButton: {
+        color: cor.gray200,
+        fontWeight: font.semibold,
+        fontSize: 16
     },
     textEmoteGroup: {
         display: "flex",

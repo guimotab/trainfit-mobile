@@ -1,4 +1,4 @@
-import { Pressable, Button, StyleSheet, Text, View } from "react-native"
+import { Pressable, Button, StyleSheet, Text, View, TextInput } from "react-native"
 import PresetGroup from "../PresetGroup"
 import StyleIcons from "../StyleIcons"
 import { useRoute } from "@react-navigation/native"
@@ -20,6 +20,8 @@ import ErrorProgram from "../../../components/ErrorProgram"
 import useSucessProgram from "../../../state/hooks/useSucessProgram"
 import useChangedWarning from "../../../state/hooks/useChangedWarning"
 import SucessProgram from "../../../components/SucessProgram"
+import { MuscleGroup } from "../../../models/MuscleGroup"
+import { PreferencesWorkout } from "../../../models/PreferencesWorkout"
 const EditWorkout = () => {
     const erroProgram = useErrorProgram()
     const changedWarning = useChangedWarning()
@@ -35,6 +37,10 @@ const EditWorkout = () => {
     const [saveTable, setSaveTable] = useState(tables.tables)
     const thereIsChange = useChangedWarning()
     const setMessageProgram = useUpdateMessageProgram()
+    const saveTables = new Tables(saveTable)
+    const savePreference = findCurrentPreference(savePreferences, id)
+    const [valueInput, setValueInput] = useState(savePreference.nameMuscleGroup)
+
     function sucessAlert() {
         if (thereIsChange[0] === "") {
             setMessageProgram([""], "none")
@@ -45,24 +51,62 @@ const EditWorkout = () => {
         AsyncStorager.saveTables(saveTable)
         AsyncStorager.savePreferences({ initializer: preferences.initializer, preferencesWorkout: savePreferences })
     }
+    function editNameMuscularGroup() {
+        const value = valueInput
+        const findValueIquals = savePreferences.find(thisExercise => thisExercise.nameMuscleGroup === value)
+        const isThisElement = value === savePreference.nameMuscleGroup
+        if (value === "") {
+            setValueInput(savePreference.nameMuscleGroup)
+            setMessageProgram(["O campo não pode ficar vazio!"], "error")
+        } else {
+            if (!findValueIquals) {
+                //save on the table
+                const indexTable = saveTables.tables.findIndex(table => table.id === savePreference.id)
+                const thisTable = new MuscleGroup(saveTables.tables[indexTable])
+                thisTable.name = value
+                saveTables.updateTables(thisTable)
+                setSaveTable(saveTables.tables)
+                //save on the preferences
+                const fakePreferences = [...savePreferences]
+                const preferenceWorkout = new PreferencesWorkout(savePreference)
+                const indexPreferences = fakePreferences.findIndex(preference => preference.nameMuscleGroup === preferenceWorkout.nameMuscleGroup)
+                preferenceWorkout.nameMuscleGroup = value
+                fakePreferences.splice(indexPreferences, 1, preferenceWorkout.returnPreferences())
+                setSavePreferences(fakePreferences)
+                setValueInput(value)
+                setMessageProgram(["Há alterações feitas!"], "changed")
+            } else if (!isThisElement) {
+                setValueInput(savePreference.nameMuscleGroup)
+                setMessageProgram(["Esse grupo muscular já foi criado!"], "error")
+            }
+        }
+    }
     return (
         <>
             <View style={styles.sectionView}>
-                <PresetGroup
-                    id={id}
-                    saveTable={saveTable}
-                    savePreferences={savePreferences}
-                    setSaveTable={setSaveTable}
-                    setSavePreferences={setSavePreferences} />
-                <StyleIcons
-                    id={id}
-                    saveTable={saveTable}
-                    setSaveTable={setSaveTable} />
-                <View style={styles.viewSave}>
-                    <Text style={styles.button}
-                        onPress={event => sucessAlert()}>
-                        Salvar alterações
-                    </Text>
+                <TextInput
+                    maxLength={25}
+                    value={valueInput}
+                    onChangeText={text => setValueInput(text)}
+                    onEndEditing={event => editNameMuscularGroup()}
+                    style={styles.textInput} />
+                <View style={{gap: 20}}>
+                    <PresetGroup
+                        valueInput={valueInput}
+                        savePreference={savePreference}
+                        savePreferences={savePreferences}
+                        setSaveTable={setSaveTable}
+                        setSavePreferences={setSavePreferences} />
+                    <StyleIcons
+                        id={id}
+                        saveTable={saveTable}
+                        setSaveTable={setSaveTable} />
+                    <View style={styles.viewSave}>
+                        <Text style={styles.button}
+                            onPress={event => sucessAlert()}>
+                            Salvar alterações
+                        </Text>
+                    </View>
                 </View>
             </View>
             <ErrorProgram text={erroProgram} />
@@ -77,7 +121,6 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 20,
         backgroundColor: cor.gray900,
-        gap: 20
     },
     viewSave: {
         display: "flex",
@@ -85,6 +128,18 @@ const styles = StyleSheet.create({
         fontWeight: font.semibold,
         fontSize: 16,
         borderRadius: 8
+    },
+    textInput: {
+        backgroundColor: "transparent",
+        fontWeight: font.bold,
+        fontSize: 21,
+        marginTop: 10,
+        marginRight: 100,
+        paddingBottom: 3,
+        color: cor.gray200,
+        borderBottomWidth: 2,
+        borderColor: cor.secundaria,
+        borderStyle: "dashed"
     },
     button: {
         display: 'flex',

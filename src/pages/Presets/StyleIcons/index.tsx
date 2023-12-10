@@ -57,11 +57,10 @@ const styles = StyleSheet.create({
     },
     titleTrain: {
         fontWeight: font.bold,
-        fontSize: 22,
+        fontSize: 20,
         color: cor.gray200
     },
     textTrain: {
-        fontWeight: font.medium,
         fontSize: 15,
         color: cor.gray200
     },

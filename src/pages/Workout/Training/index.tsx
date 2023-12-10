@@ -1,9 +1,9 @@
-import Exercise from "./Exercise"
-import HeaderTraining from "./HeaderTraining"
 import { IMuscleGroupInformations } from "../../../shared/interfaces/IMuscleGroupInformations"
 import { IMuscleGroup } from "../../../shared/interfaces/IMuscleGroup"
 import { StyleSheet, Text, View, Pressable, ScrollView, TextInput } from "react-native"
 import { cor, font } from '../../../utils/presetStyles'
+import { useRoute, useNavigation } from "@react-navigation/native"
+import { ParamsProps } from "../../../@types/navigation"
 
 interface TrainingProps {
     workout: IMuscleGroupInformations
@@ -12,34 +12,36 @@ interface TrainingProps {
 }
 
 const Training = ({ workout, saveTable, setSaveTable }: TrainingProps) => {
+    const route = useRoute()
+    const params = route.params as ParamsProps
+    const id = params.id
+    const navigation = useNavigation()
+    function viewTraining() {
+        navigation.navigate("TrainingWorkout", { id, date: workout.date })
+    }
     return (
-        <View key={workout.date} style={styles.section}>
-            <HeaderTraining workout={workout} saveTable={saveTable} setSaveTable={setSaveTable} />
-            <View style={styles.viewExercise}>
-                {workout.exercise.map((exercise, index) =>
-                    <Exercise key={index} exercise={exercise} workout={workout} saveTable={saveTable} setSaveTable={setSaveTable} />
-                )}
-            </View>
-        </View>
+        <Pressable onPress={event => viewTraining()} style={styles.sectionView}>
+            <Text style={styles.text}>{workout.date}</Text>
+        </Pressable>
     )
 }
 const styles = StyleSheet.create({
-    section: {
-        //"flex flex-col bg-gray-700 rounded-2xl px-7 py-4 gap-3"
+
+    sectionView: {
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
         backgroundColor: cor.gray800,
         borderRadius: 12,
-        gap: 28,
         paddingVertical: 15,
         paddingHorizontal: 26,
     },
-    viewExercise: {
-        //'flex flex-col gap-5'
-        display: "flex",
-        flexDirection: "column",
-        gap: 20
-    }
+    text: {
+        fontWeight: font.semibold,
+        color: cor.gray200,
+        fontSize: 21
+    },
 });
 
 export default Training

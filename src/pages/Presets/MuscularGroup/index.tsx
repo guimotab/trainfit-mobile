@@ -11,50 +11,17 @@ import { StyleSheet, Text, View, Pressable, TextInput } from "react-native"
 import { cor, font } from "../../../utils/presetStyles"
 import useChangedWarning from "../../../state/hooks/useChangedWarning"
 interface MuscularGroupProps {
+    valueInput: string
     preference: IPreferencesWorkout
     savePreferences: IPreferencesWorkout[]
-    saveTable: IMuscleGroup[]
-    setSaveTable: React.Dispatch<React.SetStateAction<IMuscleGroup[]>>
     setSavePreferences: React.Dispatch<React.SetStateAction<IPreferencesWorkout[]>>
 }
-const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, setSavePreferences }: MuscularGroupProps) => {
+const MuscularGroup = ({ valueInput, preference, savePreferences, setSavePreferences }: MuscularGroupProps) => {
     const [createNewExercise, setCreateNewExercise] = useState(false)
-    const [valueInput, setValueInput] = useState(preference.nameMuscleGroup)
     const [valueInicialInput, setValueInicialInput] = useState("")
     const setMessageProgram = useUpdateMessageProgram()
     const thereIsChange = useChangedWarning()
-    const saveTables = new Tables(saveTable)
-
-    function editNameMuscularGroup() {
-        const value = valueInput
-        const findValueIquals = savePreferences.find(thisExercise => thisExercise.nameMuscleGroup === value)
-        const isThisElement = value === preference.nameMuscleGroup
-        if (value === "") {
-            setValueInput(preference.nameMuscleGroup)
-            setMessageProgram(["O campo não pode ficar vazio!"], "error")
-        } else {
-            if (!findValueIquals) {
-                //save on the table
-                const indexTable = saveTables.tables.findIndex(table => table.id === preference.id)
-                const thisTable = new MuscleGroup(saveTables.tables[indexTable])
-                thisTable.name = value
-                saveTables.updateTables(thisTable)
-                setSaveTable(saveTables.tables)
-                //save on the preferences
-                const fakePreferences = [...savePreferences]
-                const preferenceWorkout = new PreferencesWorkout(preference)
-                const indexPreferences = fakePreferences.findIndex(preference => preference.nameMuscleGroup === preferenceWorkout.nameMuscleGroup)
-                preferenceWorkout.nameMuscleGroup = value
-                fakePreferences.splice(indexPreferences, 1, preferenceWorkout.returnPreferences())
-                setSavePreferences(fakePreferences)
-                setValueInput(value)
-                setMessageProgram(["Há alterações feitas!"], "changed")
-            } else if (!isThisElement) {
-                setValueInput(preference.nameMuscleGroup)
-                setMessageProgram(["Esse grupo muscular já foi criado!"], "error")
-            }
-        }
-    }
+    
     function saveNewExercise() {
         const value = valueInicialInput
         const findThisPreference = savePreferences.findIndex(preference => preference.nameMuscleGroup === valueInput)
@@ -87,14 +54,8 @@ const MuscularGroup = ({ preference, savePreferences, saveTable, setSaveTable, s
         <View style={styles.section}>
             <View style={styles.sectionView}>
                 <View style={styles.firstGroup}>
-                    <TextInput
-                        maxLength={25}
-                        value={valueInput}
-                        onChangeText={text => setValueInput(text)}
-                        onEndEditing={event => editNameMuscularGroup()}
-                        style={styles.textInput} />
                     <Pressable onPress={event => addNewExercise()} style={styles.createGroup}>
-                        <AddGroup name="my-library-add" style={styles.icon}/><Text style={styles.textButton}>Novo</Text>
+                        <AddGroup name="my-library-add" style={styles.icon}/><Text style={styles.textButton}>Adicionar</Text>
                     </Pressable>
                 </View>
                 <View style={styles.exercisesGroup}>
@@ -148,16 +109,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 12,
-    },
-    textInput: {
-        backgroundColor: "transparent",
-        fontWeight: font.semibold,
-        fontSize: 16,
-        color: cor.gray200,
-        borderBottomWidth: 2,
-        borderColor: cor.secundaria,
-        flex: 1,
-        borderStyle: "dashed"
     },
     exercisesGroup: {
         display: "flex",
