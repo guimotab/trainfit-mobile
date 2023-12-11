@@ -15,9 +15,10 @@ import { useRoute } from "@react-navigation/native";
 import { ParamsProps } from "../../../../../@types/navigation";
 import { StyleSheet, Text, View, Pressable, ScrollView, TextInput } from "react-native"
 import { cor, font } from "../../../../../utils/presetStyles"
-import Trash from "react-native-vector-icons/FontAwesome5"
-import Selector from "../../../../../components/Selector";
 import { Picker } from "@react-native-picker/picker";
+import Edit from "react-native-vector-icons/MaterialIcons"
+import useIdSetsEdit from "../../../../../state/hooks/useIdSetsEdit";
+import { useUpdateIdSetsEdit } from "../../../../../state/hooks/useUpdateIdSetsEdit";
 
 export interface SetsProps {
     sets: ISets
@@ -34,6 +35,7 @@ const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsProps) =
     const saveTables = new Tables(saveTable)
     const setTables = useUpdateTables()
     const updadeMessageProgram = useUpdateMessageProgram()
+    const setIdSetsEdit = useUpdateIdSetsEdit()
     const warningProgram = useWarningProgram()
     const currentTable = new MuscleGroup(findCurrentTable(saveTable, id!))
     const [dateId, setDateId] = useState(workout.date + "%" + exercise.id + "%" + sets.numberSet)
@@ -115,67 +117,37 @@ const Sets = ({ sets, exercise, workout, saveTable, setSaveTable }: SetsProps) =
         <View style={styles.section}>
             <View style={styles.viewSeries}>
                 <Text style={styles.textSeries}>{numberSet}° Série</Text>
-                <Trash name="trash" size={18} onPress={event => deleteSet()} style={styles.icon} />
+                {/* <Trash name="trash" size={18} onPress={event => deleteSet()} style={styles.icon} /> */}
+                <Edit name="edit" size={21} onPress={event => setIdSetsEdit(exercise.name + "|" + sets.numberSet)} style={styles.icon} />
             </View>
             <View style={styles.viewGroup}>
                 <View style={styles.viewInputTexts}>
                     <View style={styles.viewInputWeightRep}>
                         <Text style={styles.text}>Peso: </Text>
-                        <TextInput
-                            maxLength={4}
-                            value={weight.toString()}
-                            onChangeText={text => verifyIsNumber(text, "weight")}
-                            onEndEditing={event => saveInformations()}
-                            style={styles.textInput}
-                        />
+                        <Text style={styles.textInput}>{weight}</Text>
                     </View>
                     <View style={styles.viewInputTypeTech}>
                         <Text style={styles.text}>Medida: </Text>
-                        <View style={styles.selectInput}>
-                            {typeWeightArray.map(thisTypeWeight =>
-                                <Text key={thisTypeWeight}
-                                    onPress={event => (changeTypeWeight(thisTypeWeight))}
-                                    style={typeWeight === thisTypeWeight ? { color: cor.gray200, fontWeight: font.medium } : { color: cor.gray400, fontWeight: font.medium }}>{thisTypeWeight}</Text>)
-                            }
-                        </View>
+                        <Text style={styles.textInput}>{typeWeight}</Text>
                     </View>
                 </View>
                 <View style={styles.viewInputTexts}>
                     <View style={styles.viewInputWeightRep}>
                         <Text style={styles.text}>Repetições: </Text>
-                        <TextInput
-                            value={repetitions.toString()}
-                            maxLength={3}
-                            style={styles.textInputRepetition}
-                            onChangeText={text => verifyIsNumber(text, "repetitions")}
-                            onEndEditing={event => saveInformations()}
-                        />
+                        <Text style={styles.textInput}>{repetitions}</Text>
                     </View>
                     <View style={styles.viewInputTypeTech}>
                         <Text style={styles.text}>Técnica Avançada: </Text>
-                        <View style={styles.technique}>
-                            <Picker
-                                style={styles.picker}
-                                selectedValue={advancedTechnique}
-                                onValueChange={(itemValue, itemIndex) => saveInformations({ advancedTechnique: itemValue, numberSet, observations, repetitions, typeWeight, weight })}>
-                                {advancedTechniqueArray.map((technique, index) =>
-                                    <Picker.Item key={index} label={technique} value={technique} />)
-                                }
-                            </Picker>
-                        </View>
+                        <Text style={styles.textInput}>{advancedTechnique}</Text>
                     </View>
                 </View>
-                <View style={styles.viewInputObservation}>
-                    <Text style={styles.text}>Observações: </Text>
-                    <TextInput
-                        multiline={true}
-                        numberOfLines={3}
-                        maxLength={110}
-                        style={styles.inputObservation}
-                        value={observations}
-                        onChangeText={text => setObservations(text)}
-                        onEndEditing={event => saveInformations()} />
-                </View>
+                {observations !== "" ?
+                    <View style={styles.viewInputObservation}>
+                        <Text style={styles.text}>Observações: </Text>
+                        <Text style={styles.textInput}>{observations}</Text>
+                    </View>
+                    : <></>
+                }
             </View>
         </View>
     );
@@ -267,6 +239,8 @@ const styles = StyleSheet.create({
     },
     textInput: {
         backgroundColor: cor.gray200,
+        textAlignVertical: "center",
+        height: 25,
         fontWeight: font.medium,
         paddingLeft: 4,
         borderRadius: 8,

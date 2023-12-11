@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
         fontWeight: font.bold,
         fontSize: 21,
         marginTop: 10,
-        marginRight: 100,
+        marginRight: 80,
         paddingBottom: 3,
         color: cor.gray200,
         borderBottomWidth: 2,

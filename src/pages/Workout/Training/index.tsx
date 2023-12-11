@@ -26,7 +26,6 @@ const Training = ({ workout, saveTable, setSaveTable }: TrainingProps) => {
     )
 }
 const styles = StyleSheet.create({
-
     sectionView: {
         display: "flex",
         flexDirection: "row",

@@ -18,6 +18,12 @@ export class MuscleGroupInformation implements IMuscleGroupInformations {
         exercises.splice(indexExercise, 1)
         this._exercise = [...exercises]
     }
+    deleteExerciseByName(nameExercise: string){
+        const exercises = [...this._exercise]
+        const indexExercise = exercises.findIndex(exercise => exercise.name === nameExercise)
+        exercises.splice(indexExercise, 1)
+        this._exercise = [...exercises]
+    }
     updateExercise(nameExercise: string, newExercise: IExercise) {
         const exercises = [...this._exercise]
         const indexExercise = exercises.findIndex(exercise => exercise.name === nameExercise)

@@ -1,7 +1,6 @@
 import { View, StyleSheet, ScrollView } from "react-native"
 import Exercise from "../Training/Exercise"
 import HeaderTraining from "../Training/HeaderTraining"
-import { IMuscleGroupInformations } from "../../../shared/interfaces/IMuscleGroupInformations"
 import { cor } from "../../../utils/presetStyles"
 import { ParamsProps } from "../../../@types/navigation"
 import { useRoute } from "@react-navigation/native"
@@ -16,6 +15,13 @@ import ErrorProgram from '../../../components/ErrorProgram'
 import WarningProgram from '../../../components/WarningProgram'
 import useErrorProgram from "../../../state/hooks/useErrorProgram"
 import useWarningProgram from "../../../state/hooks/useWarningProgram"
+import EditExercise from "./EditExercise"
+import ScreenBottom from "../../../components/ScreenBottom"
+import useIdExerciseEdit from "../../../state/hooks/useIdExerciseEdit"
+import { useUpdateIdExerciseEdit } from "../../../state/hooks/useUpdateIdExerciseEdit"
+import useIdSetsEdit from "../../../state/hooks/useIdSetsEdit"
+import { useUpdateIdSetsEdit } from "../../../state/hooks/useUpdateIdSetsEdit"
+import EditSets from "./EditSets"
 
 const TrainingWorkout = () => {
     const tables = new Tables(useTables())
@@ -28,7 +34,13 @@ const TrainingWorkout = () => {
     const workout = findCurrentWorkout(currentTable, date)!
     const warningProgram = useWarningProgram()
     const errorProgram = useErrorProgram()
-
+    const idExerciseEdit = useIdExerciseEdit()
+    const setIdExerciseEdit = useUpdateIdExerciseEdit()
+    const idSetsEdit = useIdSetsEdit()
+    const setIdSetsEdit = useUpdateIdSetsEdit()
+    useEffect(() => {
+        setSaveTable(tables.tables)
+    }, [tables.tables])
     return (
         <>
             <View key={workout.date} style={styles.section}>
@@ -51,6 +63,12 @@ const TrainingWorkout = () => {
                     />
                 </View>
             </View>
+            <ScreenBottom showEdit={idExerciseEdit} setShowEdit={setIdExerciseEdit}>
+                <EditExercise currentTable={currentTable} workout={workout} saveTable={saveTable} setSaveTable={setSaveTable}/>
+            </ScreenBottom>
+            <ScreenBottom showEdit={idSetsEdit} setShowEdit={setIdSetsEdit}>
+                <EditSets currentTable={currentTable} workout={workout} saveTable={saveTable} setSaveTable={setSaveTable}/>
+            </ScreenBottom>
             <WarningProgram text={warningProgram} saveTable={saveTable} setSaveTable={setSaveTable} />
             <ErrorProgram text={errorProgram} />
         </>

@@ -27,3 +27,11 @@ export const changedWarning = atom<string[]>({
     key: 'changedWarning',
     default: [""]
 })
+export const idExerciseEdit = atom<string>({
+    key: 'idExerciseEdit',
+    default: ""
+})
+export const idSetsEdit = atom<string>({
+    key: 'idSetsEdit',
+    default: ""
+})

@@ -3,20 +3,28 @@ import { cor, font } from "../../utils/presetStyles"
 import { Tables } from "../../models/Tables"
 import useTables from "../../state/hooks/useTables"
 import WorkoutCards from "./WorkoutCards"
+import { FlatList } from "react-native"
 const Presets = () => {
     const tables = new Tables(useTables())
     return (
         <View style={styles.screen}>
-            <ScrollView>
-                <View style={styles.section}>
-                    <View style={styles.sectionView}>
-                        <Text style={{ color: cor.gray200, fontWeight: font.semibold, fontSize: 22 }}>Escolha um treino para editar:</Text>
-                        <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap", gap: 20 }}>
-                            {tables.tables.map(table => <WorkoutCards key={table.id} table={table} />)}
-                        </View>
-                    </View>
+            <View style={styles.section}>
+                <View style={styles.sectionView}>
+                    <Text style={{ color: cor.gray200, fontWeight: font.semibold, fontSize: 22 }}>Escolha um treino para editar:</Text>
+                    <FlatList
+                        contentContainerStyle={{ gap: 20 }}
+                        columnWrapperStyle={{ gap: 20 }}
+                        numColumns={2}
+                        horizontal={false}
+                        data={tables.tables}
+                        renderItem={({ item, index }) =>
+                            <WorkoutCards
+                                key={item.id}
+                                table={item} />
+                        }
+                    />
                 </View>
-            </ScrollView>
+            </View>
         </View>
     )
 
