@@ -2,26 +2,16 @@ import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native"
 import { cor, font } from "../../../utils/presetStyles";
 import Actions from 'react-native-vector-icons/Ionicons'
 import { FileSystemTrainFit } from "../../../service/FileSystem";
-import { IMuscleGroup } from "../../../shared/interfaces/IMuscleGroup";
-import { IPreferences } from "../../../shared/interfaces/IPreferences";
-import { useNavigation } from "@react-navigation/native";
-import { useUpdatePreferences } from "../../../state/hooks/useUpdatePreferences";
-import { useUpdateTables } from "../../../state/hooks/useUpdateTables";
+interface UploadDownloadInformation{
+    setShowWarning: React.Dispatch<React.SetStateAction<boolean>>
+}
+const UploadDownloadInformation = ({setShowWarning}:UploadDownloadInformation) => {
 
-const UploadDownloadInformation = () => {
-    const setTable = useUpdateTables()
-    const setPreferences = useUpdatePreferences()
-    const navigation = useNavigation()
     async function downloadInformations() {
         await FileSystemTrainFit.downloadFile()
     }
     async function uploadInformation() {
-        const [tables, preferences] = await FileSystemTrainFit.uploadFile() as [IMuscleGroup[], IPreferences]
-        if (tables.length > 0) {
-            setTable(tables)
-            setPreferences(preferences)
-            navigation.navigate("Home")
-        }
+        setShowWarning(true)
     }
     return (
         <>

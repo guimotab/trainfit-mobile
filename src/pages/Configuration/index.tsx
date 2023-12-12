@@ -10,12 +10,14 @@ import UploadDownloadInformation from "./UploadDownloadInformations"
 import DeleteInformations from "./DeleteInformations"
 import WarningDeleteInformations from "./DeleteInformations/WarningInformations"
 import { useState } from "react"
+import WarningUpload from "./UploadDownloadInformations/WarningUpload"
 
 const Configuration = () => {
     const erroProgram = useErrorProgram()
     const sucessProgram = useSucessProgram()
     const changedWarning = useChangedWarning()
-    const [showWarning, setShowWarning] = useState(false)
+    const [showWarningDelete, setShowWarningDelete] = useState(false)
+    const [showWarningUpload, setShowWarningUpload] = useState(false)
 
     // const rotationKeyFrame = new Keyframe({
     //     0: {
@@ -31,12 +33,13 @@ const Configuration = () => {
     // })
     return (
         <>
-            <WarningDeleteInformations setShowWarning={setShowWarning} showWarning={showWarning} />
+            <WarningDeleteInformations setShowWarning={setShowWarningDelete} showWarning={showWarningDelete} />
+            <WarningUpload setShowWarning={setShowWarningUpload} showWarning={showWarningUpload} />
             <View style={styles.screen}>
                 <ScrollView>
                     <View style={styles.section}>
-                        <UploadDownloadInformation />
-                        <DeleteInformations showWarning={showWarning} setShowWarning={setShowWarning}/>
+                        <UploadDownloadInformation setShowWarning={setShowWarningUpload}/>
+                        <DeleteInformations setShowWarning={setShowWarningDelete}/>
                     </View>
                 </ScrollView>
             </View>

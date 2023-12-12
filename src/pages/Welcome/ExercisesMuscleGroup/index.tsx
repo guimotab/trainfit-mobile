@@ -6,9 +6,9 @@ import usePreferences from "../../../state/hooks/usePreferences"
 import { useUpdatePreferences } from "../../../state/hooks/useUpdatePreferences"
 import { useState } from "react"
 import { useUpdateMessageProgram } from "../../../state/hooks/useUpdateMessageProgram"
-import Icon from "react-native-vector-icons/AntDesign"
-import { ScrollView, Button, StyleSheet, Text, View, TextInput } from "react-native"
+import { Pressable, StyleSheet, Text, View, TextInput } from "react-native"
 import { cor, font } from "../../../utils/presetStyles"
+import Plus from "react-native-vector-icons/MaterialIcons"
 
 interface ExercisesMuscleGroupProps {
     preference: IPreferencesWorkout
@@ -50,7 +50,10 @@ const ExercisesMuscleGroup = ({ preference }: ExercisesMuscleGroupProps) => {
                     <Text style={styles.text} >
                         {preference.nameMuscleGroup}
                     </Text>
-                    <Icon name={"pluscircleo"} size={23} onPress={event => setNewExercise(true)} style={styles.icon} />
+                    <Pressable style={styles.pressableAdd} onPress={event => setNewExercise(true)}>
+                        <Plus name={"add-box"} size={19} style={styles.icon} />
+                        <Text style={{ color: cor.gray200, fontWeight: font.medium, fontSize: 15 }}>Adicionar</Text>
+                    </Pressable>
                 </View>
                 <View style={styles.divExerciseInput}>
                     {preference.basesExercises.map(exercise =>
@@ -85,14 +88,14 @@ const styles = StyleSheet.create({
         borderColor: cor.secundaria,
         borderRadius: 10,
         paddingHorizontal: 16,
-        paddingVertical: 8,
+        paddingVertical: 12,
         gap: 12
     },
     titleGroup: {
         display: "flex",
         flexDirection: "row",
+        justifyContent: "space-between",
         alignItems: "center",
-        gap: 12
     },
     text: {
         paddingHorizontal: 4,
@@ -100,6 +103,16 @@ const styles = StyleSheet.create({
         color: cor.gray200,
         fontWeight: font.medium,
         fontSize: 20
+    },
+    pressableAdd: {
+        gap: 7,
+        alignSelf: "flex-start",
+        flexDirection: "row",
+        alignItems: "center",
+        paddingHorizontal: 13,
+        paddingVertical: 5,
+        backgroundColor: cor.secundaria,
+        borderRadius: 7
     },
     divExerciseInput: {
         display: "flex",
@@ -109,7 +122,7 @@ const styles = StyleSheet.create({
         paddingBottom: 12
     },
     input: {
-        paddingHorizontal:10,
+        paddingHorizontal: 10,
         color: cor.gray800,
         fontWeight: font.medium,
         fontSize: 16,

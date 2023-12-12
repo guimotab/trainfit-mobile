@@ -34,9 +34,7 @@ const Table = () => {
     const preferences = new AllPreferences(usePreferences())
     const updatePreferences = useUpdatePreferences()
     const updateTables = useUpdateTables()
-    const [saveTable, setSaveTable] = useState(tables.tables)
-    const currentTable = new MuscleGroup(findCurrentTable(saveTable, id!))
-    const [currentTableInform, setCurrentTableInform] = useState([...currentTable.information].reverse())
+    const currentTable = new MuscleGroup(findCurrentTable(tables.tables, id!))
     const [typeFilter, setTypeFilter] = useState<string>("Últimos 7 dias")
     const [tableFilter, setTableFilter] = useState(filterDays(true)!)
     const [showWarning, setShowWarning] = useState(false)
@@ -46,7 +44,6 @@ const Table = () => {
     const [openMenuKebab, setOpenMenuKebab] = useState(false)
     const errorProgram = useErrorProgram()
     const updadeMessageProgram = useUpdateMessageProgram()
-
     useEffect(() => {
         setNameTable(currentTable.name)
     }, [currentTable.name])
@@ -58,11 +55,7 @@ const Table = () => {
         let startDay: Date
         let endDay: Date
         if (typeFilter !== "Todos os dias") {
-            if (!typeFilter.split("-")[1]) {
-                [startDay, endDay] = newFindFilterDays(typeFilter)
-            } else {
-                [startDay, endDay] = returnStartEndDate(typeFilter)
-            }
+            [startDay, endDay] = newFindFilterDays(typeFilter)
             currentTable.information.forEach(workout => {
                 const workoutDateFormated = newDayMonthYearToDate(workout.date)
                 if (startDay <= workoutDateFormated && workoutDateFormated <= endDay) {
@@ -73,9 +66,9 @@ const Table = () => {
             tablesFiltered = [...currentTable.information]
         }
         if (giveReturn) {
-            return tablesFiltered
+            return tablesFiltered.reverse()
         } else {
-            setTableFilter(tablesFiltered)
+            setTableFilter(tablesFiltered.reverse())
         }
     }
     function createWorkout() {
@@ -114,8 +107,7 @@ const Table = () => {
                     currentTable.createNewInformation({ date: date, exercise: [], feeling: "" })
                 }
                 tables.updateTables(currentTable)
-                setCurrentTableInform([...currentTable.information].reverse())
-                setSaveTable(tables.tables)
+                // setCurrentTableInform([...currentTable.information].reverse())
                 updateTables(tables.tables)
             }
         }
@@ -135,7 +127,6 @@ const Table = () => {
                     tables.updateTables(currentTable)
                     setTables(tables.tables)
                     AsyncStorager.saveTables(tables.tables)
-                    setSaveTable(tables.tables)
                     //preferences
                     try {
                         const indexPreference = preferences.preferences.findIndex(preference => preference.id === currentTable.id)
@@ -155,9 +146,6 @@ const Table = () => {
         setShowWarning(true)
         setOpenMenuKebab(false)
         updadeMessageProgram([""], "none")
-        if (setSaveTable) {
-            setSaveTable(tables.tables)
-        }
     }
     return (
         <>
@@ -197,19 +185,16 @@ const Table = () => {
                     </View>
                 </View>
                 <FlatList
-                    contentContainerStyle={{ gap: 20}}
-                    data={currentTableInform}
+                    contentContainerStyle={{ gap: 20 }}
+                    data={tableFilter}
                     renderItem={({ item, index }) =>
                         <Training
                             key={item.date}
                             workout={item}
-                            saveTable={saveTable}
-                            setSaveTable={setSaveTable}
                         />
                     }
                 />
             </View>
-            <WarningProgram text={warningProgram} saveTable={saveTable} setSaveTable={setSaveTable} />
             <ErrorProgram text={errorProgram} />
         </>
     )
@@ -218,16 +203,13 @@ const styles = StyleSheet.create({
     section: {
         paddingHorizontal: 24,
         paddingVertical: 30,
-        minHeight: 1000,
-        flex: 1,
+        flex: 1
     },
     sectionView: {
         position: "relative",
-        display: "flex",
         justifyContent: "center"
     },
     viewTextGroup: {
-        display: "flex",
         width: "100%",
         marginBottom: 32,
         gap: 30

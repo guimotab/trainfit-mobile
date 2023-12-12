@@ -10,6 +10,7 @@ import AddGroup from "react-native-vector-icons/MaterialIcons"
 import { StyleSheet, Text, View, Pressable, TextInput } from "react-native"
 import { cor, font } from "../../../utils/presetStyles"
 import useChangedWarning from "../../../state/hooks/useChangedWarning"
+import { FlatList } from "react-native"
 interface MuscularGroupProps {
     valueInput: string
     preference: IPreferencesWorkout
@@ -21,7 +22,7 @@ const MuscularGroup = ({ valueInput, preference, savePreferences, setSavePrefere
     const [valueInicialInput, setValueInicialInput] = useState("")
     const setMessageProgram = useUpdateMessageProgram()
     const thereIsChange = useChangedWarning()
-    
+
     function saveNewExercise() {
         const value = valueInicialInput
         const findThisPreference = savePreferences.findIndex(preference => preference.nameMuscleGroup === valueInput)
@@ -55,7 +56,7 @@ const MuscularGroup = ({ valueInput, preference, savePreferences, setSavePrefere
             <View style={styles.sectionView}>
                 <View style={styles.firstGroup}>
                     <Pressable onPress={event => addNewExercise()} style={styles.createGroup}>
-                        <AddGroup name="my-library-add" style={styles.icon}/><Text style={styles.textButton}>Adicionar</Text>
+                        <AddGroup name="my-library-add" style={styles.icon} /><Text style={styles.textButton}>Adicionar</Text>
                     </Pressable>
                 </View>
                 <View style={styles.exercisesGroup}>
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
         fontWeight: font.semibold,
         fontSize: 15
     },
-    icon:{
+    icon: {
         color: cor.gray200,
         fontSize: 19
     }

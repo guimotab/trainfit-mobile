@@ -15,7 +15,7 @@ import { IMuscleGroup } from "../../../../shared/interfaces/IMuscleGroup"
 import useWarningProgram from "../../../../state/hooks/useWarningProgram"
 import { useRoute } from "@react-navigation/native"
 import { ParamsProps } from "../../../../@types/navigation"
-import { StyleSheet, Text, View, Pressable, ScrollView, TextInput } from "react-native"
+import { StyleSheet, Text, View, Pressable } from "react-native"
 import { cor, font } from "../../../../utils/presetStyles"
 import Edit from "react-native-vector-icons/MaterialIcons"
 import Plus from "react-native-vector-icons/MaterialIcons"
@@ -83,8 +83,6 @@ const Exercise = ({ exercise, workout, saveTable, setSaveTable }: ExerciseProps)
                         key={item.numberSet}
                         sets={item}
                         exercise={exercise} workout={workout}
-                        saveTable={saveTable}
-                        setSaveTable={setSaveTable}
                     />
                 }
             />
@@ -101,6 +99,7 @@ const styles = StyleSheet.create({
         borderRadius: 7,
         paddingVertical: 15,
         paddingHorizontal: 22,
+        marginHorizontal: 20,
         marginBottom: 10,
     },
     viewExercise: {

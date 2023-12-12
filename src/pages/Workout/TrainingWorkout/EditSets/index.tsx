@@ -6,7 +6,7 @@ import { cor, font } from "../../../../utils/presetStyles"
 import Trash from "react-native-vector-icons/FontAwesome5"
 import Check from "react-native-vector-icons/FontAwesome5"
 import useIdSetsEdit from "../../../../state/hooks/useIdSetsEdit"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import findCurrentSet from "../../../../utils/findCurrentSet"
 import findCurrentExercise from "../../../../utils/findCurrentExercise"
 import { Picker } from "@react-native-picker/picker"
@@ -17,6 +17,7 @@ import { Tables } from "../../../../models/Tables"
 import useTables from "../../../../state/hooks/useTables"
 import { useUpdateTables } from "../../../../state/hooks/useUpdateTables"
 import { useUpdateMessageProgram } from "../../../../state/hooks/useUpdateMessageProgram"
+import { useUpdateIdSetsEdit } from "../../../../state/hooks/useUpdateIdSetsEdit"
 
 interface EditSetsProps {
     currentTable: MuscleGroup
@@ -26,27 +27,33 @@ interface EditSetsProps {
 }
 const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsProps) => {
     const allIdSet = useIdSetsEdit()
+    const setIdSets = useUpdateIdSetsEdit()
     const nameExercise = allIdSet.split("|")[0]
     const idSet = allIdSet.split("|")[1]
     const tables = new Tables(useTables());
     const saveTables = new Tables(saveTable)
     const setTables = useUpdateTables()
-    const currentExercise = findCurrentExercise(workout, nameExercise)
-    const sets = findCurrentSet(currentExercise, Number(idSet))
+    let currentExercise = findCurrentExercise(workout, nameExercise)
+    let sets = findCurrentSet(currentExercise, Number(idSet))
     const [changed, setChanged] = useState(false)
     const [dateId, setDateId] = useState(workout.date + "%" + currentExercise.id + "%" + sets.numberSet)
     const [stringError, setStringError] = useState("")
     const [numberSet, setNumberSet] = useState(sets.numberSet)
-    const [weight, setWeight] = useState(sets.weight)
+    const [weight, setWeight] = useState(sets.weight.toString())
     const [typeWeight, setTypeWeight] = useState(sets.typeWeight)
     const [repetitions, setRepetitions] = useState(sets.repetitions)
     const [advancedTechnique, setAdvancedTechnique] = useState(sets.advancedTechnique)
     const [observations, setObservations] = useState(sets.observations)
     const updadeMessageProgram = useUpdateMessageProgram()
+    useEffect(()=>{
+        currentExercise = findCurrentExercise(workout, nameExercise)
+        sets = findCurrentSet(currentExercise, Number(idSet))
+    },[workout])
     function saveInformations(newSets?: ISets) {
         if (!newSets) {
-            newSets = { advancedTechnique, numberSet, observations, repetitions, typeWeight, weight }
+            newSets = { advancedTechnique, numberSet, observations, repetitions, typeWeight, weight: Number(weight) }
         }
+        setChanged(false)
         // if (warningProgram[0] === "") {
         currentTable.updateSets(dateId, newSets)
         tables.updateTables(currentTable)
@@ -59,35 +66,33 @@ const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsPr
         currentTable.deleteSets(dateId)
         saveTables.updateTables(currentTable)
         setSaveTable(saveTables.tables)
-        updadeMessageProgram(["Há alterações feitas!"], "warning")
+        updadeMessageProgram(["Há alterações feitas!"], "warning") 
         setStringError("")
+        setIdSets("")
     }
     function changeTypeWeight(thisTypeWeight: string) {
         setChanged(true)
         setTypeWeight(thisTypeWeight)
-        saveInformations({ advancedTechnique, numberSet, observations, repetitions, typeWeight: thisTypeWeight, weight })
     }
     function verifyIsNumber(text: string, type: string) {
         if (type === "weight") {
-            if (text === "") {
-                setWeight(Number(text))
-            } else {
-                if (Number(text)) {
-                    setWeight(Number(text))
-                } else {
-                    setWeight(weight)
+            if (text !== "") {
+                if (text[1] !== ".") {
+                    if (text[0] === "0" && text[1] !== "," && text.length > 1) {
+                        text = text.substring(1)
+                    }
                 }
+                const condition = new RegExp(/^[0-9,.]+$/, 'g');
+                const test = condition.test(text)
+
+                test ? setWeight(text.replace(",", ".")) : setWeight(weight)
+            } else {
+                setWeight("0")
             }
         } else {
-            if (text === "") {
-                setRepetitions(Number(text))
-            } else {
-                if (Number(text)) {
-                    setRepetitions(Number(text))
-                } else {
-                    setRepetitions(repetitions)
-                }
-            }
+            const condition = new RegExp(/^[0-9]+$/, 'g');
+            const test = condition.test(text)
+            test ? setRepetitions(Number(text)) : setRepetitions(repetitions)
         }
     }
     const typeWeightArray = [
@@ -102,19 +107,26 @@ const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsPr
         "Cluster-Set",
         "Super-Set"
     ];
-    function wasChanged() {
+    function wasChanged(technique?: boolean) {
+        if (technique) {
+            setChanged(true)
+        }
         if (!changed) {
-            if (numberSet !== sets.numberSet || weight !== sets.weight || typeWeight !== sets.typeWeight || repetitions !== sets.repetitions || advancedTechnique !== sets.advancedTechnique || observations !== sets.observations) {
+            if (numberSet !== sets.numberSet || weight !== sets.weight.toString() || typeWeight !== sets.typeWeight || repetitions !== sets.repetitions || advancedTechnique !== sets.advancedTechnique || observations !== sets.observations) {
                 setChanged(true)
             }
         }
+    }
+    function changeTechnique(value: string) {
+        wasChanged(true)
+        setAdvancedTechnique(value)
     }
     return (
         <View style={styles.section}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
                     <Text style={styles.textEdit}>Editar Série</Text>
-                    <Pressable style={nameExercise === nameExercise ? styles.pressableSave : styles.pressableSaveChanged} onPress={event => saveInformations()}>
+                    <Pressable style={changed ? styles.pressableSaveChanged : styles.pressableSave} onPress={event => saveInformations()}>
                         <Check name="check" size={16} style={styles.icon} />
                         <Text style={{ color: cor.gray200, fontSize: 15, fontWeight: font.semibold }}>Salvar</Text>
                     </Pressable>
@@ -129,8 +141,8 @@ const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsPr
                     <View style={styles.viewInputWeightRep}>
                         <Text style={styles.text}>Peso: </Text>
                         <TextInput
-                            maxLength={4}
-                            value={weight.toString()}
+                            maxLength={6}
+                            value={weight.toString().replace(".", ",")}
                             onChangeText={text => verifyIsNumber(text, "weight")}
                             onEndEditing={event => wasChanged()}
                             style={styles.textInput}
@@ -164,7 +176,7 @@ const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsPr
                             <Picker
                                 style={styles.picker}
                                 selectedValue={advancedTechnique}
-                                onValueChange={(itemValue, itemIndex) => saveInformations({ advancedTechnique: itemValue, numberSet, observations, repetitions, typeWeight, weight })}>
+                                onValueChange={(itemValue, itemIndex) => changeTechnique(itemValue)}>
                                 {advancedTechniqueArray.map((technique, index) =>
                                     <Picker.Item key={index} label={technique} value={technique} />)
                                 }
@@ -175,13 +187,12 @@ const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsPr
                 <View style={styles.viewInputObservation}>
                     <Text style={styles.text}>Observações: </Text>
                     <TextInput
-                        multiline={true}
-                        numberOfLines={3}
-                        maxLength={110}
+                        multiline
+                        numberOfLines={2}
+                        maxLength={90}
                         style={styles.inputObservation}
                         value={observations}
-                        onChangeText={text => setObservations(text)}
-                        onEndEditing={event => wasChanged()} />
+                        onChangeText={text => (wasChanged(), setObservations(text))} />
                 </View>
             </View>
         </View>

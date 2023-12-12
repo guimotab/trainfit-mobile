@@ -1,9 +1,8 @@
-import Icon from 'react-native-vector-icons/AntDesign'
 import useTables from '../../state/hooks/useTables'
 import { useUpdateTables } from '../../state/hooks/useUpdateTables'
 import usePreferences from '../../state/hooks/usePreferences'
 import { useUpdatePreferences } from '../../state/hooks/useUpdatePreferences'
-import {ScrollView, Button, StyleSheet, Text, View } from "react-native"
+import { ScrollView, StyleSheet, Text, View } from "react-native"
 import { Tables } from '../../models/Tables'
 import InputNameMuscles from './InputNameMuscles'
 import { IPreferencesWorkout } from '../../shared/interfaces/IPreferencesWorkout'
@@ -12,7 +11,8 @@ import ErrorProgram from '../../components/ErrorProgram'
 import useErrorProgram from '../../state/hooks/useErrorProgram'
 import { useNavigation } from '@react-navigation/native'
 import { cor, font } from '../../utils/presetStyles'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import Plus from "react-native-vector-icons/MaterialIcons"
+import { Pressable } from 'react-native'
 
 const Welcome = () => {
     const tables = new Tables(useTables())
@@ -46,11 +46,12 @@ const Welcome = () => {
                 <View style={styles.divWelcome}>
                     <View style={styles.divTextWelcome}>
                         <Text style={styles.inicialText}>Olá! Bem vindo ao <Text style={styles.boldText}>TrainFit!</Text></Text>
-                        <View style={styles.viewDivH2}>
-                            <View style={styles.viewH2}>
-                                <Text style={styles.h2}>Crie sua divisão de grupos musculares</Text>
-                                <Icon name={"pluscircleo"} size={23} onPress={event => addNewMuscularGroup()} style={styles.icon} />
-                            </View>
+                        <View style={styles.viewH2}>
+                            <Text style={styles.h2}>Crie sua divisão de grupos musculares</Text>
+                            <Pressable style={styles.pressableAdd} onPress={event => addNewMuscularGroup()}>
+                                <Plus name={"add-box"} size={19} style={styles.icon} />
+                                <Text style={{ color: cor.gray200, fontWeight: font.medium, fontSize: 15 }}>Adicionar</Text>
+                            </Pressable>
                         </View>
                     </View>
                     <View style={styles.divInputButton}>
@@ -61,8 +62,6 @@ const Welcome = () => {
                             {tables.tables[0] ?
                                 <Text
                                     style={styles.buttonNextEnable}
-                                    //id='button-to-criarExercicios'
-                                    //style=''
                                     accessibilityLabel="Novo Grupo Muscular"
                                     onPress={event => navigation.navigate("CreateExercises")}> Próximo</Text>
                                 :
@@ -97,8 +96,6 @@ const styles = StyleSheet.create({
     },
     divInputButton: {
         display: "flex",
-        flex: 1,
-        gap: 30,
         flexDirection: "column",
     },
     inicialText: {
@@ -110,21 +107,23 @@ const styles = StyleSheet.create({
         color: cor.secundaria,
         fontWeight: font.extraBold
     },
-    viewDivH2: {
-        display: "flex",
-        flexDirection: "column",
-        gap: 20
-    },
     viewH2: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
         gap: 12
     },
     h2: {
         color: cor.gray200, //200,
         fontWeight: font.semibold,
         fontSize: 17 //2xl
+    },
+    pressableAdd: {
+        gap: 7,
+        alignSelf: "flex-start",
+        flexDirection: "row",
+        alignItems: "center",
+        paddingHorizontal: 13,
+        paddingVertical: 5,
+        backgroundColor: cor.secundaria,
+        borderRadius: 7
     },
     icon: {
         color: cor.gray200, //200,

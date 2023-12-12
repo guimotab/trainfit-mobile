@@ -22,6 +22,7 @@ import useChangedWarning from "../../../state/hooks/useChangedWarning"
 import SucessProgram from "../../../components/SucessProgram"
 import { MuscleGroup } from "../../../models/MuscleGroup"
 import { PreferencesWorkout } from "../../../models/PreferencesWorkout"
+import { ScrollView } from "react-native"
 const EditWorkout = () => {
     const erroProgram = useErrorProgram()
     const changedWarning = useChangedWarning()
@@ -84,30 +85,32 @@ const EditWorkout = () => {
     return (
         <>
             <View style={styles.sectionView}>
-                <TextInput
-                    maxLength={25}
-                    value={valueInput}
-                    onChangeText={text => setValueInput(text)}
-                    onEndEditing={event => editNameMuscularGroup()}
-                    style={styles.textInput} />
-                <View style={{gap: 20}}>
-                    <PresetGroup
-                        valueInput={valueInput}
-                        savePreference={savePreference}
-                        savePreferences={savePreferences}
-                        setSaveTable={setSaveTable}
-                        setSavePreferences={setSavePreferences} />
-                    <StyleIcons
-                        id={id}
-                        saveTable={saveTable}
-                        setSaveTable={setSaveTable} />
-                    <View style={styles.viewSave}>
-                        <Text style={styles.button}
-                            onPress={event => sucessAlert()}>
-                            Salvar alterações
-                        </Text>
+                <ScrollView>
+                    <TextInput
+                        maxLength={25}
+                        value={valueInput}
+                        onChangeText={text => setValueInput(text)}
+                        onEndEditing={event => editNameMuscularGroup()}
+                        style={styles.textInput} />
+                    <View style={{ gap: 20 }}>
+                        <PresetGroup
+                            valueInput={valueInput}
+                            savePreference={savePreference}
+                            savePreferences={savePreferences}
+                            setSaveTable={setSaveTable}
+                            setSavePreferences={setSavePreferences} />
+                        <StyleIcons
+                            id={id}
+                            saveTable={saveTable}
+                            setSaveTable={setSaveTable} />
+                        <View style={styles.viewSave}>
+                            <Text style={styles.button}
+                                onPress={event => sucessAlert()}>
+                                Salvar alterações
+                            </Text>
+                        </View>
                     </View>
-                </View>
+                </ScrollView>
             </View>
             <ErrorProgram text={erroProgram} />
             <ChangedWarning text={changedWarning} />

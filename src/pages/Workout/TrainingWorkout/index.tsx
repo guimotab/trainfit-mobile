@@ -22,6 +22,7 @@ import { useUpdateIdExerciseEdit } from "../../../state/hooks/useUpdateIdExercis
 import useIdSetsEdit from "../../../state/hooks/useIdSetsEdit"
 import { useUpdateIdSetsEdit } from "../../../state/hooks/useUpdateIdSetsEdit"
 import EditSets from "./EditSets"
+import WarningDeleteWorkout from "./WarningDeleteWorkout.tsx"
 
 const TrainingWorkout = () => {
     const tables = new Tables(useTables())
@@ -30,6 +31,7 @@ const TrainingWorkout = () => {
     const id = params.id.toString()
     const date = params.date
     const [saveTable, setSaveTable] = useState(tables.tables)
+    const [showDeleteWorkout, setShowDeleteWorkout] = useState(false)
     const currentTable = new MuscleGroup(findCurrentTable(saveTable, id!))
     const workout = findCurrentWorkout(currentTable, date)!
     const warningProgram = useWarningProgram()
@@ -38,15 +40,22 @@ const TrainingWorkout = () => {
     const setIdExerciseEdit = useUpdateIdExerciseEdit()
     const idSetsEdit = useIdSetsEdit()
     const setIdSetsEdit = useUpdateIdSetsEdit()
+
     useEffect(() => {
         setSaveTable(tables.tables)
     }, [tables.tables])
     return (
         <>
+            <WarningDeleteWorkout
+                currentTable={currentTable}
+                setShowWarning={setShowDeleteWorkout}
+                showWarning={showDeleteWorkout}
+                workout={workout} />
             <View key={workout.date} style={styles.section}>
                 <HeaderTraining
                     saveTable={saveTable}
                     workout={workout}
+                    setShowDeleteWorkout={setShowDeleteWorkout}
                     setSaveTable={setSaveTable} />
                 <View style={styles.viewExercise}>
                     <FlatList
@@ -63,13 +72,27 @@ const TrainingWorkout = () => {
                     />
                 </View>
             </View>
-            <ScreenBottom showEdit={idExerciseEdit} setShowEdit={setIdExerciseEdit}>
-                <EditExercise currentTable={currentTable} workout={workout} saveTable={saveTable} setSaveTable={setSaveTable}/>
+            <ScreenBottom
+                showEdit={idExerciseEdit}
+                setShowEdit={setIdExerciseEdit}>
+                <EditExercise
+                    currentTable={currentTable}
+                    workout={workout}
+                    saveTable={saveTable}
+                    setSaveTable={setSaveTable} />
             </ScreenBottom>
-            <ScreenBottom showEdit={idSetsEdit} setShowEdit={setIdSetsEdit}>
-                <EditSets currentTable={currentTable} workout={workout} saveTable={saveTable} setSaveTable={setSaveTable}/>
+            <ScreenBottom
+                showEdit={idSetsEdit}
+                setShowEdit={setIdSetsEdit}>
+                <EditSets
+                    currentTable={currentTable}
+                    workout={workout}
+                    saveTable={saveTable}
+                    setSaveTable={setSaveTable} />
             </ScreenBottom>
-            <WarningProgram text={warningProgram} saveTable={saveTable} setSaveTable={setSaveTable} />
+            <WarningProgram text={warningProgram}
+                saveTable={saveTable}
+                setSaveTable={setSaveTable} />
             <ErrorProgram text={errorProgram} />
         </>
     )
@@ -83,7 +106,6 @@ const styles = StyleSheet.create({
         backgroundColor: cor.gray900,
         gap: 28,
         paddingTop: 20,
-        paddingHorizontal: 20,
     },
     viewExercise: {
         flex: 1,

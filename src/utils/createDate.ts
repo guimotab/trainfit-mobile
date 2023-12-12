@@ -50,7 +50,7 @@ export function newDayMonthYearToDate(date: string, subtractionDays=0){
     let monthDate = resultDate[1]
     let yearDate = Number(resultDate[2])
     let indexMonthDate = months.findIndex(month => month === monthDate)
-    return dayjs(`${indexMonthDate+1}/${dayDate}/${yearDate}`).subtract(subtractionDays, "days").toDate()
+    return dayjs(`${yearDate}-${indexMonthDate+1}-${dayDate}`).subtract(subtractionDays, "days").toDate()
 }
 
 // export function dayMonthYearToDate(date: string, subtractionDays = 0) {

@@ -10,9 +10,9 @@ const Presets = () => {
         <View style={styles.screen}>
             <View style={styles.section}>
                 <View style={styles.sectionView}>
-                    <Text style={{ color: cor.gray200, fontWeight: font.semibold, fontSize: 22 }}>Escolha um treino para editar:</Text>
+                    <Text style={{ color: cor.gray200, fontWeight: font.semibold, fontSize: 22, paddingHorizontal: 20, }}>Escolha um treino para editar:</Text>
                     <FlatList
-                        contentContainerStyle={{ gap: 20 }}
+                        contentContainerStyle={{ gap: 20, paddingHorizontal: 20, }}
                         columnWrapperStyle={{ gap: 20 }}
                         numColumns={2}
                         horizontal={false}
@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         gap: 30,
-        paddingHorizontal: 20,
         flex: 1
     },
     sectionView: {

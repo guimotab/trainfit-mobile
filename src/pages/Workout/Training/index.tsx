@@ -7,11 +7,9 @@ import { ParamsProps } from "../../../@types/navigation"
 
 interface TrainingProps {
     workout: IMuscleGroupInformations
-    saveTable: IMuscleGroup[]
-    setSaveTable: React.Dispatch<React.SetStateAction<IMuscleGroup[]>>
 }
 
-const Training = ({ workout, saveTable, setSaveTable }: TrainingProps) => {
+const Training = ({ workout }: TrainingProps) => {
     const route = useRoute()
     const params = route.params as ParamsProps
     const id = params.id

@@ -87,10 +87,9 @@ const EditExercise = ({ saveTable, currentTable, workout, setSaveTable }: EditEx
                     maxLength={20}
                     onChangeText={text => setNameExercise(text)}
                     style={styles.textInput} />
-                {
-                    stringError !== "" ?
-                        <Text style={styles.textError}>{stringError}</Text>
-                        : ""
+                {stringError !== "" ?
+                    <Text style={styles.textError}>{stringError}</Text>
+                    : ""
                 }
             </View>
         </View>

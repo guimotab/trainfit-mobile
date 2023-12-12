@@ -3,7 +3,6 @@ import { StorageAccessFramework } from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as DocumentPicker from 'expo-document-picker';
 import { Alert } from 'react-native';
-import { IPreferencesWorkout } from '../shared/interfaces/IPreferencesWorkout';
 import { IMuscleGroup } from '../shared/interfaces/IMuscleGroup';
 import { IPreferences } from '../shared/interfaces/IPreferences';
 export abstract class FileSystemTrainFit {
@@ -20,7 +19,6 @@ export abstract class FileSystemTrainFit {
                 `)
                 Alert.alert('Arquivo Salvo', 'Seu arquivo foi salvo com sucesso.');
             } catch (error) {
-                console.error('Erro Ao Salvar:', error);
                 Alert.alert('Erro Ao Salvar', 'Ocorreu um erro ao salvar seu arquivo.');
             }
         }
@@ -40,6 +38,7 @@ export abstract class FileSystemTrainFit {
             return [tables, preferences]
         } catch (error) {
             Alert.alert('Erro ao Fazer Upload', 'Ocorreu um erro ao tentar ler arquivo.');
+            return []
         }
     }
 }

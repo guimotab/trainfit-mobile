@@ -1,18 +1,10 @@
 import { StyleSheet, Text, View, Pressable, ScrollView, Alert } from "react-native"
 import { font, cor } from "../../../utils/presetStyles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
-import { useUpdatePreferences } from "../../../state/hooks/useUpdatePreferences";
-import { useUpdateTables } from "../../../state/hooks/useUpdateTables";
-import { IPreferencesWorkout } from "../../../shared/interfaces/IPreferencesWorkout";
-import WarningDeleteInformations from "./WarningInformations";
-import { useState } from "react";
 interface DeleteInformationsprops{
-    showWarning: boolean
     setShowWarning: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const DeleteInformations = ({setShowWarning, showWarning}: DeleteInformationsprops) => {
+const DeleteInformations = ({setShowWarning}: DeleteInformationsprops) => {
     async function deleteAll() {
         setShowWarning(true)
     }
