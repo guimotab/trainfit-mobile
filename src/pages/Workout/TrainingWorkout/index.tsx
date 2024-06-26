@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView } from "react-native"
+import { View, StyleSheet } from "react-native"
 import Exercise from "../Training/Exercise"
 import HeaderTraining from "../Training/HeaderTraining"
 import { cor } from "../../../utils/presetStyles"
@@ -23,6 +23,7 @@ import useIdSetsEdit from "../../../state/hooks/useIdSetsEdit"
 import { useUpdateIdSetsEdit } from "../../../state/hooks/useUpdateIdSetsEdit"
 import EditSets from "./EditSets"
 import WarningDeleteWorkout from "./WarningDeleteWorkout.tsx"
+import StopWatch from "./StopWatch"
 
 const TrainingWorkout = () => {
     const tables = new Tables(useTables())
@@ -51,6 +52,7 @@ const TrainingWorkout = () => {
                 setShowWarning={setShowDeleteWorkout}
                 showWarning={showDeleteWorkout}
                 workout={workout} />
+            <StopWatch />
             <View key={workout.date} style={styles.section}>
                 <HeaderTraining
                     saveTable={saveTable}

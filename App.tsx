@@ -18,20 +18,66 @@ export default function App() {
     <SafeAreaProvider>
       <RecoilRoot>
         <NavigationContainer>
-          <StatusBar backgroundColor="#111827" style='light' />
-          <Stack.Navigator screenOptions={{ gestureDirection: 'horizontal', gestureEnabled: true }} initialRouteName='Home'>
+          <StatusBar
+            backgroundColor="#111827"
+            style='light' />
+          <Stack.Navigator
+            screenOptions={{ gestureDirection: 'horizontal', gestureEnabled: true }}
+            initialRouteName='Home'>
             <Stack.Group screenOptions={{ headerShown: false, animation: 'default' }} >
-              <Stack.Screen name='Home' component={Home} />
-              <Stack.Screen name='Workout' component={Workout} options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Grupos" }} />
-              <Stack.Screen name='TrainingWorkout' component={TrainingWorkout} options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Treinos" }} />
-              <Stack.Screen name='EditWorkout' component={EditWorkout} options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Editar Treino" }} />
-              <Stack.Screen name='Presets' options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Predefinições" }}
+              <Stack.Screen
+                name='Home'
+                component={Home} />
+              <Stack.Screen
+                name='Workout'
+                component={Workout}
+                options={{
+                  headerShown: true, headerStyle: { backgroundColor: "#111827" },
+                  headerTintColor: '#fff',
+                  title: "Grupos"
+                }} />
+              <Stack.Screen
+                name='TrainingWorkout'
+                component={TrainingWorkout}
+                options={{
+                  headerShown: true,
+                  headerStyle: { backgroundColor: "#111827" },
+                  headerTintColor: '#fff',
+                  title: "Treinos"
+                }} />
+              <Stack.Screen
+                name='EditWorkout'
+                component={EditWorkout}
+                options={{
+                  headerShown: true,
+                  headerStyle: { backgroundColor: "#111827" },
+                  headerTintColor: '#fff',
+                  title: "Editar Treino"
+                }} />
+              <Stack.Screen
+                name='Presets'
+                options={{
+                  headerShown: true, headerStyle: { backgroundColor: "#111827" },
+                  headerTintColor: '#fff',
+                  title: "Predefinições"
+                }}
                 component={Presets} />
-              <Stack.Screen name='Configuration' options={{ headerShown: true, headerStyle: { backgroundColor: "#111827" }, headerTintColor: '#fff', title: "Configurações" }}
+              <Stack.Screen name='Configuration'
+                options={{
+                  headerShown: true, headerStyle: { backgroundColor: "#111827" },
+                  headerTintColor: '#fff',
+                  title: "Configurações"
+                }}
                 component={Configuration} />
-              <Stack.Screen name='Welcome' component={Welcome} />
-              <Stack.Screen name='CreateExercises' component={CreateExercises} />
-              <Stack.Screen name='StyleGroups' component={StyleGroups} />
+              <Stack.Screen
+                name='Welcome'
+                component={Welcome} />
+              <Stack.Screen
+                name='CreateExercises'
+                component={CreateExercises} />
+              <Stack.Screen
+                name='StyleGroups'
+                component={StyleGroups} />
             </Stack.Group>
           </Stack.Navigator>
         </NavigationContainer>
