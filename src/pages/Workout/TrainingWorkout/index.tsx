@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
         backgroundColor: cor.gray900,
         gap: 28,
         paddingTop: 20,
+        paddingBottom: 30,
     },
     viewExercise: {
         flex: 1,

@@ -38,7 +38,7 @@ const StopWatch = () => {
   };
 
   const handleStopWatch = () => {
-    if(stopWatchStarted){
+    if (stopWatchStarted) {
       setTime(0);
       setIsRunning(false);
       clearInterval(timerRef.current);
@@ -48,23 +48,27 @@ const StopWatch = () => {
       setStopWatchStarted(true);
     }
   };
-  
+
   return (
     <>
       {stopWatchStarted ?
-        <View style={styles.sectionNotStarted}>
-          {isRunning ?
-            <Pause name="pause" style={{ ...styles.icon, paddingHorizontal: 18, }} onPress={handleStartPause} />
-            :
-            <Play name="play" style={{ ...styles.icon, paddingLeft: 16, paddingRight: 12, paddingVertical: 12, fontSize: 25 }} onPress={handleStartPause} />
-          }
-          <View style={{ ...styles.viewCronText, alignSelf: "center" }}>
+        < >
+          <View style={styles.divAbsoluteLeft}>
+            {isRunning ?
+              <Pause name="pause" style={{ ...styles.icon, paddingHorizontal: 18, }} onPress={handleStartPause} />
+              :
+              <Play name="play" style={{ ...styles.icon, paddingLeft: 16, paddingRight: 12, paddingVertical: 12, fontSize: 25 }} onPress={handleStartPause} />
+            }
+          </View>
+          <View style={{ ...styles.viewCronText, ...styles.divAbsoluteCenter }}>
             <Text style={{ ...styles.cronText }}>{formatTime(time)}</Text>
           </View>
-          <Stop name="controller-stop" style={{ ...styles.icon, paddingHorizontal: 10, backgroundColor: cor.erro }} onPress={handleStopWatch} />
-        </View>
+          <View style={styles.divAbsoluteRight}>
+            <Stop name="controller-stop" style={{ ...styles.icon, paddingHorizontal: 10, backgroundColor: cor.erro }} onPress={handleStopWatch} />
+          </View>
+        </>
         :
-        <View style={{ ...styles.sectionNotStarted, justifyContent: "flex-end" }}>
+        <View style={{ ...styles.divAbsoluteRight}}>
           <Stopwatch name="stopwatch" style={{ ...styles.icon }} onPress={handleStopWatch} />
         </View>
       }
@@ -73,19 +77,28 @@ const StopWatch = () => {
 }
 
 const styles = StyleSheet.create({
-  sectionNotStarted: {
+  divAbsoluteCenter: {
     //"flex flex-col bg-gray-700 rounded-2xl px-7 py-4 gap-3"
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
     position: "absolute",
-    width: "100%",
     zIndex: 10,
-    paddingHorizontal: 25,
+    bottom: 20,
+  },
+  divAbsoluteLeft: {
+    //"flex flex-col bg-gray-700 rounded-2xl px-7 py-4 gap-3"
+    position: "absolute",
+    left: 25,
+    zIndex: 10,
+    bottom: 20,
+  },
+  divAbsoluteRight: {
+    //"flex flex-col bg-gray-700 rounded-2xl px-7 py-4 gap-3"
+    position: "absolute",
+    right: 25,
+    zIndex: 10,
     bottom: 20,
   },
   viewCronText: {
+    alignSelf: "center",
     backgroundColor: cor.gray900,
     borderRadius: 7,
     borderColor: "white",

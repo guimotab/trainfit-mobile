@@ -74,6 +74,7 @@ const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsPr
         setTypeWeight(thisTypeWeight)
     }
     function verifyIsNumber(text: string, type: string) {
+        setChanged(true)
         if (type === "weight") {
             if (text !== "") {
                 if (text[1] !== ".") {
@@ -89,7 +90,6 @@ const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsPr
                 setWeight("0")
             }
         } else {
-            setChanged(true)
             if (text !== "") {
                 const condition = new RegExp(/^[0-9]+$/, 'g');
                 const test = condition.test(text)
@@ -111,18 +111,8 @@ const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsPr
         "Cluster-Set",
         "Super-Set"
     ];
-    function wasChanged(technique?: boolean) {
-        if (technique) {
-            setChanged(true)
-        }
-        if (!changed) {
-            if (numberSet !== sets.numberSet || weight !== sets.weight.toString() || typeWeight !== sets.typeWeight || repetitions !== sets.repetitions || advancedTechnique !== sets.advancedTechnique || observations !== sets.observations) {
-                setChanged(true)
-            }
-        }
-    }
     function changeTechnique(value: string) {
-        wasChanged(true)
+        setChanged(true)
         setAdvancedTechnique(value)
     }
     return (
@@ -148,7 +138,7 @@ const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsPr
                             maxLength={6}
                             value={weight.toString().replace(".", ",")}
                             onChangeText={text => verifyIsNumber(text, "weight")}
-                            onEndEditing={event => wasChanged()}
+                            onEndEditing={event => setChanged(true)}
                             style={styles.textInput}
                         />
                     </View>
@@ -171,7 +161,7 @@ const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsPr
                             maxLength={3}
                             style={styles.textInputRepetition}
                             onChangeText={text => verifyIsNumber(text, "repetitions")}
-                            onEndEditing={event => wasChanged()}
+                            onEndEditing={event => setChanged(true)}
                         />
                     </View>
                     <View style={styles.viewInputTypeTech}>
@@ -196,7 +186,7 @@ const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsPr
                         maxLength={90}
                         style={styles.inputObservation}
                         value={observations}
-                        onChangeText={text => (wasChanged(), setObservations(text))} />
+                        onChangeText={text => (setChanged(true), setObservations(text))} />
                 </View>
             </View>
         </View>
