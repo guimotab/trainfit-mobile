@@ -1,29 +1,71 @@
 import { View, StyleSheet, Text } from "react-native"
 import { cor, font } from "../../../../utils/presetStyles";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Stopwatch from "react-native-vector-icons/Fontisto"
 import Stop from "react-native-vector-icons/Entypo"
+import Pause from "react-native-vector-icons/Foundation"
+import Play from "react-native-vector-icons/FontAwesome5"
 
 const StopWatch = () => {
-  const [stopWatchStarted, setStopWatchStarted] = useState(false)
+  const [time, setTime] = useState(0); //seconds
+  const [isRunning, setIsRunning] = useState(false);
+  const [stopWatchStarted, setStopWatchStarted] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout>();
 
-  function handleStopWatch(){
-    setStopWatchStarted(!stopWatchStarted)
-  }
+  useEffect(() => {
+    if (isRunning) {
+      timerRef.current = setInterval(() => {
+        setTime((prevTime) => prevTime + 1);
+      }, 1000);
 
+    } else if (!isRunning && timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    return () => { timerRef.current && clearInterval(timerRef.current); }
+  }, [isRunning]);
+
+  const formatTime = (time: number) => {
+    const getSeconds = `0${time % 60}`.slice(-2);
+    const minutes = Math.floor(time / 60);
+    const getMinutes = `0${minutes % 60}`.slice(-2);
+    const getHours = `0${Math.floor(time / 3600)}`.slice(-2);
+
+    return `${getHours}:${getMinutes}:${getSeconds}`;
+  };
+
+  const handleStartPause = () => {
+    setIsRunning(!isRunning);
+  };
+
+  const handleStopWatch = () => {
+    if(stopWatchStarted){
+      setTime(0);
+      setIsRunning(false);
+      clearInterval(timerRef.current);
+      setStopWatchStarted(false);
+    } else {
+      setIsRunning(true);
+      setStopWatchStarted(true);
+    }
+  };
+  
   return (
     <>
       {stopWatchStarted ?
         <View style={styles.sectionNotStarted}>
-          <Stop name="controller-stop" style={{...styles.icon, paddingHorizontal:10, backgroundColor: cor.erro}} onPress={handleStopWatch}/>
-          <View style={{alignSelf: "center"}}>
-            <Text style={{}}>00:00</Text>
+          {isRunning ?
+            <Pause name="pause" style={{ ...styles.icon, paddingHorizontal: 18, }} onPress={handleStartPause} />
+            :
+            <Play name="play" style={{ ...styles.icon, paddingLeft: 16, paddingRight: 12, paddingVertical: 12, fontSize: 25 }} onPress={handleStartPause} />
+          }
+          <View style={{ ...styles.viewCronText, alignSelf: "center" }}>
+            <Text style={{ ...styles.cronText }}>{formatTime(time)}</Text>
           </View>
-          <Stop name="controller-stop" style={{...styles.icon, paddingHorizontal:10, backgroundColor: cor.erro}} onPress={handleStopWatch}/>
+          <Stop name="controller-stop" style={{ ...styles.icon, paddingHorizontal: 10, backgroundColor: cor.erro }} onPress={handleStopWatch} />
         </View>
         :
-        <View style={{...styles.sectionNotStarted, justifyContent: "flex-end"}}>
-          <Stopwatch name="stopwatch" style={{...styles.icon}} onPress={handleStopWatch}/>
+        <View style={{ ...styles.sectionNotStarted, justifyContent: "flex-end" }}>
+          <Stopwatch name="stopwatch" style={{ ...styles.icon }} onPress={handleStopWatch} />
         </View>
       }
     </>
@@ -42,7 +84,18 @@ const styles = StyleSheet.create({
     zIndex: 10,
     paddingHorizontal: 25,
     bottom: 20,
+  },
+  viewCronText: {
     backgroundColor: cor.gray900,
+    borderRadius: 7,
+    borderColor: "white",
+    borderWidth: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  cronText: {
+    color: "white",
+    fontSize: 17,
   },
   icon: {
     fontSize: 30,

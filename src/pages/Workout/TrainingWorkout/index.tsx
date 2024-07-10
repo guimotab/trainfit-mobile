@@ -61,6 +61,8 @@ const TrainingWorkout = () => {
                     setSaveTable={setSaveTable} />
                 <View style={styles.viewExercise}>
                     <FlatList
+                        initialNumToRender={10}
+                        maxToRenderPerBatch={10}
                         data={workout.exercise}
                         renderItem={({ item, index }) =>
                             <Exercise

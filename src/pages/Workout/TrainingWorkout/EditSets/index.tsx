@@ -12,7 +12,6 @@ import findCurrentExercise from "../../../../utils/findCurrentExercise"
 import { Picker } from "@react-native-picker/picker"
 import { AsyncStorager } from "../../../../service/AsyncStorager"
 import { ISets } from "../../../../shared/interfaces/ISets"
-import { warningProgram } from "../../../../state/atom"
 import { Tables } from "../../../../models/Tables"
 import useTables from "../../../../state/hooks/useTables"
 import { useUpdateTables } from "../../../../state/hooks/useUpdateTables"
@@ -45,10 +44,10 @@ const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsPr
     const [advancedTechnique, setAdvancedTechnique] = useState(sets.advancedTechnique)
     const [observations, setObservations] = useState(sets.observations)
     const updadeMessageProgram = useUpdateMessageProgram()
-    useEffect(()=>{
+    useEffect(() => {
         currentExercise = findCurrentExercise(workout, nameExercise)
         sets = findCurrentSet(currentExercise, Number(idSet))
-    },[workout])
+    }, [workout])
     function saveInformations(newSets?: ISets) {
         if (!newSets) {
             newSets = { advancedTechnique, numberSet, observations, repetitions, typeWeight, weight: Number(weight) }
@@ -66,7 +65,7 @@ const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsPr
         currentTable.deleteSets(dateId)
         saveTables.updateTables(currentTable)
         setSaveTable(saveTables.tables)
-        updadeMessageProgram(["Há alterações feitas!"], "warning") 
+        updadeMessageProgram(["Há alterações feitas!"], "warning")
         setStringError("")
         setIdSets("")
     }
@@ -90,9 +89,14 @@ const EditSets = ({ saveTable, currentTable, workout, setSaveTable }: EditSetsPr
                 setWeight("0")
             }
         } else {
-            const condition = new RegExp(/^[0-9]+$/, 'g');
-            const test = condition.test(text)
-            test ? setRepetitions(Number(text)) : setRepetitions(repetitions)
+            setChanged(true)
+            if (text !== "") {
+                const condition = new RegExp(/^[0-9]+$/, 'g');
+                const test = condition.test(text)
+                test ? setRepetitions(Number(text)) : setRepetitions(repetitions)
+            } else {
+                setRepetitions(0)
+            }
         }
     }
     const typeWeightArray = [
